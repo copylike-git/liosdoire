@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liosdoire MPS Quote v4</title>
+    <style>
+        :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; padding: 16px; max-width: 800px; margin: 0 auto; }
+        header { text-align: center; padding: 20px 0; border-bottom: 2px solid #e2e8f0; }
+        h1 { color: var(--primary); font-size: 1.5rem; margin: 8px 0; }
+        .subtitle { color: #64748b; font-size: 0.9rem; }
+        .section { background: white; border-radius: 12px; padding: 20px; margin: 16px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
+        .device-grid { display: grid; gap: 12px; }
+        .device-item { display: flex; align-items: center; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .device-info { flex: 1; }
+        .device-name { font-weight: 600; }
+        .device-desc { font-size: 0.85rem; color: #64748b; }
+        .qty-controls { display: flex; align-items: center; gap: 8px; }
+        button { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 500; cursor: pointer; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        button.secondary { background: #64748b; }
+        button.success { background: var(--success); }
+        input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; }
+        .result { background: #f1f5f9; border-radius: 8px; padding: 16px; margin-top: 16px; }
+        .result-row { display: flex; justify-content: space-between; padding: 6px 0; }
+        .result-total { font-weight: 700; font-size: 1.1rem; color: var(--primary); border-top: 2px solid #cbd5e1; padding-top: 10px; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+        .badge-success { background: #dcfce7; color: var(--success); }
+        .badge-warning { background: #fef9c3; color: var(--warning); }
+        .excess-section { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 16px; margin-top: 16px; border-radius: 0 8px 8px 0; }
+        .hidden { display: none; }
+        .footer { text-align: center; margin-top: 24px; color: #64748b; font-size: 0.85rem; }
+        @media (max-width: 600px) {
+            .device-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .qty-controls { width: 100%; }
+            input[type="number"] { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Liosdoire MPS Quote v4</h1>
+        <div class="subtitle">All prices EX. VAT (23%) | Excess: €0.005 mono / €0.05 colour</div>
+    </header>
+
+    <div class="section">
+        <div class="section-title">1. Select Devices</div>
+        <div class="device-grid" id="deviceList">
+            <!-- Devices injected by JS -->
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">2. MPS Pack (Optional)</div>
+        <div>
+            <label>
+                <input type="checkbox" id="mpsToggle"> 
+                Is Managed Print Solution required?
+            </label>
+        </div>
+        
+        <div id="mpsOptions" class="hidden">
+            <div style="margin: 16px 0;">
+                <label>Select pack:</label><br>
+                <select id="packSelect" style="width: 100%; margin-top: 8px;">
+                    <option value="Basic">RSI Basic — €20/mo (Cloud mgmt)</option>
+                    <option value="Plus">RSI Plus — €35/mo (+Scan to OneDrive)</option>
+                    <option value="Platinum">RSI Platinum — €45/mo (+Reporting, Priority)</option>
+                </select>
+            </div>
+            
+            <div>
+                <label>How many machines need this pack?</label>
+                <input type="number" id="mpsMachines" min="1" value="1" style="width: 100%; margin-top: 8px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">3. Print Credit & Excess</div>
+        
+        <div style="margin-bottom: 16px;">
+            <label>Print Credit (over 60 months, per site):</label><br>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                <div>
+                    <input type="number" id="monoIncluded" placeholder="120000 mono" value="120000">
+                </div>
+                <div>
+                    <input type="number" id="colourIncluded" placeholder="30000 colour" value="30000">
+                </div>
+            </div>
+        </div>
+
+        <div class="excess-section">
+            <label>Excess Usage Estimate (optional):</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                <div>
+                    <input type="number" id="monoExcess" placeholder="Excess mono/year" value="0">
+                </div>
+                <div>
+                    <input type="number" id="colourExcess" placeholder="Excess colour/year" value="0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">4. Quote Summary</div>
+        <button id="calculateBtn" class="success">Calculate Quote</button>
+        
+        <div id="result" class="result hidden">
+            <div class="result-row">
+                <span>Compliance Score:</span>
+                <span id="scoreDisplay"></span>
+            </div>
+            <div class="result-row">
+                <span>Monthly (EX. VAT):</span>
+                <span id="monthlyDisplay">€0.00</span>
+            </div>
+            <div class="result-row">
+                <span>Inc. VAT (23%):</span>
+                <span id="monthlyVatDisplay">€0.00</span>
+            </div>
+            <div class="result-row result-total">
+                <span><strong>Net Margin (60 mo):</strong></span>
+                <span id="marginDisplay">0.0%</span>
+            </div>
+            
+            <div id="excessResult" class="hidden" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #cbd5e1;">
+                <div class="result-row">
+                    <span><strong>5-Year Excess Profit:</strong></span>
+                    <span id="excessProfitDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Excess Margin:</span>
+                    <span id="excessMarginDisplay">0.0%</span>
+                </div>
+            </div>
+        </div>
+
+        <button id="emailBtn" class="secondary hidden" style="margin-top: 16px;">📧 Email Quote</button>
+    </div>
+
+    <div class="footer">
+        Liosdoire Computers — v4 | Based on 2026 Ricoh Order
+    </div>
+
+    <script>
+        // Data from your CSV files
+        const DEVICES = [
+            { model: "IM 7000", desc: "IM 7000 (A3 Mono)", cost: 300.00, capex: 4150, score: 40 },
+            { model: "IM C3010", desc: "IM C3010 (A3 Colour)", cost: 150.00, capex: 2000, score: 35 },
+            { model: "IM C320F", desc: "IM C320F (A4 Colour)", cost: 50.00, capex: 1000, score: 20 },
+            { model: "IM 370", desc: "IM 370 (A4 Mono)", cost: 25.00, capex: 700, score: 15 },
+            { model: "IM 3000", desc: "IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 30 }
+        ];
+
+        const PACKS = {
+            Basic: 20.00,
+            Plus: 35.00,
+            Platinum: 45.00
+        };
+
+        const EXCESS_RATES = {
+            mono: 0.005,
+            colour: 0.05
+        };
+
+        // DOM elements
+        const deviceList = document.getElementById('deviceList');
+        const mpsToggle = document.getElementById('mpsToggle');
+        const mpsOptions = document.getElementById('mpsOptions');
+        const packSelect = document.getElementById('packSelect');
+        const mpsMachines = document.getElementById('mpsMachines');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const result = document.getElementById('result');
+        const emailBtn = document.getElementById('emailBtn');
+        
+        // Initialize
+        function init() {
+            // Render devices
+            deviceList.innerHTML = DEVICES.map(d => `
+                <div class="device-item">
+                    <div class="device-info">
+                        <div class="device-name">${d.desc}</div>
+                        <div class="device-desc">€${d.cost.toFixed(2)}/mo | CapEx: €${d.capex}</div>
+                    </div>
+                    <div class="qty-controls">
+                        <button onclick="adjustQty('${d.model}', -1)" type="button">−</button>
+                        <input type="number" id="qty-${d.model}" value="0" min="0" style="width: 60px; text-align: center;">
+                        <button onclick="adjustQty('${d.model}', 1)" type="button">+</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // MPS toggle
+            mpsToggle.addEventListener('change', () => {
+                mpsOptions.classList.toggle('hidden', !mpsToggle.checked);
+                if (mpsToggle.checked) {
+                    mpsMachines.value = getTotalDevices();
+                }
+            });
+
+            // Calculate
+            calculateBtn.addEventListener('click', calculateQuote);
+            emailBtn.addEventListener('click', emailQuote);
+        }
+
+        function adjustQty(model, delta) {
+            const input = document.getElementById(`qty-${model}`);
+            let val = parseInt(input.value) || 0;
+            val = Math.max(0, val + delta);
+            input.value = val;
+        }
+
+        function getQty(model) {
+            return parseInt(document.getElementById(`qty-${model}`).value) || 0;
+        }
+
+        function getTotalDevices() {
+            return DEVICES.reduce((sum, d) => sum + getQty(d.model), 0);
+        }
+
+        function calculateQuote() {
+            // Get inputs
+            const quantities = {};
+            let totalScore = 0;
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                quantities[d.model] = qty;
+                totalScore += qty * d.score;
+            });
+
+            const totalDevices = getTotalDevices();
+            if (totalDevices === 0) {
+                alert("⚠️ Please select at least one device.");
+                return;
+            }
+
+            // MPS
+            let packName = "None";
+            let packCost = 0;
+            let mpsMachinesVal = 0;
+            if (mpsToggle.checked) {
+                packName = packSelect.value;
+                packCost = PACKS[packName];
+                mpsMachinesVal = Math.min(parseInt(mpsMachines.value) || totalDevices, totalDevices);
+            }
+
+            // Print credit
+            const monoInc = parseInt(document.getElementById('monoIncluded').value) || 120000;
+            const colourInc = parseInt(document.getElementById('colourIncluded').value) || 30000;
+
+            // Excess
+            const monoExcess = parseInt(document.getElementById('monoExcess').value) || 0;
+            const colourExcess = parseInt(document.getElementById('colourExcess').value) || 0;
+
+            // Calculations
+            const deviceMonthly = DEVICES.reduce((sum, d) => sum + quantities[d.model] * d.cost, 0);
+            const mpsMonthly = mpsMachinesVal * packCost;
+            const totalMonthlyExVat = deviceMonthly + mpsMonthly;
+
+            const capexTotal = DEVICES.reduce((sum, d) => sum + quantities[d.model] * d.capex, 0);
+            const cppCost60mo = (monoInc * 0.0038) + (colourInc * 0.038);
+            const revenue60mo = totalMonthlyExVat * 60;
+            const netProfit = revenue60mo - capexTotal - cppCost60mo;
+            const marginPct = revenue60mo > 0 ? (netProfit / revenue60mo) * 100 : 0;
+
+            // Excess
+            const exMonoRate = EXCESS_RATES.mono;
+            const exColourRate = EXCESS_RATES.colour;
+            const excessRevenue5yr = (monoExcess * exMonoRate + colourExcess * exColourRate) * 5;
+            const excessCost5yr = (monoExcess * 0.0038 + colourExcess * 0.038) * 5;
+            const excessProfit5yr = excessRevenue5yr - excessCost5yr;
+            const excessMarginPct = excessRevenue5yr > 0 ? (excessProfit5yr / excessRevenue5yr) * 100 : 0;
+
+            // Display
+            document.getElementById('scoreDisplay').innerHTML = 
+                `${totalScore} <span class="badge ${totalScore >= 100 ? 'badge-success' : 'badge-warning'}">${totalScore >= 100 ? 'PASS' : 'FAIL'}</span>`;
+            
+            document.getElementById('monthlyDisplay').textContent = `€${totalMonthlyExVat.toFixed(2)}`;
+            document.getElementById('monthlyVatDisplay').textContent = `€${(totalMonthlyExVat * 1.23).toFixed(2)}`;
+            document.getElementById('marginDisplay').textContent = `${marginPct.toFixed(1)}%`;
+
+            const excessResult = document.getElementById('excessResult');
+            if (monoExcess > 0 || colourExcess > 0) {
+                document.getElementById('excessProfitDisplay').textContent = `€${excessProfit5yr.toFixed(2)}`;
+                document.getElementById('excessMarginDisplay').textContent = `${excessMarginPct.toFixed(1)}%`;
+                excessResult.classList.remove('hidden');
+            } else {
+                excessResult.classList.add('hidden');
+            }
+
+            result.classList.remove('hidden');
+            emailBtn.classList.remove('hidden');
+            emailBtn.disabled = (totalScore < 100);
+        }
+
+        function emailQuote() {
+            const emailBody = `
+Liosdoire MPS Quote — Client
+
+Quote generated: ${new Date().toLocaleString()}
+
+DEVICES:
+${DEVICES.map(d => {
+    const qty = getQty(d.model);
+    if (qty === 0) return '';
+    const packName = mpsToggle.checked ? packSelect.value : "None";
+    const packCost = mpsToggle.checked ? PACKS[packName] : 0;
+    const perMachine = d.cost + (mpsToggle.checked ? packCost : 0);
+    return `${qty} x ${d.desc} = €${perMachine.toFixed(2)}/machine/mo`;
+}).filter(x => x).join('\n')}
+
+PRINT CREDIT (60 mo):
+Mono: ${document.getElementById('monoIncluded').value} | Colour: ${document.getElementById('colourIncluded').value}
+
+MONTHLY (EX. VAT): €${parseFloat(document.getElementById('monthlyDisplay').textContent.replace('€', '')).toFixed(2)}
+MONTHLY (INC. VAT): €${parseFloat(document.getElementById('monthlyVatDisplay').textContent.replace('€', '')).toFixed(2)}
+
+NET MARGIN (60 mo): ${document.getElementById('marginDisplay').textContent}
+
+${document.getElementById('excessResult').classList.contains('hidden') ? '' : `EXCESS REVENUE (5-YEAR):
+5-Year Excess Profit: ${document.getElementById('excessProfitDisplay').textContent}
+Excess Margin: ${document.getElementById('excessMarginDisplay').textContent}`}
+
+COMPLIANCE: ${document.getElementById('scoreDisplay').textContent}
+
+---
+Liosdoire Computers — v4
+            `.replace(/\n\s+/g, '\n').trim();
+
+            const subject = "MPS Quote — Liosdoire";
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+        }
+
+        // Start
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
