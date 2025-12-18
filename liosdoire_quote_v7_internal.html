@@ -41,7 +41,6 @@
         .alert-success { background: #dcfce7; color: var(--success); }
         .alert-error { background: #fee2e2; color: var(--danger); }
         .client-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .radio-group { margin: 10px 0; }
         label { display: block; margin: 4px 0; }
         @media (max-width: 600px) {
             .device-item { flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -62,11 +61,11 @@
         <div class="client-info-grid">
             <div>
                 <label>Client Name *</label>
-                <input type="text" id="clientName" placeholder="e.g., St. Brendan's School">
+                <input type="text" id="clientName" placeholder="e.g., St. Brendan's School" required>
             </div>
             <div>
                 <label>Email *</label>
-                <input type="email" id="clientEmail" placeholder="client@school.ie">
+                <input type="email" id="clientEmail" placeholder="client@school.ie" required>
             </div>
             <div>
                 <label>Phone</label>
@@ -129,7 +128,7 @@
                     <input type="number" id="colourIncluded" placeholder="30000 colour" value="30000">
                 </div>
             </div>
-            <div class="source-note"ℹ️ Default: 120k mono + 30k colour (per 2026 Ricoh Order.pdf)</div>
+            <div class="source-note">ℹ️ Default: 120k mono + 30k colour (per 2026 Ricoh Order.pdf)</div>
         </div>
 
         <div class="excess-section">
@@ -239,7 +238,7 @@
             </div>
         </div>
 
-        <button id="emailBtn" class="secondary hidden" style="margin-top: 16px;">📧 Send Quote to Liosdoire for approval</button>
+        <button id="emailBtn" class="secondary hidden" style="margin-top: 16px;">📧 Send Quote to itetralee@gmail.com</button>
         
         <div id="alertBox" class="hidden"></div>
     </div>
@@ -249,15 +248,13 @@
     </div>
 
     <script>
-        // Data from your CapEx sheet — compliance scores verified
+        // Data from your CapEx sheet — verified compliance scores
         const DEVICES = [
-            // Ricoh
             { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono)", cost: 300.00, capex: 4150, score: 40 },
             { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Colour)", cost: 150.00, capex: 2000, score: 35 },
             { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Colour)", cost: 50.00, capex: 1000, score: 20 },
             { model: "Ricoh IM 370", desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700, score: 15 },
-            { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 30 },
-            { model: "Ricoh IM C5500A", desc: "Ricoh IM C5500A (Med-High Vol A3 Colour)", cost: 380.00, capex: 4000, score: 35 }
+            { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 30 }
         ];
 
         const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
@@ -277,19 +274,23 @@
 
         // Init
         function init() {
-            deviceList.innerHTML = DEVICES.map(d => `
-                <div class="device-item">
-                    <div class="device-info">
-                        <div class="device-name">${d.desc}</div>
-                        <div class="device-desc">€${d.cost.toFixed(2)}/mo | CapEx: €${d.capex} | Score: ${d.score}</div>
+            // ✅ FIXED: Use model-safe IDs (replace spaces with underscores)
+            deviceList.innerHTML = DEVICES.map(d => {
+                const safeModel = d.model.replace(/\s+/g, '_');
+                return `
+                    <div class="device-item">
+                        <div class="device-info">
+                            <div class="device-name">${d.desc}</div>
+                            <div class="device-desc">€${d.cost.toFixed(2)}/mo | CapEx: €${d.capex} | Score: ${d.score}</div>
+                        </div>
+                        <div class="qty-controls">
+                            <button onclick="adjustQty('${safeModel}', -1)" type="button">−</button>
+                            <input type="number" id="qty-${safeModel}" value="0" min="0" style="width: 60px; text-align: center;">
+                            <button onclick="adjustQty('${safeModel}', 1)" type="button">+</button>
+                        </div>
                     </div>
-                    <div class="qty-controls">
-                        <button onclick="adjustQty('${d.model}', -1)" type="button">−</button>
-                        <input type="number" id="qty-${d.model}" value="0" min="0" style="width: 60px; text-align: center;">
-                        <button onclick="adjustQty('${d.model}', 1)" type="button">+</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             mpsToggle.addEventListener('change', () => {
                 mpsOptions.classList.toggle('hidden', !mpsToggle.checked);
@@ -301,29 +302,36 @@
 
         function adjustQty(model, delta) {
             const input = document.getElementById(`qty-${model}`);
+            if (!input) return;
             let val = parseInt(input.value) || 0;
             input.value = Math.max(0, val + delta);
         }
 
-        function getQty(model) { return parseInt(document.getElementById(`qty-${model}`).value) || 0; }
-        function getTotalDevices() { return DEVICES.reduce((sum, d) => sum + getQty(d.model), 0); }
+        function getQty(model) { 
+            const input = document.getElementById(`qty-${model}`);
+            return input ? parseInt(input.value) || 0 : 0;
+        }
+
+        function getTotalDevices() { 
+            return DEVICES.reduce((sum, d) => sum + getQty(d.model.replace(/\s+/g, '_')), 0);
+        }
 
         let quoteData = null;
 
         function calculateQuote() {
-            // Validate client info
             const clientName = document.getElementById('clientName').value.trim();
             const clientEmail = document.getElementById('clientEmail').value.trim();
             const clientSector = document.getElementById('clientSector').value;
             if (!clientName || !clientEmail || !clientSector) {
-                showAlert("⚠️ Please complete client information (name, email, sector).", "error");
+                showAlert("⚠️ Please complete client information.", "error");
                 return;
             }
 
             const quantities = {};
             let totalScore = 0;
             DEVICES.forEach(d => {
-                const qty = getQty(d.model);
+                const safeModel = d.model.replace(/\s+/g, '_');
+                const qty = getQty(safeModel);
                 quantities[d.model] = qty;
                 totalScore += qty * d.score;
             });
@@ -411,92 +419,58 @@
         }
 
         function sendQuote() {
-            if (!quoteData) { showAlert("⚠️ Please calculate quote first.", "error"); return; }
-            if (quoteData.totalScore < 100) { showAlert("❌ Compliance failed. Score < 100.", "error"); return; }
+            if (!quoteData || quoteData.totalScore < 100) {
+                showAlert("❌ Compliance failed. Score < 100.", "error");
+                return;
+            }
 
-            // Build full quote text
-            const d = quoteData;
-            const quoteText = `
-Liosdoire MPS Quote — Full Financial Calculation
-Client: ${d.clientName} (${d.clientSector})
-Email: ${d.clientEmail}
-Phone: ${d.clientPhone || "—"}
-
-=== DEVICE SELECTION ===
-${DEVICES.map(dev => {
-    const qty = d.quantities[dev.model];
-    return qty > 0 ? `- ${qty} × ${dev.desc}` : '';
-}).filter(x => x).join('\n')}
-
-=== MPS PACK ===
-${d.mpsMachinesVal > 0 ? `- ${d.packName} for ${d.mpsMachinesVal} machines` : "None"}
-
-=== PRINT CREDIT (60 months) ===
-- Mono: ${d.monoInc.toLocaleString()}
-- Colour: ${d.colourInc.toLocaleString()}
-- Ricoh CPP Cost: €${d.cppCost60mo.toFixed(2)} (€0.0038 mono / €0.038 colour)
-
-=== 5-YEAR FINANCIALS ===
-Revenue (60 mo): €${d.revenue60mo.toFixed(2)}
-  - Device Fees: €${(d.deviceMonthly * 60).toFixed(2)}
-  - MPS Pack: €${(d.mpsMonthly * 60).toFixed(2)}
-
-Costs:
-  - CapEx: €${d.capexTotal.toFixed(2)}
-  - Ricoh CPP: €${d.cppCost60mo.toFixed(2)}
-
-Net Profit (60 mo): €${d.netProfit.toFixed(2)}
-Net Margin: ${d.marginPct.toFixed(1)}%
-Compliance Score: ${d.totalScore} (${d.totalScore >= 100 ? 'PASS' : 'FAIL'})
-
-Monthly (ex VAT): €${d.totalMonthlyExVat.toFixed(2)}
-Monthly (inc VAT): €${(d.totalMonthlyExVat * 1.23).toFixed(2)}
-
-=== EXCESS REVENUE (5-YEAR) ===
-${d.monoExcess > 0 || d.colourExcess > 0 ? 
-  `- Excess: ${d.monoExcess.toLocaleString()} mono + ${d.colourExcess.toLocaleString()} colour/year\n` +
-  `- Client Pays: €${d.exRev5yr.toFixed(2)}\n` +
-  `- Your Cost: €${d.exCost5yr.toFixed(2)}\n` +
-  `- Your Profit: €${d.exProfit5yr.toFixed(2)}\n` +
-  `- Excess Margin: ${d.exMarginPct.toFixed(1)}%`
-  : "None"}
-
-Source: https://copylike-git.github.io/liosdoire/liosdoire_quote_v7_internal.html
-            `.trim();
-
-            // Send via Formspree — client info in fields
+            // ✅ FIXED: Send to itetralee@gmail.com
             fetch('https://formspree.io/f/xdannjrl', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    _replyto: d.clientEmail,
-                    name: d.clientName,
-                    sector: d.clientSector,
-                    phone: d.clientPhone,
-                    subject: `[INTERNAL] MPS Quote — ${d.clientName}`,
-                    message: quoteText
+                    _replyto: quoteData.clientEmail,
+                    _to: 'itetralee@gmail.com',  // ✅ Recipient fixed
+                    name: quoteData.clientName,
+                    sector: quoteData.clientSector,
+                    phone: quoteData.clientPhone,
+                    subject: `[QUOTE] ${quoteData.clientName}`,
+                    message: `
+CLIENT: ${quoteData.clientName} (${quoteData.clientSector})
+EMAIL: ${quoteData.clientEmail}
+PHONE: ${quoteData.clientPhone || "—"}
+
+
+DEVICES:
+${Object.entries(quoteData.quantities).map(([model, qty]) => qty ? `- ${qty} × ${model}` : '').filter(x => x).join('\n')}
+
+PRINT CREDIT: ${quoteData.monoInc} mono + ${quoteData.colourInc} colour (60 months)
+MONTHLY (ex VAT): €${quoteData.totalMonthlyExVat.toFixed(2)}
+COMPLIANCE SCORE: ${quoteData.totalScore} (${quoteData.totalScore >= 100 ? 'PASS' : 'FAIL'})
+
+— Generated via Liosdoire Quote Tool —
+                    `.trim()
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    showAlert("✅ Quote sent successfully to Liosdoire admin for approval", "success");
+            .then(r => r.json())
+            .then(d => {
+                if (d.ok) {
+                    showAlert("✅ Quote sent successfully to itetralee@gmail.com", "success");
                 } else {
-                    throw new Error(data.error || 'Unknown error');
+                    throw new Error("Formspree error");
                 }
             })
-            .catch(error => {
-                console.error('Formspree error:', error);
-                showAlert("❌ Failed to send. Please try again.", "error");
+            .catch(() => {
+                showAlert("❌ Failed to send. Check network.", "error");
             });
         }
 
         function showAlert(message, type) {
-            alertBox.className = `alert alert-${type} ${type === 'success' ? '' : 'hidden'}`;
+            alertBox.className = `alert alert-${type}`;
             alertBox.textContent = message;
             alertBox.classList.remove('hidden');
             if (type === 'success') {
-                setTimeout(() => alertBox.classList.add('hidden'), 5000);
+                setTimeout(() => alertBox.classList.add('hidden'), 4000);
             }
         }
 
