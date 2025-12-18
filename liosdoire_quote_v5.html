@@ -222,11 +222,11 @@
     <script>
         // Data from your files
         const DEVICES = [
-            { model: "IM 7000", desc: "IM 7000 (A3 Mono)", cost: 300.00, capex: 4150, score: 100 },
-            { model: "IM C3010", desc: "IM C3010 (A3 Colour)", cost: 150.00, capex: 2000, score: 100 },
-            { model: "IM C320F", desc: "IM C320F (A4 Colour)", cost: 50.00, capex: 1000, score: 20 },
-            { model: "IM 370", desc: "IM 370 (A4 Mono)", cost: 25.00, capex: 700, score: 15 },
-            { model: "IM 3000", desc: "IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 100 }
+            { model: "IM 7000", desc: "IM 7000 (A3 Mono HIGH VOL) 70ppm 700,000 Monthly", cost: 300.00, capex: 4150, score: 100 },
+            { model: "IM C3010", desc: "IM C3010 (A3 Colour Popular) 30ppm 200,000 Monthly", cost: 150.00, capex: 2000, score: 100 },
+            { model: "IM C320F", desc: "IM C320F (A4 Colour Desktop) 32ppm 75,000 Monthly", cost: 50.00, capex: 1000, score: 20 },
+            { model: "IM 370", desc: "IM 370 (A4 Mono Desktop) 37ppm 75,000 Monthly", cost: 25.00, capex: 700, score: 15 },
+            { model: "IM 3000", desc: "IM 3000 (A3 Mono Economy) 30ppm 200,000 Monthly", cost: 100.00, capex: 1710, score: 100 }
         ];
 
         const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
@@ -405,7 +405,7 @@ ${d.mpsMachinesVal > 0 ? `- ${d.packName} for ${d.mpsMachinesVal} machines` : "N
 === 5-YEAR FINANCIALS ===
 Revenue (60 mo): €${d.revenue60mo.toFixed(2)}
   - Device Fees: €${(d.deviceMonthly * 60).toFixed(2)}
-  - MPS Pack: €${(d.mpsMonthly * 60).toFixed(2)}
+  - Print Credits: €${(d.mpsMonthly * 60).toFixed(2)}
 
 Costs:
   - CapEx: €${d.capexTotal.toFixed(2)}
@@ -418,7 +418,7 @@ Compliance Score: ${d.totalScore} (${d.totalScore >= 100 ? 'PASS' : 'FAIL'})
 Monthly (ex VAT): €${d.totalMonthlyExVat.toFixed(2)}
 Monthly (inc VAT): €${(d.totalMonthlyExVat * 1.23).toFixed(2)}
 
-=== EXCESS REVENUE (5-YEAR) ===
+=== EXCESS REVENUE (5-YEAR) if applicable===
 ${d.monoExcess > 0 || d.colourExcess > 0 ? 
   `- Excess: ${d.monoExcess.toLocaleString()} mono + ${d.colourExcess.toLocaleString()} colour/year\n` +
   `- Client Pays: €${d.exRev5yr.toFixed(2)}\n` +
@@ -468,3 +468,4 @@ Source: https://copylike-git.github.io/liosdoire/liosdoire_quote_v5.html
 </body>
 
 </html>
+
