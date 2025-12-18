@@ -299,21 +299,45 @@
             emailBtn.disabled = (totalScore < 100);
         }
 
-        function emailQuote() {
-            const emailBody = `
-Liosdoire MPS Quote — Client
+        async function emailQuote() {
+    // Get quote data
+    const monthly = document.getElementById('monthlyDisplay').textContent;
+    const margin = document.getElementById('marginDisplay').textContent;
+    const score = document.getElementById('scoreDisplay').textContent.replace(/<[^>]*>/g, '');
+    
+    const payload = {
+        _replyto: 'noreply@github.com', // prevents reply-to client
+        subject: 'MPS Quote — Liosdoire',
+        message: `
+Liosdoire MPS Quote Generated
 
-Quote generated: ${new Date().toLocaleString()}
+Monthly (ex VAT): ${monthly}
+Monthly (inc VAT): ${document.getElementById('monthlyVatDisplay').textContent}
+Net Margin (60 mo): ${margin}
+Compliance Score: ${score}
 
-DEVICES:
-${DEVICES.map(d => {
-    const qty = getQty(d.model);
-    if (qty === 0) return '';
-    const packName = mpsToggle.checked ? packSelect.value : "None";
-    const packCost = mpsToggle.checked ? PACKS[packName] : 0;
-    const perMachine = d.cost + (mpsToggle.checked ? packCost : 0);
-    return `${qty} x ${d.desc} = €${perMachine.toFixed(2)}/machine/mo`;
-}).filter(x => x).join('\n')}
+Generated via: https://copylike-git.github.io/liosdoire/liosdoire_quote_v4.html
+        `.trim()
+    };
+
+    try {
+        const response = await fetch('https://formspree.io/f/xdannjrl', { // ← REPLACE WITH YOUR ENDPOINT
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            alert('✅ Quote sent successfully!\nCheck your inbox (richard@iteireann.ie)');
+        } else {
+            const err = await response.text();
+            throw new Error(err);
+        }
+    } catch (e) {
+        alert('❌ Failed to send. Please try again or email manually.');
+        console.error('Email error:', e);
+    }
+}
 
 PRINT CREDIT (60 mo):
 Mono: ${document.getElementById('monoIncluded').value} | Colour: ${document.getElementById('colourIncluded').value}
