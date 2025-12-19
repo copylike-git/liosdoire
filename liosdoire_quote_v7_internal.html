@@ -260,7 +260,7 @@
     <script>
         async function login() {
         const code = document.getElementById('code').value;
-        const pwd = document.getElementById('pwd').value;
+        //const pwd = document.getElementById('pwd').value;
         
         // Fetch hashed passwords from private Gist (no auth needed for public Gist ID)
         const res = await fetch('https://gist.githubusercontent.com/copylike-git/56f1afdffd8b6cdc911f0839381d16cb/raw');
@@ -270,8 +270,8 @@
         if (!client) return showError("Invalid code");
         
         // Verify password (client-side bcrypt is heavy → use SHA-256 for simplicity)
-        const hash = sha256(pwd);
-        if (hash !== client.hash) return showError("Invalid password");
+        //const hash = sha256(pwd);
+        //if (hash !== client.hash) return showError("Invalid password");
         
         document.getElementById('login').style.display = 'none';
         document.getElementById('app').style.display = 'block';
