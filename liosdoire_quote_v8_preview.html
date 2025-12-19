@@ -3,233 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire MPS Quote — Preview</title>
+    <title>Liosdoire MPS Quote v7 — Internal Use Only</title>
     <style>
-        :root { --primary: #1e3a8a; --light: #f8fafc; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background: var(--light); color: #1e293b; padding: 16px; }
-        .container { max-width: 800px; margin: 0 auto; }
+        :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--light); color: #1e293b; padding: 16px; max-width: 900px; margin: 0 auto; }
         header { text-align: center; padding: 20px 0; border-bottom: 2px solid #e2e8f0; }
-        h1 { font-size: 1.4rem; margin: 8px 0; }
+        h1 { color: var(--primary); font-size: 1.6rem; margin: 8px 0; }
         .subtitle { color: #64748b; font-size: 0.9rem; }
-        .pdf-page { background: white; padding: 40px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .section { margin-bottom: 24px; }
-        .section-title { font-weight: bold; margin-bottom: 8px; }
-        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
-        th, td { text-align: left; padding: 8px 4px; border-bottom: 1px solid #e2e8f0; }
-        .footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 0.85rem; }
-        .btn { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 12px 24px; font-size: 1rem; cursor: pointer; margin-top: 20px; }
-        .btn:hover { opacity: 0.9; }
+        .section { background: white; border-radius: 12px; padding: 20px; margin: 16px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
+        .device-grid { display: grid; gap: 12px; }
+        .device-item { display: flex; align-items: center; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .device-info { flex: 1; }
+        .device-name { font-weight: 600; }
+        .device-desc { font-size: 0.85rem; color: #64748b; }
+        .qty-controls { display: flex; align-items: center; gap: 8px; }
+        button { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 10px 16px; font-weight: 500; cursor: pointer; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        button.secondary { background: #64748b; }
+        button.success { background: var(--success); }
+        input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; }
+        .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; }
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .result-table th, .result-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; }
+        .result-table th { background: #e2e8f0; font-weight: 600; }
+        .result-row { display: flex; justify-content: space-between; padding: 8px 0; }
+        .result-total { font-weight: 700; font-size: 1.1rem; color: var(--primary); border-top: 2px solid #cbd5e1; padding-top: 12px; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+        .badge-success { background: #dcfce7; color: var(--success); }
+        .badge-warning { background: #fef9c3; color: var(--warning); }
+        .excess-section { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 16px; margin-top: 16px; border-radius: 0 8px 8px 0; }
         .hidden { display: none; }
-        @media print {
-            .btn, footer { display: none; }
-            .pdf-page { box-shadow: none; }
+        .footer { text-align: center; margin-top: 24px; color: #64748b; font-size: 0.85rem; }
+        .source-note { font-size: 0.75rem; color: #94a3b8; margin-top: 8px; }
+        .alert { padding: 12px; margin: 16px 0; border-radius: 8px; }
+        .alert-success { background: #dcfce7; color: var(--success); }
+        .alert-error { background: #fee2e2; color: var(--danger); }
+        .client-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        label { display: block; margin: 4px 0; }
+        @media (max-width: 600px) {
+            .device-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .qty-controls { width: 100%; }
+            input[type="number"] { flex: 1; }
+            .result-table { font-size: 0.85rem; }
+            .client-info-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Managed Print Solution Agreement</h1>
-            <div class="subtitle">Liosdoire Computers — Preview Before Sending</div>
-        </header>
+    <header>
+        <div class="subtitle"><image src="https://liosdoirecomputers.com/wp-content/uploads/2023/01/LiosdoireComputerslogo-o8.png" width="100"></image></div>
+        <br><br><strong>Liosdoire Computers - Printing Systems</strong></div>
+    </header>
+    <div id="login" style="text-align:center; padding:50px;">
+        <h2>Quotation Portal</h2><br>
+        <input id="code" placeholder="Client Code" type="text"><br><br>
+        <!--<input id="pwd" placeholder="Password" type="password"><br><br>-->
+        <button onclick="login()">Submit</button>
+        <div id="msg" style="color:red; margin-top:10px;"></div>
+    </div>
 
-        <!-- Page 1 -->
-        <div class="pdf-page">
-            <div class="section">
-                <div><strong>Company / School:</strong> <span id="previewClientName">Client Name</span></div>
-                <div><strong>Date:</strong> <span id="previewDate">DD/MM/YYYY</span></div>
-                <div><strong>Address:</strong> <span id="previewAddress">—</span></div>
-                <div><strong>Rep:</strong> S. Linnane</div>
-                <div><strong>Client Name:</strong> <span id="previewClientContact">—</span></div>
-                <div><strong>Client email:</strong> <span id="previewClientEmail">—</span></div>
-                <div><strong>Type:</strong> <span id="previewClientSector">Education</span></div>
+<div id="app" style="display:none;">
+    <div class="section">
+        <div class="section-title">1. Client Information</div>
+        <div class="client-info-grid">
+            <div>
+                <label>Client Name *</label>
+                <input type="text" id="clientName" placeholder="e.g., St. Brendan's School" required>
             </div>
-
-            <div class="section">
-                <div class="section-title">Copier choice</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Quantity</th>
-                            <th>Model (All MFP with scanner)</th>
-                            <th>Speed</th>
-                            <th>Annual load</th>
-                            <th>Monthly Load</th>
-                            <th>Cost/month</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewDeviceTable">
-                        <!-- Filled by JS -->
-                    </tbody>
-                </table>
+            <div>
+                <label>Email *</label>
+                <input type="email" id="clientEmail" placeholder="client@school.ie" required>
             </div>
-
-            <div class="section">
-                <div class="section-title">Print Management included</div>
-                <table>
-                    <tr>
-                        <td>YES / NO</td>
-                        <td>Cloud Print management and user accounting per machine</td>
-                        <td>€<span id="previewMgmtFee">20.00</span></td>
-                    </tr>
-                </table>
+            <div>
+                <label>Phone</label>
+                <input type="tel" id="clientPhone" placeholder="085 123 4567">
             </div>
-        </div>
-
-        <!-- Page 2 -->
-        <div class="pdf-page">
-            <div class="section">
-                <div class="section-title">Proposal</div>
-                <div>Photocopier maintenance and print management plan — Cost per month</div>
-                <div><strong>Agreement Print credit (Usable over 60 months)</strong></div>
-                <div>120,000 mono & 30,000 colour — <strong>INCLUDED</strong></div>
-                <div>Mono & colour Toner when required</div>
-                <div>Replacement Imaging Unit & Drums when required</div>
-                <div>Maintenance parts & labour</div>
-                <div><em>Fair Deal</em></div>
+            <div>
+                <label>Sector *</label>
+                <select id="clientSector" required>
+                    <option value="">Select...</option>
+                    <option value="Education">Education</option>
+                    <option value="Business">Business</option>
+                </select>
             </div>
-
-            <div class="section">
-                <div>Print counter is calculated for usage over 60 months, allowing our client to better leverage their busier and off-peak printing needs.</div>
-                <div>We will be monitoring your usage to ensure you are working within budget.</div>
-                <div>We believe a “Fair deal” is a good deal for all.</div>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Additional cost (excess use only)</div>
-                <table>
-                    <tr><td>Colour Prints/Copies</td><td>€0.05</td></tr>
-                    <tr><td>Mono Prints/Copies</td><td>€0.005</td></tr>
-                </table>
-                <div><em>All prices are ex. VAT 23%</em></div>
-            </div>
-
-            <div class="section">
-                <div><strong>Monthly Total (ex. VAT):</strong> €<span id="previewMonthlyExVat">0.00</span></div>
-                <div><strong>Monthly Total (inc. VAT):</strong> €<span id="previewMonthlyIncVat">0.00</span></div>
-            </div>
-        </div>
-
-        <button id="sendBtn" class="btn">📤 Send to itetralee@gmail.com</button>
-        <div id="alertBox" class="hidden" style="margin-top: 16px; padding: 12px; background: #dcfce7; border-radius: 6px;"></div>
-
-        <div class="footer">
-            Liosdoire Computers — Based on 2026 Ricoh Order.pdf
         </div>
     </div>
 
-    <script>
-        // Reconstruct quote from session (set by main quoting tool)
-        document.addEventListener('DOMContentLoaded', () => {
-            const data = JSON.parse(sessionStorage.getItem('quoteData'));
-            if (!data) {
-                alert("No quote data found. Please calculate first.");
-                window.history.back();
+    <div class="section">
+        <div class="section-title">2. Select Devices</div>
+        <div class="device-grid" id="deviceList">
+            <!-- Devices injected by JS -->
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">3. MPS Pack (Optional)</div>
+        <div>
+            <label>
+                <input type="checkbox" id="mpsToggle"> 
+                Is Managed Print Solution required?
+            </label>
+        </div>
+        
+        <div id="mpsOptions" class="hidden">
+            <div style="margin: 16px 0;">
+                <label>Select pack:</label><br>
+                <select id="packSelect" style="width: 100%; margin-top: 8px;">
+                    <option value="Basic">RSI Basic — €20/mo (Cloud mgmt)</option>
+                    <option value="Plus">RSI Plus — €35/mo (+Scan to OneDrive)</option>
+                    <option value="Platinum">RSI Platinum — €45/mo (+Reporting, Priority)</option>
+                </select>
+            </div>
+            
+            <div>
+                <label>How many machines need this pack?</label>
+                <input type="number" id="mpsMachines" min="1" value="1" style="width: 100%; margin-top: 8px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">4. Print Credit & Excess</div>
+        
+        <div style="margin-bottom: 16px;">
+            <label>Print Credit (over 60 months, per site):</label><br>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                <div>
+                    <input type="number" id="monoIncluded" placeholder="120000 mono" value="120000">
+                </div>
+                <div>
+                    <input type="number" id="colourIncluded" placeholder="30000 colour" value="30000">
+                </div>
+            </div>
+            <div class="source-note">ℹ️ Default: 120k mono + 30k colour (per 2026 Ricoh Order.pdf)</div>
+        </div>
+
+        <div class="excess-section">
+            <label>Excess Usage Estimate (optional):</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                <div>
+                    <input type="number" id="monoExcess" placeholder="Excess mono/year" value="0">
+                </div>
+                <div>
+                    <input type="number" id="colourExcess" placeholder="Excess colour/year" value="0">
+                </div>
+            </div>
+            <div class="source-note">ℹ️ Rates: €0.005 mono / €0.05 colour (per PDF, Page 2)</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">5. Quote & Financial Analysis</div>
+        <button id="calculateBtn" class="success">Calculate Full Quote</button>
+        
+        <div id="result" class="result hidden">
+            <h3 style="margin-bottom: 16px;">Financial Summary (5-Year / 60 Months)</h3>
+            
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Calculation</th>
+                        <th>Amount (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Device Fees (60 mo)</strong></td>
+                        <td id="deviceCalc"></td>
+                        <td id="deviceAmt"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>MPS Pack (60 mo)</strong></td>
+                        <td id="mpsCalc"></td>
+                        <td id="mpsAmt"></td>
+                    </tr>
+                    <tr style="background: #f8fafc;">
+                        <td><strong>Total Revenue (60 mo)</strong></td>
+                        <td></td>
+                        <td id="revenueAmt"></td>
+                    </tr>
+                    <tr>
+                        <td>CapEx Outflow</td>
+                        <td id="capexCalc"></td>
+                        <td id="capexAmt"></td>
+                    </tr>
+                    <tr>
+                        <td>Ricoh CPP Cost</td>
+                        <td id="cppCalc"></td>
+                        <td id="cppAmt"></td>
+                    </tr>
+                    <tr style="background: #dcfce7;">
+                        <td><strong>Net Profit (60 mo)</strong></td>
+                        <td></td>
+                        <td id="profitAmt"></td>
+                    </tr>
+                    <tr>
+                        <td>Net Margin</td>
+                        <td></td>
+                        <td id="marginAmt"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 20px; padding-top: 16px; border-top: 2px dashed #cbd5e1;">
+                <div class="result-row">
+                    <span><strong>Compliance Score:</strong></span>
+                    <span id="scoreDisplay"></span>
+                </div>
+                <div class="result-row">
+                    <span>Monthly (EX. VAT):</span>
+                    <span id="monthlyDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Inc. VAT (23%):</span>
+                    <span id="monthlyVatDisplay">€0.00</span>
+                </div>
+            </div>
+
+            <div id="excessResult" class="hidden" style="margin-top: 20px; padding: 16px; background: #f0fdf4; border-radius: 8px;">
+                <h4>Excess Usage Revenue (5-Year Projection)</h4>
+                <div class="result-row">
+                    <span>Client Pays (€0.005/€0.05):</span>
+                    <span id="excessRevenueDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Your Cost (Ricoh €0.0038/€0.038):</span>
+                    <span id="excessCostDisplay">€0.00</span>
+                </div>
+                <div class="result-row result-total">
+                    <span><strong>Your Profit on Excess:</strong></span>
+                    <span id="excessProfitDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Excess Margin:</span>
+                    <span id="excessMarginDisplay">0.0%</span>
+                </div>
+                <div class="source-note" style="margin-top: 8px;">
+                    ℹ️ Margin = (€0.005−€0.0038)/€0.005 = 31.6% mono | (€0.05−€0.038)/€0.05 = 31.6% colour
+                </div>
+            </div>
+        </div>
+
+        <button id="emailBtn" class="secondary hidden" style="margin-top: 16px;">Email sent. Please conplete order confirmation</button>
+        
+        <div id="alertBox" class="hidden"></div>
+    </div>
+</div>
+    <div class="footer">
+        Copyright © 2026 Kanda Systems Limited<br><a href="mailto:kandasystems@proton.me">Email us</a> 
+    </div>
+
+    <script 
+        src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js">
+
+        async function login() {
+        const code = document.getElementById('code').value;
+        //const pwd = document.getElementById('pwd').value;
+        
+        // Fetch hashed passwords from private Gist (no auth needed for public Gist ID)
+        const res = await fetch('https://gist.githubusercontent.com/copylike-git/56f1afdffd8b6cdc911f0839381d16cb/raw');
+        const data = await res.json();
+        
+        const client = data.clients.find(c => c.code === code);
+        if (!client) return showError("Invalid code");
+        
+        // Verify password (client-side bcrypt is heavy → use SHA-256 for simplicity)
+        //const hash = sha256(pwd);
+        //if (hash !== client.hash) return showError("Invalid password");
+        
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        }
+        function showError(msg) { document.getElementById('msg').textContent = msg; }
+    
+        // Data from your CapEx sheet — verified compliance scores
+        const DEVICES = [
+            { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono)", cost: 300.00, capex: 4150, score: 40 },
+            { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Colour)", cost: 150.00, capex: 2000, score: 35 },
+            { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Colour)", cost: 50.00, capex: 1000, score: 20 },
+            { model: "Ricoh IM 370", desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700, score: 15 },
+            { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 30 }
+        ];
+
+        const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
+        const EXCESS_RATES = { mono: 0.005, colour: 0.05 };
+        const RICHO_CPP = { mono: 0.0038, colour: 0.038 };
+
+        // DOM
+        const deviceList = document.getElementById('deviceList');
+        const mpsToggle = document.getElementById('mpsToggle');
+        const mpsOptions = document.getElementById('mpsOptions');
+        const packSelect = document.getElementById('packSelect');
+        const mpsMachines = document.getElementById('mpsMachines');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const result = document.getElementById('result');
+        const emailBtn = document.getElementById('emailBtn');
+        const alertBox = document.getElementById('alertBox');
+
+        // Init
+        function init() {
+            // ✅ FIXED: Use model-safe IDs (replace spaces with underscores)
+            deviceList.innerHTML = DEVICES.map(d => {
+                const safeModel = d.model.replace(/\s+/g, '_');
+                return `
+                    <div class="device-item">
+                        <div class="device-info">
+                            <div class="device-name">${d.desc}</div>
+                            <div class="device-desc">€${d.cost.toFixed(2)}/mo | CapEx: €${d.capex} | Score: ${d.score}</div>
+                        </div>
+                        <div class="qty-controls">
+                            <button onclick="adjustQty('${safeModel}', -1)" type="button">−</button>
+                            <input type="number" id="qty-${safeModel}" value="0" min="0" style="width: 60px; text-align: center;">
+                            <button onclick="adjustQty('${safeModel}', 1)" type="button">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            mpsToggle.addEventListener('change', () => {
+                mpsOptions.classList.toggle('hidden', !mpsToggle.checked);
+                if (mpsToggle.checked) mpsMachines.value = getTotalDevices();
+            });
+            calculateBtn.addEventListener('click', calculateQuote);
+            emailBtn.addEventListener('click', sendQuote);
+        }
+
+        function adjustQty(model, delta) {
+            const input = document.getElementById(`qty-${model}`);
+            if (!input) return;
+            let val = parseInt(input.value) || 0;
+            input.value = Math.max(0, val + delta);
+        }
+
+        function getQty(model) { 
+            const input = document.getElementById(`qty-${model}`);
+            return input ? parseInt(input.value) || 0 : 0;
+        }
+
+        function getTotalDevices() { 
+            return DEVICES.reduce((sum, d) => sum + getQty(d.model.replace(/\s+/g, '_')), 0);
+        }
+
+        let quoteData = null;
+
+        function calculateQuote() {
+            const clientName = document.getElementById('clientName').value.trim();
+            const clientEmail = document.getElementById('clientEmail').value.trim();
+            const clientSector = document.getElementById('clientSector').value;
+            if (!clientName || !clientEmail || !clientSector) {
+                showAlert("⚠️ Please complete client information.", "error");
                 return;
             }
 
-            // Page 1
-            document.getElementById('previewClientName').textContent = data.clientName;
-            document.getElementById('previewDate').textContent = new Date().toLocaleDateString('en-IE');
-            document.getElementById('previewClientContact').textContent = data.clientName;
-            document.getElementById('previewClientEmail').textContent = data.clientEmail;
-            document.getElementById('previewClientSector').textContent = data.clientSector;
+            const quantities = {};
+            let totalScore = 0;
+            DEVICES.forEach(d => {
+                const safeModel = d.model.replace(/\s+/g, '_');
+                const qty = getQty(safeModel);
+                quantities[d.model] = qty;
+                totalScore += qty * d.score;
+            });
 
-            // Devices
-            const deviceRows = [];
-            const ricohSpecs = {
-                "Ricoh IM 7000": { speed: "70 ppm", annual: "700,000", monthly: "40,000–100,000", cost: 300.00 },
-                "Ricoh IM C3010": { speed: "30 ppm", annual: "200,000", monthly: "8,000–25,000", cost: 150.00 },
-                "Ricoh IM C320F": { speed: "32 ppm", annual: "75,000", monthly: "3,000–8,000", cost: 50.00 },
-                "Ricoh IM 370": { speed: "37 ppm", annual: "120,000", monthly: "5,000–12,000", cost: 25.00 },
-                "Ricoh IM 3000": { speed: "30 ppm", annual: "250,000", monthly: "10,000–30,000", cost: 100.00 }
+            const totalDevices = getTotalDevices();
+            if (totalDevices === 0) { showAlert("⚠️ Please select at least one device.", "error"); return; }
+
+            // MPS
+            let packName = "None", packCost = 0, mpsMachinesVal = 0;
+            if (mpsToggle.checked) {
+                packName = packSelect.value;
+                packCost = PACKS[packName];
+                mpsMachinesVal = Math.min(parseInt(mpsMachines.value) || totalDevices, totalDevices);
+            }
+
+            // Inputs
+            const monoInc = parseInt(document.getElementById('monoIncluded').value) || 120000;
+            const colourInc = parseInt(document.getElementById('colourIncluded').value) || 30000;
+            const monoExcess = parseInt(document.getElementById('monoExcess').value) || 0;
+            const colourExcess = parseInt(document.getElementById('colourExcess').value) || 0;
+
+            // Calculations
+            const deviceMonthly = DEVICES.reduce((sum, d) => sum + quantities[d.model] * d.cost, 0);
+            const mpsMonthly = mpsMachinesVal * packCost;
+            const totalMonthlyExVat = deviceMonthly + mpsMonthly;
+            const revenue60mo = totalMonthlyExVat * 60;
+
+            const capexTotal = DEVICES.reduce((sum, d) => sum + quantities[d.model] * d.capex, 0);
+            const cppCost60mo = (monoInc * RICHO_CPP.mono) + (colourInc * RICHO_CPP.colour);
+            const netProfit = revenue60mo - capexTotal - cppCost60mo;
+            const marginPct = revenue60mo > 0 ? (netProfit / revenue60mo) * 100 : 0;
+
+            // Excess 5-year
+            const exRev5yr = (monoExcess * EXCESS_RATES.mono + colourExcess * EXCESS_RATES.colour) * 5;
+            const exCost5yr = (monoExcess * RICHO_CPP.mono + colourExcess * RICHO_CPP.colour) * 5;
+            const exProfit5yr = exRev5yr - exCost5yr;
+            const exMarginPct = exRev5yr > 0 ? (exProfit5yr / exRev5yr) * 100 : 0;
+
+            // Save for email
+            quoteData = {
+                clientName, clientEmail, clientPhone: document.getElementById('clientPhone').value, clientSector,
+                quantities, totalScore, packName, mpsMachinesVal, packCost,
+                monoInc, colourInc, monoExcess, colourExcess,
+                deviceMonthly, mpsMonthly, totalMonthlyExVat,
+                revenue60mo, capexTotal, cppCost60mo, netProfit, marginPct,
+                exRev5yr, exCost5yr, exProfit5yr, exMarginPct
             };
 
-            for (const [model, qty] of Object.entries(data.quantities)) {
-                if (qty > 0) {
-                    const spec = ricohSpecs[model] || { speed: "—", annual: "—", monthly: "—", cost: data.deviceMonthly / Object.values(data.quantities).reduce((a, b) => a + b, 0) };
-                    deviceRows.push(`
-                        <tr>
-                            <td>${qty}</td>
-                            <td>${model.replace('Ricoh ', '')}</td>
-                            <td>${spec.speed}</td>
-                            <td>${spec.annual}</td>
-                            <td>${spec.monthly}</td>
-                            <td>€${(spec.cost || 0).toFixed(2)}</td>
-                        </tr>
-                    `);
-                }
+            // Display
+            document.getElementById('deviceCalc').textContent = 
+                DEVICES.map(d => `${quantities[d.model]}×€${d.cost}`).filter(x => !x.startsWith('0×')).join(' + ') || "—";
+            document.getElementById('deviceAmt').textContent = `€${(deviceMonthly * 60).toFixed(2)}`;
+            document.getElementById('mpsCalc').textContent = 
+                mpsMachinesVal > 0 ? `${mpsMachinesVal}×€${packCost}/mo × 60 mo` : "—";
+            document.getElementById('mpsAmt').textContent = mpsMachinesVal > 0 ? `€${(mpsMonthly * 60).toFixed(2)}` : "€0.00";
+            document.getElementById('revenueAmt').textContent = `€${revenue60mo.toFixed(2)}`;
+            document.getElementById('capexCalc').textContent = 
+                DEVICES.map(d => `${quantities[d.model]}×€${d.capex}`).filter(x => !x.startsWith('0×')).join(' + ') || "—";
+            document.getElementById('capexAmt').textContent = `€${capexTotal.toFixed(2)}`;
+            document.getElementById('cppCalc').textContent = 
+                `${monoInc.toLocaleString()}×€${RICHO_CPP.mono} + ${colourInc.toLocaleString()}×€${RICHO_CPP.colour}`;
+            document.getElementById('cppAmt').textContent = `€${cppCost60mo.toFixed(2)}`;
+            document.getElementById('profitAmt').textContent = `€${netProfit.toFixed(2)}`;
+            document.getElementById('marginAmt').textContent = `${marginPct.toFixed(1)}%`;
+            document.getElementById('scoreDisplay').innerHTML = 
+                `${totalScore} <span class="badge ${totalScore >= 100 ? 'badge-success' : 'badge-warning'}">${totalScore >= 100 ? 'PASS' : 'FAIL'}</span>`;
+            document.getElementById('monthlyDisplay').textContent = `€${totalMonthlyExVat.toFixed(2)}`;
+            document.getElementById('monthlyVatDisplay').textContent = `€${(totalMonthlyExVat * 1.23).toFixed(2)}`;
+
+            // Excess
+            const exResult = document.getElementById('excessResult');
+            if (monoExcess > 0 || colourExcess > 0) {
+                document.getElementById('excessRevenueDisplay').textContent = `€${exRev5yr.toFixed(2)}`;
+                document.getElementById('excessCostDisplay').textContent = `€${exCost5yr.toFixed(2)}`;
+                document.getElementById('excessProfitDisplay').textContent = `€${exProfit5yr.toFixed(2)}`;
+                document.getElementById('excessMarginDisplay').textContent = `${exMarginPct.toFixed(1)}%`;
+                exResult.classList.remove('hidden');
+            } else {
+                exResult.classList.add('hidden');
             }
-            document.getElementById('previewDeviceTable').innerHTML = deviceRows.join('');
 
-            // Management fee
-            const mgmtPerMachine = data.mpsMachinesVal > 0 ? 20 : 0;
-            document.getElementById('previewMgmtFee').textContent = mgmtPerMachine.toFixed(2);
-
-            // Page 2 totals
-            document.getElementById('previewMonthlyExVat').textContent = data.totalMonthlyExVat.toFixed(2);
-            document.getElementById('previewMonthlyIncVat').textContent = (data.totalMonthlyExVat * 1.23).toFixed(2);
-
-            // Send button
-            document.getElementById('sendBtn').addEventListener('click', sendQuote);
-        });
+            result.classList.remove('hidden');
+            emailBtn.classList.remove('hidden');
+            emailBtn.disabled = (totalScore < 100);
+        }
 
         function sendQuote() {
-            const data = JSON.parse(sessionStorage.getItem('quoteData'));
-            if (!data) return;
+            if (!quoteData || quoteData.totalScore < 100) {
+                showAlert("❌ Compliance failed. Score < 100.", "error");
+                return;
+            }
 
-            const quoteText = `
-Liosdoire MPS Quote — Client Preview
-
-Client: ${data.clientName} (${data.clientSector})
-Email: ${data.clientEmail}
-Phone: ${data.clientPhone || "—"}
-
-=== SELECTED DEVICES ===
-${Object.entries(data.quantities)
-    .map(([model, qty]) => qty > 0 ? `- ${qty} × ${model}` : '')
-    .filter(x => x).join('\n')}
-
-=== PRINT CREDIT ===
-120,000 mono + 30,000 colour over 60 months (per site)
-
-=== MONTHLY COST (ex. VAT) ===
-Device Fees: €${data.deviceMonthly.toFixed(2)}
-Cloud Management (${data.mpsMachinesVal} × €20): €${(data.mpsMachinesVal * 20).toFixed(2)}
-MPS Pack (${data.packName}): €${data.mpsMonthly.toFixed(2)}
-→ TOTAL (ex. VAT): €${data.totalMonthlyExVat.toFixed(2)}
-→ TOTAL (inc. VAT): €${(data.totalMonthlyExVat * 1.23).toFixed(2)}
-
-Excess: €0.005 mono / €0.05 colour
-
-Generated: ${new Date().toLocaleString()}
-            `.trim();
-
+            // STEP 1 - FIXED: Send to itetralee@gmail.com
             fetch('https://formspree.io/f/xdannjrl', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    _replyto: data.clientEmail,
-                    _to: 'itetralee@gmail.com',
-                    subject: `MPS Quote Preview — ${data.clientName}`,
-                    message: quoteText
+                    _replyto: quoteData.clientEmail,
+                    _to: 'itetralee@gmail.com',  // ✅ Recipient fixed
+                    name: quoteData.clientName,
+                    sector: quoteData.clientSector,
+                    phone: quoteData.clientPhone,
+                    subject: `[QUOTE] ${quoteData.clientName}`,
+                    message: `
+CLIENT: ${quoteData.clientName} (${quoteData.clientSector})
+EMAIL: ${quoteData.clientEmail}
+PHONE: ${quoteData.clientPhone || "—"}
+
+
+DEVICES:
+${Object.entries(quoteData.quantities).map(([model, qty]) => qty ? `- ${qty} × ${model}` : '').filter(x => x).join('\n')}
+
+PRINT CREDIT: ${quoteData.monoInc} mono + ${quoteData.colourInc} colour (60 months)
+MONTHLY (ex VAT): €${quoteData.totalMonthlyExVat.toFixed(2)}
+COMPLIANCE SCORE: ${quoteData.totalScore} (${quoteData.totalScore >= 100 ? 'PASS' : 'FAIL'})
+
+— Generated via Liosdoire Quote Tool —
+                    `.trim()
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    const alert = document.getElementById('alertBox');
-                    alert.textContent = "✅ Quote sent successfully to itetralee@gmail.com";
-                    alert.classList.remove('hidden');
+            .then(r => r.json())
+            .then(d => {
+                if (d.ok) {
+                    showAlert("✅ Quote sent successfully to itetralee@gmail.com", "success");
                 } else {
-                    throw new Error();
+                    throw new Error("Formspree error");
                 }
             })
             .catch(() => {
-                alert("❌ Failed to send. Please try again.");
+                showAlert("❌ Failed to send. Check network.", "error");
             });
         }
+
+        function showAlert(message, type) {
+            alertBox.className = `alert alert-${type}`;
+            alertBox.textContent = message;
+            alertBox.classList.remove('hidden');
+            if (type === 'success') {
+                setTimeout(() => alertBox.classList.add('hidden'), 4000);
+            }
+        }
+
+        //Ste 2 -  Save to session (no sensitive data exposed)
+        sessionStorage.setItem('quoteData', JSON.stringify({
+            clientName: quoteData.clientName,
+            clientEmail: quoteData.clientEmail,
+            clientPhone: quoteData.clientPhone,
+            clientSector: quoteData.clientSector,
+            quantities: quoteData.quantities,
+            totalMonthlyExVat: quoteData.totalMonthlyExVat,
+            monoCredit: quoteData.monoInc,
+            colourCredit: quoteData.colourInc,
+            compliance: quoteData.totalScore >= 100 ? 'PASS' : 'FAIL',
+            date: new Date().toLocaleDateString('en-IE')
+        }));
+
+        // ✅ Redirect to preview
+        window.location.href = 'preview.html';
+
+        document.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
 </html>
