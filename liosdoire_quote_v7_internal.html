@@ -51,29 +51,6 @@
         }
     </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js"></script>
-<script>
-    async function login() {
-    const code = document.getElementById('code').value;
-    const pwd = document.getElementById('pwd').value;
-    
-    // Fetch hashed passwords from private Gist (no auth needed for public Gist ID)
-    const res = await fetch('https://gist.githubusercontent.com/YOU/abc123def456/raw/quotes.json');
-    const data = await res.json();
-    
-    const client = data.clients.find(c => c.code === code);
-    if (!client) return showError("Invalid code");
-    
-    // Verify password (client-side bcrypt is heavy → use SHA-256 for simplicity)
-    const hash = sha256(pwd);
-    if (hash !== client.hash) return showError("Invalid password");
-    
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    }
-    function showError(msg) { document.getElementById('msg').textContent = msg; }
-</script>
-
 <body>
     <header>
         <div class="subtitle"><image src="https://liosdoirecomputers.com/wp-content/uploads/2023/01/LiosdoireComputerslogo-o8.png" width="100"></image></div>
@@ -273,11 +250,33 @@
         
         <div id="alertBox" class="hidden"></div>
     </div>
-
+</div>
     <div class="footer">
         Liosdoire Computers — v7 | Data Sources: 2026 Ricoh Order.pdf, CapEx/OpEx Analysis
     </div>
-</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js"></script>
+    <script>
+        async function login() {
+        const code = document.getElementById('code').value;
+        const pwd = document.getElementById('pwd').value;
+        
+        // Fetch hashed passwords from private Gist (no auth needed for public Gist ID)
+        const res = await fetch('https://gist.githubusercontent.com/YOU/abc123def456/raw/quotes.json');
+        const data = await res.json();
+        
+        const client = data.clients.find(c => c.code === code);
+        if (!client) return showError("Invalid code");
+        
+        // Verify password (client-side bcrypt is heavy → use SHA-256 for simplicity)
+        const hash = sha256(pwd);
+        if (hash !== client.hash) return showError("Invalid password");
+        
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        }
+        function showError(msg) { document.getElementById('msg').textContent = msg; }
+    </script>
     <script>
         // Data from your CapEx sheet — verified compliance scores
         const DEVICES = [
