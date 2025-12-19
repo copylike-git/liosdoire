@@ -455,7 +455,7 @@
                 return;
             }
 
-            // ✅ FIXED: Send to itetralee@gmail.com
+            // STEP 1 - FIXED: Send to itetralee@gmail.com
             fetch('https://formspree.io/f/xdannjrl', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -505,7 +505,25 @@ COMPLIANCE SCORE: ${quoteData.totalScore} (${quoteData.totalScore >= 100 ? 'PASS
             }
         }
 
+        //Ste 2 -  Save to session (no sensitive data exposed)
+        sessionStorage.setItem('quoteData', JSON.stringify({
+            clientName: quoteData.clientName,
+            clientEmail: quoteData.clientEmail,
+            clientPhone: quoteData.clientPhone,
+            clientSector: quoteData.clientSector,
+            quantities: quoteData.quantities,
+            totalMonthlyExVat: quoteData.totalMonthlyExVat,
+            monoCredit: quoteData.monoInc,
+            colourCredit: quoteData.colourInc,
+            compliance: quoteData.totalScore >= 100 ? 'PASS' : 'FAIL',
+            date: new Date().toLocaleDateString('en-IE')
+        }));
+
+        // ✅ Redirect to preview
+        window.location.href = 'preview.html';
+
         document.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
 </html>
