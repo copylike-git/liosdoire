@@ -29,11 +29,13 @@ async function login() {
 
 // ========== QUOTING ENGINE ==========
 const DEVICES = [
-    { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono)", cost: 300.00, capex: 4150, score: 40 },
-    { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Colour)", cost: 150.00, capex: 2000, score: 35 },
-    { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Colour)", cost: 50.00, capex: 1000, score: 20 },
-    { model: "Ricoh IM 370", desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700, score: 15 },
-    { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 30 }
+    { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono)", cost: 300.00, capex: 4150, score: 100 },
+    { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Colour)", cost: 150.00, capex: 2000, score: 100 },
+    { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Colour)", cost: 50.00, capex: 1000, score: 50 },
+    { model: "Ricoh IM 370", desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700, score: 25 },
+    { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710, score: 75 }
+    { model: "Competitor A3 copier", desc: "Pay per print A3 colour", cost: 75.00, capex: 1710, score: 75 }
+    { model: "Competitor A4 copier", desc: "Pay per print A4 colour", cost: 25.00, capex: 700, score: 25 }
 ];
 
 const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };

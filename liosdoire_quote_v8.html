@@ -69,12 +69,12 @@
         <div class="section-title">1. Client Information</div>
         <div class="client-info-grid">
             <div>
-                <label>Client Name *</label>
-                <input type="text" id="clientName" placeholder="e.g., St. Brendan's School" required>
+                <label>Customer Name *</label>
+                <input type="text" id="clientName" placeholder="Account name" required>
             </div>
             <div>
                 <label>Email *</label>
-                <input type="email" id="clientEmail" placeholder="client@school.ie" required>
+                <input type="email" id="clientEmail" placeholder="Account email" required>
             </div>
             <div>
                 <label>Phone</label>
@@ -93,17 +93,19 @@
 
     <div class="section">
         <div class="section-title">2. Select Devices</div>
+        <div class="section-title">Note: Always bundle a Small A4 colour with a Mono A3 copier</div>
         <div class="device-grid" id="deviceList">
             <!-- Devices injected by JS -->
         </div>
     </div>
 
     <div class="section">
-        <div class="section-title">3. MPS Pack (Optional)</div>
+        <div class="section-title">3. Cloud Managed Print (Optional)</div>
+        <div class="section-title">Note: This allows reporting and user print limits</div>
         <div>
             <label>
                 <input type="checkbox" id="mpsToggle"> 
-                Is Managed Print Solution required?
+                Is Managed Print Solution required?<br>
             </label>
         </div>
         
@@ -112,13 +114,13 @@
                 <label>Select pack:</label><br>
                 <select id="packSelect" style="width: 100%; margin-top: 8px;">
                     <option value="Basic">RSI Basic — €20/mo (Cloud mgmt)</option>
-                    <option value="Plus">RSI Plus — €35/mo (+Scan to OneDrive)</option>
-                    <option value="Platinum">RSI Platinum — €45/mo (+Reporting, Priority)</option>
+                    <!--<option value="Plus">RSI Plus — €35/mo (+Scan to OneDrive)</option>
+                    <option value="Platinum">RSI Platinum — €45/mo (+Reporting, Priority)</option>-->
                 </select>
             </div>
             
             <div>
-                <label>How many machines need this pack?</label>
+                <label>How many machines need this pack?<br>Note: You can manage non-Liosdoire Machines</label>
                 <input type="number" id="mpsMachines" min="1" value="1" style="width: 100%; margin-top: 8px;">
             </div>
         </div>
@@ -128,20 +130,20 @@
         <div class="section-title">4. Print Credit & Excess</div>
         
         <div style="margin-bottom: 16px;">
-            <label>Print Credit (over 60 months, per site):</label><br>
+            <label>Print Credit (Useable over 60 months, per site):</label><br>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
                 <div>
                     <input type="number" id="monoIncluded" placeholder="120000 mono" value="120000">
                 </div>
                 <div>
-                    <input type="number" id="colourIncluded" placeholder="30000 colour" value="30000">
+                    <input type="number" id="colourIncluded" placeholder="36000 colour" value="36000">
                 </div>
             </div>
-            <div class="source-note">ℹ️ Default: 120k mono + 30k colour (per 2026 Ricoh Order.pdf)</div>
+            <div class="source-note">ℹ️ Default: 120k mono + 36k colour (e.g. 12k/3k monthly)</div>
         </div>
 
         <div class="excess-section">
-            <label>Excess Usage Estimate (optional):</label>
+            <label>Pay per print (Takeover pack):</label>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
                 <div>
                     <input type="number" id="monoExcess" placeholder="Excess mono/year" value="0">
@@ -150,7 +152,7 @@
                     <input type="number" id="colourExcess" placeholder="Excess colour/year" value="0">
                 </div>
             </div>
-            <div class="source-note">ℹ️ Rates: €0.005 mono / €0.05 colour (per PDF, Page 2)</div>
+            <div class="source-note">ℹ️ Rates: €0.005 mono / €0.05 colour</div>
         </div>
     </div>
 
@@ -241,9 +243,9 @@
                     <span>Excess Margin:</span>
                     <span id="excessMarginDisplay">0.0%</span>
                 </div>
-                <div class="source-note" style="margin-top: 8px;">
+                <!--<div class="source-note" style="margin-top: 8px;">
                     ℹ️ Margin = (€0.005−€0.0038)/€0.005 = 31.6% mono | (€0.05−€0.038)/€0.05 = 31.6% colour
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -255,7 +257,7 @@
 <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js"></script>
 <script src="current.js"></script>
     <div class="footer">
-        Copyright © 2026 Kanda Systems Limited<br><a href="mailto:kandasystems@proton.me">Email us</a> 
+        Copyright © 2026 Kanda Systems Limited<!--<br><a href="mailto:kandasystems@proton.me">Email us</a> -->
     </div>
 </body>
 </html>
