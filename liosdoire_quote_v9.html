@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liosdoire MPS Quote — Internal Use Only</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="subtitle"><image src="https://liosdoirecomputers.com/wp-content/uploads/2023/01/LiosdoireComputerslogo-o8.png" width="100"></image></div>
+        <br><br><strong>Liosdoire Computers - Printing Systems</strong></div>
+    </header>
+    <div id="login" style="text-align:center; padding:50px;">
+        <h2>Quotation Portal v8</h2><br>
+        <input id="code" placeholder="Client Code" type="text"><br><br>
+        <!--<input id="pwd" placeholder="Password" type="password"><br><br>-->
+        <button onclick="login()">Submit</button>
+        <div id="msg" style="color:red; margin-top:10px;"></div>
+    </div>
+
+<div id="app" style="display:none;">
+    <div class="section">
+        <div class="section-title">1. Client Information</div>
+        <div class="client-info-grid">
+            <div>
+                <label>Customer Name *</label>
+                <input type="text" id="clientName" placeholder="Account name" required>
+            </div>
+            <div>
+                <label>Email *</label>
+                <input type="email" id="clientEmail" placeholder="Account email" required>
+            </div>
+            <div>
+                <label>Phone</label>
+                <input type="tel" id="clientPhone" placeholder="085 123 4567">
+            </div>
+            <div>
+                <label>Sector *</label>
+                <select id="clientSector" required>
+                    <option value="">Select...</option>
+                    <option value="Education">Education</option>
+                    <option value="Business">Business</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">2. Select Devices</div>
+        <div class="section-title">Note: Always bundle a Small A4 colour with a Mono A3 copier</div>
+        <div class="device-grid" id="deviceList">
+            <!-- Devices injected by JS -->
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">3. Cloud Managed Print (Optional)</div>
+        <div class="section-title">Note: This allows reporting and user print limits</div>
+        <div>
+            <label>
+                <input type="checkbox" id="mpsToggle"> 
+                Is Managed Print Solution required?<br>
+            </label>
+        </div>
+        
+        <div id="mpsOptions" class="hidden">
+            <div style="margin: 16px 0;">
+                <label>Select pack:</label><br>
+                <select id="packSelect" style="width: 100%; margin-top: 8px;">
+                    <option value="Basic">RSI Basic — €20/mo (Cloud mgmt)</option>
+                    <!--<option value="Plus">RSI Plus — €35/mo (+Scan to OneDrive)</option>
+                    <option value="Platinum">RSI Platinum — €45/mo (+Reporting, Priority)</option>-->
+                </select>
+            </div>
+            
+            <div>
+                <label>How many machines need this pack?<br>Note: You can manage non-Liosdoire Machines</label>
+                <input type="number" id="mpsMachines" min="1" value="1" style="width: 100%; margin-top: 8px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">4. Print Credit & Excess</div>
+        
+        <div style="margin-bottom: 16px;">
+            <label>Print Credit (Useable over 60 months, per site):</label><br>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                <div>
+                    <input type="number" id="monoIncluded" placeholder="120000 mono" value="120000">
+                </div>
+                <div>
+                    <input type="number" id="colourIncluded" placeholder="36000 colour" value="36000">
+                </div>
+            </div>
+            <div class="source-note">ℹ️ Default: 120k mono + 36k colour (e.g. 12k/3k monthly)</div>
+        </div>
+
+        <div class="excess-section">
+            <label>Pay per print (Takeover pack):</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                <div>
+                    <input type="number" id="monoExcess" placeholder="Excess mono/year" value="0">
+                </div>
+                <div>
+                    <input type="number" id="colourExcess" placeholder="Excess colour/year" value="0">
+                </div>
+            </div>
+            <div class="source-note">ℹ️ Rates: €0.005 mono / €0.05 colour</div>
+        </div>
+    </div>
+    <div style="margin-bottom: 16px;">
+        <label for="grenkeRate"><strong>Grenke Finance Rate (Haircut):</strong></label>
+        <select id="grenkeRate" style="width: 100%; margin-top: 8px;">
+            <option value="3.5">3.5% (Best Case)</option>
+            <option value="4.0">4.0% (Standard)</option>
+            <option value="5.0" selected>5.0% (Safe/High Risk)</option>
+        </select>
+        <div class="source-note">ℹ️ Deducted from total contract value before cash hits bank.</div>
+    </div>
+    <div class="section">
+        <div class="section-title">5. Quote & Financial Analysis</div>
+        <button id="calculateBtn" class="success">Calculate Full Quote</button>
+        
+        <div id="result" class="result hidden">
+            <h3 style="margin-bottom: 16px;">Financial Summary (5-Year / 60 Months)</h3>
+            
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Calculation</th>
+                        <th>Amount (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Device Fees (60 mo)</strong></td>
+                        <td id="deviceCalc"></td>
+                        <td id="deviceAmt"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>MPS Pack (60 mo)</strong></td>
+                        <td id="mpsCalc"></td>
+                        <td id="mpsAmt"></td>
+                    </tr>
+                    <tr style="background: #f8fafc;">
+                        <td><strong>Total Revenue (60 mo)</strong></td>
+                        <td></td>
+                        <td id="revenueAmt"></td>
+                    </tr>
+                    <tr>
+                        <td>CapEx Outflow</td>
+                        <td id="capexCalc"></td>
+                        <td id="capexAmt"></td>
+                    </tr>
+                    <tr>
+                        <td>Ricoh CPP Cost</td>
+                        <td id="cppCalc"></td>
+                        <td id="cppAmt"></td>
+                    </tr>
+                    <tr style="background: #dcfce7;">
+                        <td><strong>Net Profit (60 mo)</strong></td>
+                        <td></td>
+                        <td id="profitAmt"></td>
+                    </tr>
+                    <tr>
+                        <td>Net Margin</td>
+                        <td></td>
+                        <td id="marginAmt"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 20px; padding-top: 16px; border-top: 2px dashed #cbd5e1;">
+                <div class="result-row">
+                    <span><strong>Compliance Score:</strong></span>
+                    <span id="scoreDisplay"></span>
+                </div>
+                <div class="result-row">
+                    <span>Monthly (EX. VAT):</span>
+                    <span id="monthlyDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Inc. VAT (23%):</span>
+                    <span id="monthlyVatDisplay">€0.00</span>
+                </div>
+            </div>
+
+            <div id="excessResult" class="hidden" style="margin-top: 20px; padding: 16px; background: #f0fdf4; border-radius: 8px;">
+                <h4>Excess Usage Revenue (5-Year Projection)</h4>
+                <div class="result-row">
+                    <span>Client Pays (€0.005/€0.05):</span>
+                    <span id="excessRevenueDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Your Cost (Ricoh €0.0038/€0.038):</span>
+                    <span id="excessCostDisplay">€0.00</span>
+                </div>
+                <div class="result-row result-total">
+                    <span><strong>Your Profit on Excess:</strong></span>
+                    <span id="excessProfitDisplay">€0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Excess Margin:</span>
+                    <span id="excessMarginDisplay">0.0%</span>
+                </div>
+                <!--<div class="source-note" style="margin-top: 8px;">
+                    ℹ️ Margin = (€0.005−€0.0038)/€0.005 = 31.6% mono | (€0.05−€0.038)/€0.05 = 31.6% colour
+                </div>-->
+            </div>
+        </div>
+
+        <button id="emailBtn" class="secondary hidden" style="margin-top: 16px;">Email sent. Please conplete order confirmation</button>
+        
+        <div id="alertBox" class="hidden"></div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js"></script>
+<script src="updated.js"></script>
+    <div class="footer">
+        Copyright © 2026 Kanda Systems Limited<!--<br><a href="mailto:kandasystems@proton.me">Email us</a> -->
+    </div>
+</body>
+</html>
