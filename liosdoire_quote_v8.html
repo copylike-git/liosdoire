@@ -87,7 +87,6 @@
                     <option value="Education">Education</option>
                     <option value="Business">Business</option>
                 </select>
-		<select id="grenkeRate">
             </div>
         </div>
     </div>
@@ -156,7 +155,15 @@
             <div class="source-note">ℹ️ Rates: €0.005 mono / €0.05 colour</div>
         </div>
     </div>
-
+    <div style="margin-bottom: 16px;">
+        <label for="grenkeRate"><strong>Grenke Finance Rate (Haircut):</strong></label>
+        <select id="grenkeRate" style="width: 100%; margin-top: 8px;">
+            <option value="3.5">3.5% (Best Case)</option>
+            <option value="4.0">4.0% (Standard)</option>
+            <option value="5.0" selected>5.0% (Safe/High Risk)</option>
+        </select>
+        <div class="source-note">ℹ️ Deducted from total contract value before cash hits bank.</div>
+    </div>
     <div class="section">
         <div class="section-title">5. Quote & Financial Analysis</div>
         <button id="calculateBtn" class="success">Calculate Full Quote</button>
