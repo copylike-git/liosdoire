@@ -1,3 +1,58 @@
+const GRENKE_RATES = {
+    "3.5": 0.035,
+    "4.0": 0.040,
+    "5.0": 0.050
+};
+const RICOH_MIN_QTR = 100.00; // Minimum quarterly charge
+
+function calculateQuote() {
+    // ... [Previous Input Collection Code] ...
+
+    // 1. Get Grenke Rate (You need to add a dropdown <select id="grenkeRate"> to your HTML)
+    const financeRateVal = document.getElementById('grenkeRate')?.value || "5.0"; // Default 5%
+    const financeHaircut = GRENKE_RATES[financeRateVal];
+
+    // ... [Standard Monthly Calculations] ...
+    
+    // 2. REVENUE CALCULATION (The "Cash in Bank" Check)
+    // Revenue is NOT Monthly * 60. It is the Cash Lump Sum from Grenke.
+    const grossContractValue = totalMonthlyExVat * 60;
+    const grenkeFee = grossContractValue * financeHaircut;
+    const cashInBank = grossContractValue - grenkeFee; // This is what hits Lisodoire's account
+
+    // 3. COST CALCULATION (The Ricoh Minimum Check)
+    // Calculate expected Ricoh bill per quarter
+    const quarterlyMono = monoInc / 20; // 60 months = 20 quarters
+    const quarterlyColour = colourInc / 20;
+    const actualQuarterlyCost = (quarterlyMono * RICHO_CPP.mono) + (quarterlyColour * RICHO_CPP.colour);
+
+    let finalServiceCost60mo = 0;
+    let minChargeFlag = false;
+
+    if (actualQuarterlyCost < RICOH_MIN_QTR) {
+        // If usage is low, we pay the floor price (€100/qtr)
+        finalServiceCost60mo = RICOH_MIN_QTR * 20; 
+        minChargeFlag = true;
+    } else {
+        // Otherwise we pay actuals
+        finalServiceCost60mo = (monoInc * RICHO_CPP.mono) + (colourInc * RICHO_CPP.colour);
+    }
+
+    // 4. PROFIT CALCULATION
+    const netProfit = cashInBank - capexTotal - finalServiceCost60mo;
+    const marginPct = cashInBank > 0 ? (netProfit / cashInBank) * 100 : 0;
+
+    // ... [Update UI Code] ...
+
+    // 5. ALERTING (Add this to your UI updates)
+    if (minChargeFlag) {
+         showAlert("⚠️ WARNING: Print volume too low. Ricoh Minimum Charge applied (€2,000 total cost).", "warning");
+    }
+    
+    // Display the Grenke deduction clearly
+    safeSet('revenueAmt', `€${grossContractValue.toFixed(2)}`); // Show Gross
+    safeSet('cashAmt', `€${cashInBank.toFixed(2)} (Net of ${financeRateVal}%)`); // New Field for Net Cash
+}
 async function login() {
     const code = document.getElementById('code').value.trim();
     if (!code) {
