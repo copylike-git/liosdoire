@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liosdoire — Order Preview</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { padding: 20px; max-width: 800px; margin: 0 auto; background: #f8fafc; color: #334155; }
+        .page { background: white; padding: 40px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+        
+        h1 { text-align: center; color: #1e3a8a; margin-bottom: 30px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .header-grid { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 30px; gap: 20px; }
+        .header-item strong { display: block; color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-item span { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
+
+        .section { margin-bottom: 30px; }
+        .section-title { font-weight: 700; color: #1e3a8a; margin-bottom: 10px; font-size: 1.1rem; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.95rem; }
+        th { text-align: left; padding: 12px; background: #f1f5f9; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        tr:last-child td { border-bottom: none; }
+        
+        .financial-box { background: #eff6ff; padding: 20px; border-radius: 8px; margin-top: 10px; border: 1px solid #dbeafe; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 1rem; }
+        .price-row.total { font-size: 1.25rem; font-weight: 700; color: #1e3a8a; border-top: 1px solid #bfdbfe; padding-top: 12px; margin-top: 4px; }
+
+        .terms { font-size: 0.75rem; color: #64748b; margin-top: 30px; line-height: 1.5; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+
+        .signature-area { border: 2px dashed #94a3b8; height: 160px; margin: 20px 0; background: #f8fafc; position: relative; border-radius: 6px; }
+        canvas { width: 100%; height: 100%; cursor: crosshair; }
+        
+        .btn { background: #16a34a; color: white; border: none; padding: 14px 28px; font-size: 1.1rem; border-radius: 6px; cursor: pointer; display: block; margin: 30px auto; width: 100%; max-width: 300px; font-weight: 600; }
+        .btn:hover { background: #15803d; }
+
+        @media print { .btn, .no-print { display: none; } body { background: white; } .page { box-shadow: none; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>Liosdoire Quotation & Order</h1>
+        
+        <div class="header-grid">
+            <div class="header-item">
+                <strong>Client</strong>
+                <span id="pClient">—</span>
+            </div>
+            <div class="header-item">
+                <strong>Date</strong>
+                <span id="pDate">—</span>
+            </div>
+            <div class="header-item">
+                <strong>Email</strong>
+                <span id="pEmail">—</span>
+            </div>
+            <div class="header-item">
+                <strong>Sector</strong>
+                <span id="pSector">—</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Hardware & Services</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="10%">Qty</th>
+                        <th width="60%">Description</th>
+                        <th width="30%">Included Service</th>
+                    </tr>
+                </thead>
+                <tbody id="pDeviceTable"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Financial Agreement (60 Months)</div>
+            <div class="financial-box">
+                <div class="price-row">
+                    <span>Monthly Hardware & Service (Ex VAT)</span>
+                    <span>€<span id="pExVat">0.00</span></span>
+                </div>
+                <div class="price-row">
+                    <span>VAT (23%)</span>
+                    <span>€<span id="pVat">0.00</span></span>
+                </div>
+                <div class="price-row total">
+                    <span>Total Monthly Charge</span>
+                    <span>€<span id="pIncVat">0.00</span></span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 0.9rem;">
+                <strong>Included Print Allowance (Per Month Average):</strong><br>
+                • <span id="pMonoCredit">0</span> Mono Pages<br>
+                • <span id="pColourCredit">0</span> Colour Pages<br>
+                <em style="font-size: 0.8rem; color: #64748b;">(Allocated as a single 60-month pool)</em>
+            </div>
+        </div>
+
+        <div class="terms">
+            <strong>Terms & Conditions:</strong>
+            <ol style="padding-left: 20px; margin-top: 5px;">
+                <li><strong>Coverage Standard:</strong> All print credits and CPP rates are calculated based on ISO 19752 standard (5% toner coverage on A4). Consistently higher coverage may incur surcharges.</li>
+                <li><strong>Finance:</strong> This agreement is subject to credit approval by Grenke Finance (60-month term).</li>
+                <li><strong>Validity:</strong> This quote is valid for 30 days from the date above.</li>
+            </ol>
+        </div>
+
+        <div class="section" style="margin-top: 30px;">
+            <div class="section-title">Authorised Signature</div>
+            <p style="font-size: 0.9rem;">By signing below, I confirm I am authorised to order on behalf of the client.</p>
+            <div class="signature-area">
+                <canvas id="sigCanvas"></canvas>
+            </div>
+            <button onclick="clearSig()" class="no-print" style="font-size: 0.8rem; padding: 4px 8px;">Clear Signature</button>
+        </div>
+
+        <button onclick="window.print()" class="btn">🖨️ Print / Save as PDF</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(sessionStorage.getItem('quoteData'));
+            if (!data) {
+                document.body.innerHTML = "<h2 style='text-align:center; padding:50px;'>No quote data found. Please return to the calculator.</h2>";
+                return;
+            }
+
+            // Fill Fields
+            document.getElementById('pClient').textContent = data.clientName;
+            document.getElementById('pEmail').textContent = data.clientEmail;
+            document.getElementById('pDate').textContent = data.date;
+            document.getElementById('pSector').textContent = data.clientSector;
+            
+            document.getElementById('pExVat').textContent = data.monthlyExVat;
+            document.getElementById('pVat').textContent = (data.monthlyExVat * 0.23).toFixed(2);
+            document.getElementById('pIncVat').textContent = data.monthlyIncVat;
+
+            // Divide 60-month pool by 60 for "Monthly Average" display (easier for client to grasp)
+            document.getElementById('pMonoCredit').textContent = Math.round(data.monoCredit / 60).toLocaleString();
+            document.getElementById('pColourCredit').textContent = Math.round(data.colourCredit / 60).toLocaleString();
+
+            // Render Table
+            const tbody = document.getElementById('pDeviceTable');
+            for (const [model, qty] of Object.entries(data.quantities)) {
+                if (qty > 0) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${qty}</strong></td>
+                        <td>${model}</td>
+                        <td>Complete Service, Toner & Parts</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            }
+
+            // Init Signature Canvas
+            initCanvas();
+        });
+
+        let canvas, ctx, isDrawing = false;
+
+        function initCanvas() {
+            canvas = document.getElementById('sigCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Handle resizing for retina displays
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#000";
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e.touches[0]); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+            canvas.addEventListener('touchend', stopDraw);
+        }
+
+        function startDraw(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function stopDraw() { isDrawing = false; }
+        function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    </script>
+</body>
+</html>
