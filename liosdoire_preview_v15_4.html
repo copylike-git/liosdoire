@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liosdoire — Order Preview</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { padding: 20px; max-width: 800px; margin: 0 auto; background: #f8fafc; color: #334155; }
+        .page { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1e3a8a; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .header-grid { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 30px; gap: 20px; }
+        .header-item strong { display: block; color: #64748b; font-size: 0.85rem; text-transform: uppercase; }
+        .header-item span { font-size: 1.1rem; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; }
+        .total-box { background: #eff6ff; padding: 20px; border-radius: 8px; border: 1px solid #dbeafe; margin-top: 20px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .price-row.total { font-size: 1.25rem; font-weight: 700; color: #1e3a8a; border-top: 1px solid #bfdbfe; padding-top: 12px; }
+        
+        /* Print Credit Table Styles */
+        .credit-table { width: 100%; margin-top: 5px; font-size: 0.9rem; }
+        .credit-table td { padding: 6px; border: none; }
+        .credit-section { margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
+        
+        .managed-badge { background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+        .loc-text { font-size: 0.85rem; color: #64748b; display: block; margin-top: 2px; }
+        
+        .terms { font-size: 0.75rem; color: #64748b; margin-top: 30px; line-height: 1.5; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+        .btn { background: #16a34a; color: white; border: none; padding: 14px 28px; border-radius: 6px; cursor: pointer; display: block; margin: 30px auto; width: 100%; max-width: 300px; }
+        @media print { .btn { display: none; } body { background: white; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>Liosdoire Quotation & Order</h1>
+        
+        <div class="header-grid">
+            <div class="header-item"><strong>Client</strong><span id="pClient"></span></div>
+            <div class="header-item"><strong>Date</strong><span id="pDate"></span></div>
+            <div class="header-item"><strong>Email</strong><span id="pEmail"></span></div>
+            <div class="header-item"><strong>Sector</strong><span id="pSector"></span></div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <h3>Hardware & Services Schedule</h3>
+            <table>
+                <thead><tr><th width="10%">ID</th><th width="50%">Description</th><th width="40%">Service & Location</th></tr></thead>
+                <tbody id="pDeviceTable"></tbody>
+            </table>
+        </div>
+
+        <div class="total-box">
+            <div class="price-row"><span>Monthly Hardware & Service (Ex VAT)</span><span>€<span id="pExVat"></span></span></div>
+            <div class="price-row"><span>VAT (23%)</span><span>€<span id="pVat"></span></span></div>
+            <div class="price-row total"><span>Total Monthly Charge</span><span>€<span id="pIncVat"></span></span></div>
+        </div>
+
+        <div class="credit-section">
+            <strong style="color:#1e3a8a;">Included Print Allowance (60 Months Total):</strong>
+            <table class="credit-table">
+                <tr>
+                    <td width="30%"><strong>Standard Allocation:</strong></td>
+                    <td width="35%"><span id="pBaseMono">0</span> Mono</td>
+                    <td width="35%"><span id="pBaseCol">0</span> Colour</td>
+                </tr>
+                <tr id="addonRow" style="color: #166534;">
+                    <td><strong>Value Pack (Extra):</strong></td>
+                    <td>+<span id="pAddMono">0</span> Mono</td>
+                    <td>+<span id="pAddCol">0</span> Colour</td>
+                </tr>
+                <tr style="border-top:1px dashed #cbd5e1;">
+                    <td><strong>TOTAL POOL:</strong></td>
+                    <td><strong><span id="pTotalMono">0</span> Mono</strong></td>
+                    <td><strong><span id="pTotalCol">0</span> Colour</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="terms">
+            <strong>Terms & Conditions:</strong>
+            <ol style="padding-left: 20px; margin-top: 5px;">
+                <li><strong>Coverage Standard:</strong> All print credits and CPP rates are calculated based on ISO 19752 standard (5% toner coverage on A4). Consistently higher coverage may incur surcharges.</li>
+                <li><strong>Finance:</strong> This agreement is subject to credit approval by Grenke Finance (60-month term).</li>
+                <li><strong>Validity:</strong> This quote is valid for 30 days from the date above.</li>
+                <li><strong>Managed Service:</strong> Devices marked "Managed Service" include proactive toner replenishment and remote monitoring.</li>
+            </ol>
+        </div>
+
+        <div style="margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <h3>Authorisation</h3>
+            <p style="font-size: 0.9rem;">By signing below, I confirm I am authorised to order on behalf of the client.</p>
+            <div style="height: 120px; border: 2px dashed #cbd5e1; margin-top: 10px; background: #fcfcfc; position: relative;">
+                <canvas id="sigCanvas" style="width: 100%; height: 100%; cursor: crosshair;"></canvas>
+            </div>
+            <p style="text-align: center; color: #64748b; font-size: 0.8rem; margin-top: 5px;">Client Signature</p>
+            <button onclick="clearSig()" class="no-print" style="font-size: 0.7rem; float: right; margin-top: -25px;">Clear</button>
+        </div>
+
+        <button onclick="window.print()" class="btn">🖨️ Print / Save PDF</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(sessionStorage.getItem('quoteData'));
+            if (!data) return;
+
+            document.getElementById('pClient').textContent = data.clientName;
+            document.getElementById('pEmail').textContent = data.clientEmail;
+            document.getElementById('pDate').textContent = data.date;
+            document.getElementById('pSector').textContent = data.clientSector;
+            
+            document.getElementById('pExVat').textContent = data.monthlyExVat;
+            document.getElementById('pVat').textContent = (data.monthlyExVat * 0.23).toFixed(2);
+            document.getElementById('pIncVat').textContent = data.monthlyIncVat;
+
+            // Credits
+            document.getElementById('pBaseMono').textContent = parseInt(data.baseMono).toLocaleString();
+            document.getElementById('pBaseCol').textContent = parseInt(data.baseCol).toLocaleString();
+            document.getElementById('pAddMono').textContent = parseInt(data.addMono).toLocaleString();
+            document.getElementById('pAddCol').textContent = parseInt(data.addCol).toLocaleString();
+            
+            document.getElementById('pTotalMono').textContent = (data.baseMono + data.addMono).toLocaleString();
+            document.getElementById('pTotalCol').textContent = (data.baseCol + data.addCol).toLocaleString();
+
+            if (data.addMono == 0 && data.addCol == 0) {
+                document.getElementById('addonRow').style.display = 'none';
+            }
+
+            // Render Itemized Device List
+            const tbody = document.getElementById('pDeviceTable');
+            const devices = data.finalDeviceList || [];
+
+            devices.forEach((d, index) => {
+                const tr = document.createElement('tr');
+                
+                let statusHtml = '<span style="color:#94a3b8">Hardware Only</span>';
+                if (d.isManaged) {
+                    statusHtml = `<span class="managed-badge">✅ Managed Service</span>`;
+                }
+                // Add location if exists
+                if(d.location) statusHtml += `<span class="loc-text">📍 ${d.location}</span>`;
+
+                tr.innerHTML = `
+                    <td>#${index + 1}</td>
+                    <td>${d.model}</td>
+                    <td>${statusHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Init Signature
+            initCanvas();
+        });
+
+        let canvas, ctx, isDrawing = false;
+        function initCanvas() {
+            canvas = document.getElementById('sigCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Fix resolution
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = "#000";
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e.touches[0]); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+            canvas.addEventListener('touchend', stopDraw);
+        }
+
+        function startDraw(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+        function stopDraw() { isDrawing = false; }
+        function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    </script>
+</body>
+</html>
