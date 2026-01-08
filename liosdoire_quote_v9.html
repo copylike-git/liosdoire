@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire MPS Quote v9 — Margin Guard</title>
+    <title>Liosdoire MPS Quote v9.1 — Margin Guard & T&Cs</title>
     <style>
         :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -53,6 +53,19 @@
         .result-table th { background: #e2e8f0; font-weight: 600; }
         .result-total { font-weight: 700; font-size: 1.1rem; color: var(--primary); border-top: 2px solid #cbd5e1; padding-top: 12px; }
         
+        /* TERMS BOX */
+        .terms-box {
+            margin-top: 20px;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #475569;
+            line-height: 1.4;
+        }
+        .terms-box strong { color: #1e293b; display: block; margin-bottom: 4px; }
+
         .client-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         label { display: block; margin: 4px 0; font-weight: 500; font-size: 0.9rem; }
         .source-note { font-size: 0.75rem; color: #94a3b8; margin-top: 8px; }
@@ -73,7 +86,7 @@
         <div class="subtitle">
             <img src="https://liosdoirecomputers.com/wp-content/uploads/2023/01/LiosdoireComputerslogo-o8.png" width="120" alt="Liosdoire Logo">
         </div>
-        <br><strong>Liosdoire Computers - Smart Quote v9</strong>
+        <br><strong>Liosdoire Computers - Smart Quote v9.1</strong>
     </header>
 
     <div id="app">
@@ -205,6 +218,14 @@
                     <div style="font-size:1.2rem; color:var(--primary);"><strong>Monthly (Ex VAT): <span id="monthlyDisplay">€0.00</span></strong></div>
                     <div style="font-size:1rem; color:#64748b;">Inc VAT (23%): <span id="monthlyVatDisplay">€0.00</span></div>
                 </div>
+
+                <div class="terms-box">
+                    <strong>Terms & Conditions of Service (CPP):</strong>
+                    1. <strong>Standard Coverage:</strong> All Cost Per Page (CPP) rates and included Print Credits are strictly calculated based on standard A4 paper with <strong>5% toner coverage</strong> (ISO/IEC 19752 standard).<br>
+                    2. <strong>Excess Coverage:</strong> Consistent printing of high-density documents (e.g., photographs, full-page marketing graphics) exceeding 5% coverage will result in a recalculated CPP rate or additional surcharges.<br>
+                    3. <strong>Validity:</strong> This quotation assumes a 60-month lease term via Grenke Finance, subject to credit approval.
+                </div>
+
             </div>
             
             <button id="emailBtn" class="secondary hidden" style="margin-top: 15px;">Send Quote to Office</button>
