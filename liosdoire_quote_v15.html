@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire Quote v15 — Itemized MPS</title>
+    <title>Liosdoire Quote v15 — Sliders Updated</title>
     <style>
         :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -53,13 +53,14 @@
 
         /* SLIDER STYLES */
         .slider-box { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
-        input[type=range] { width: 100%; margin: 10px 0; }
+        input[type=range] { width: 100%; margin: 10px 0; cursor: pointer; }
         .ratio-labels { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: #475569; }
 
         /* ADD-ON BOX */
         .addon-box { border: 1px solid #bbf7d0; background: #f0fdf4; padding: 15px; border-radius: 8px; }
         .addon-header { font-weight: 700; color: #166534; margin-bottom: 10px; display: flex; justify-content: space-between; }
-        
+        .slider-val { font-weight: bold; color: #166534; float: right; }
+
         /* RESULTS TABLE */
         .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; }
         .result-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
@@ -143,8 +144,8 @@
                 </div>
 
                 <div style="margin-top: 15px;">
-                    <label style="font-size: 0.9rem; color: var(--primary);">Adjust Allocation Mix:</label>
-                    <input type="range" id="mixSlider" min="0" max="100" value="75" step="5">
+                    <label style="font-size: 0.9rem; color: var(--primary);">Adjust Allocation Mix (1% steps):</label>
+                    <input type="range" id="mixSlider" min="0" max="100" value="75" step="1">
                     <div class="ratio-labels">
                         <span>Colour Heavy</span>
                         <span id="ratioDisplay" style="color:var(--primary)">Mix: 75% Mono / 25% Colour</span>
@@ -158,16 +159,21 @@
                     <span>Retail Value Pack (Add-on)</span>
                     <span style="font-size:0.85rem; font-weight:400;">Rates: €0.005 / €0.05</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div>
-                        <label style="font-size:0.8rem; color:#166534;">Extra Mono (60mo)</label>
-                        <input type="number" id="addonMono" placeholder="0" value="0">
-                    </div>
-                    <div>
-                        <label style="font-size:0.8rem; color:#166534;">Extra Colour (60mo)</label>
-                        <input type="number" id="addonColour" placeholder="0" value="0">
-                    </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size:0.8rem; color:#166534;">
+                        Extra Mono (60mo): <span id="dispAddonMono" class="slider-val">0</span>
+                    </label>
+                    <input type="range" id="addonMono" min="0" max="10000000" step="1000" value="0">
                 </div>
+
+                <div>
+                    <label style="font-size:0.8rem; color:#166534;">
+                        Extra Colour (60mo): <span id="dispAddonCol" class="slider-val">0</span>
+                    </label>
+                    <input type="range" id="addonColour" min="0" max="10000000" step="1000" value="0">
+                </div>
+
                 <div style="text-align:right; margin-top:10px; font-weight:bold; color:#166534;">
                     Add-on Cost: <span id="addonCostDisplay">+€0.00 / mo</span>
                 </div>
@@ -239,8 +245,16 @@
 
             // Listeners
             document.getElementById('mixSlider').addEventListener('input', recalculateBaseCredit);
-            document.getElementById('addonMono').addEventListener('input', updateAddonCost);
-            document.getElementById('addonColour').addEventListener('input', updateAddonCost);
+            
+            // UPDATED ADDON SLIDER LISTENERS
+            document.getElementById('addonMono').addEventListener('input', (e) => {
+                document.getElementById('dispAddonMono').textContent = parseInt(e.target.value).toLocaleString();
+                updateAddonCost();
+            });
+            document.getElementById('addonColour').addEventListener('input', (e) => {
+                document.getElementById('dispAddonCol').textContent = parseInt(e.target.value).toLocaleString();
+                updateAddonCost();
+            });
             
             document.getElementById('calculateBtn').addEventListener('click', calculateQuote);
             document.getElementById('previewBtn').addEventListener('click', goToPreview);
@@ -250,7 +264,7 @@
             const el = document.getElementById(`qty-${modelSafe}`);
             el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
             recalculateBaseCredit();
-            renderMpsList(); // Update section 3 list
+            renderMpsList(); 
         }
 
         function getQty(model) {
@@ -261,14 +275,12 @@
         function renderMpsList() {
             const container = document.getElementById('mpsDeviceContainer');
             
-            // 1. Snapshot current state to preserve inputs
             const currentState = {};
             container.querySelectorAll('input').forEach(input => {
                 if (input.type === 'checkbox') currentState[input.id] = input.checked;
                 if (input.type === 'text') currentState[input.id] = input.value;
             });
 
-            // 2. Build new HTML
             let hasDevices = false;
             let html = "";
 
@@ -278,7 +290,6 @@
                     hasDevices = true;
                     const safeModel = d.model.replace(/\s+/g, '_');
                     
-                    // Loop for EACH UNIT
                     for (let i = 1; i <= qty; i++) {
                         const chkId = `mps-chk-${safeModel}-${i}`;
                         const locId = `mps-loc-${safeModel}-${i}`;
@@ -307,12 +318,10 @@
                 container.innerHTML = html;
             }
 
-            // 3. Restore State
             container.querySelectorAll('input').forEach(input => {
                 if (currentState[input.id] !== undefined) {
                     if (input.type === 'checkbox') {
                         input.checked = currentState[input.id];
-                        // Trigger visibility logic
                         const divId = input.id.replace('mps-chk-', 'mps-div-');
                         const div = document.getElementById(divId);
                         if(div) {
@@ -457,13 +466,13 @@
             
             document.getElementById('result').classList.remove('hidden');
 
-            // STORE STATE (Passing Full Device List)
+            // STORE STATE
             quoteState = {
                 clientName,
                 clientEmail: document.getElementById('clientEmail').value,
                 clientSector: document.getElementById('clientSector').value,
                 date: new Date().toLocaleDateString('en-IE'),
-                finalDeviceList, // New detailed list
+                finalDeviceList, 
                 baseMono, baseCol,
                 addMono, addCol,
                 monthlyExVat: totalMonthly.toFixed(2),
