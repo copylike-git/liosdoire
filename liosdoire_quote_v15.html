@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire Quote v15 — Sliders Updated</title>
+    <title>Liosdoire Quote v15 — Vertical Dashboard</title>
     <style>
         :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -18,10 +18,7 @@
 
         /* DEVICE LIST */
         .device-grid { display: grid; gap: 12px; }
-        .device-item { 
-            display: flex; align-items: center; padding: 12px; 
-            border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.2s; 
-        }
+        .device-item { display: flex; align-items: center; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.2s; }
         .device-item:hover { border-color: var(--primary); background: #f0f9ff; }
         .device-info { flex: 1; }
         .device-name { font-weight: 700; color: #1e293b; }
@@ -39,27 +36,66 @@
         }
         input[readonly] { background: #f1f5f9; color: #64748b; cursor: not-allowed; }
 
-        /* MPS SELECTION LIST */
+        /* MPS LIST */
         .mps-list { margin-top: 10px; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; }
         .mps-item { display: flex; flex-direction: column; padding: 10px; background: #fff; border-bottom: 1px solid #f1f5f9; }
-        .mps-item:last-child { border-bottom: none; }
         .mps-row-main { display: flex; align-items: center; width: 100%; }
         .mps-row-main label { margin: 0 0 0 10px; cursor: pointer; flex: 1; display: flex; justify-content: space-between; align-items: center; }
         .mps-unit-badge { background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: #475569; }
-        
         .mps-location-input { margin-top: 8px; margin-left: 25px; display: none; }
         .mps-location-input.visible { display: block; }
         .mps-location-input input { font-size: 0.9rem; padding: 6px; border-color: #93c5fd; background: #eff6ff; }
 
-        /* SLIDER STYLES */
-        .slider-box { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
-        input[type=range] { width: 100%; margin: 10px 0; cursor: pointer; }
-        .ratio-labels { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: #475569; }
+        /* --- VERTICAL DASHBOARD STYLES --- */
+        .dashboard-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            background: #f8fafc;
+            padding: 20px 10px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-        /* ADD-ON BOX */
-        .addon-box { border: 1px solid #bbf7d0; background: #f0fdf4; padding: 15px; border-radius: 8px; }
-        .addon-header { font-weight: 700; color: #166534; margin-bottom: 10px; display: flex; justify-content: space-between; }
-        .slider-val { font-weight: bold; color: #166534; float: right; }
+        .control-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            min-width: 150px;
+        }
+
+        .slider-wrapper {
+            height: 250px; /* Fixed height for vertical alignment */
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            background: #fff;
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid #cbd5e1;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Vertical Slider Magic */
+        input[type=range][orient=vertical] {
+            writing-mode: bt-lr; /* IE */
+            -webkit-appearance: slider-vertical; /* Webkit */
+            width: 8px;
+            height: 100%;
+            padding: 0 5px;
+            cursor: pointer;
+        }
+
+        .col-header { font-weight: 700; color: #1e3a8a; text-align: center; font-size: 0.9rem; margin-bottom: 5px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+        .col-val { font-weight: 700; color: #166534; font-size: 1.1rem; margin-top: 5px; text-align: center; }
+        .col-sub { font-size: 0.75rem; color: #64748b; text-align: center; }
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+        .tag-blue { background: #dbeafe; color: #1e3a8a; }
+        .tag-green { background: #dcfce7; color: #166534; }
 
         /* RESULTS TABLE */
         .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; }
@@ -74,7 +110,10 @@
         @media (max-width: 600px) {
             .client-info-grid { grid-template-columns: 1fr; }
             .device-item { flex-direction: column; align-items: flex-start; }
-            .qty-controls { width: 100%; justify-content: space-between; margin-top: 10px; }
+            .dashboard-container { flex-direction: column; align-items: center; }
+            .control-column { width: 100%; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px; }
+            .slider-wrapper { height: 150px; width: 100%; border-radius: 10px; }
+            input[type=range][orient=vertical] { -webkit-appearance: none; width: 100%; height: 8px; } /* Fallback to horizontal on mobile if needed, or keep vertical */
         }
     </style>
 </head>
@@ -134,51 +173,49 @@
         </div>
 
         <div class="section">
-            <div class="section-title">4. Print Credit Configuration</div>
+            <div class="section-title">4. Print Credit Dashboard</div>
+            <div class="section-desc">Adjust Base Mix and Retail Add-ons using the vertical controls.</div>
             
-            <div class="slider-box">
-                <label><strong>Included Base Credit (Hardware Absorbed)</strong></label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
-                    <div><label style="font-size:0.8rem">Base Mono (60mo)</label><input type="number" id="baseMono" readonly></div>
-                    <div><label style="font-size:0.8rem">Base Colour (60mo)</label><input type="number" id="baseColour" readonly></div>
-                </div>
+            <input type="hidden" id="baseMono" value="0">
+            <input type="hidden" id="baseColour" value="0">
 
-                <div style="margin-top: 15px;">
-                    <label style="font-size: 0.9rem; color: var(--primary);">Adjust Allocation Mix (1% steps):</label>
-                    <input type="range" id="mixSlider" min="0" max="100" value="75" step="1">
-                    <div class="ratio-labels">
-                        <span>Colour Heavy</span>
-                        <span id="ratioDisplay" style="color:var(--primary)">Mix: 75% Mono / 25% Colour</span>
-                        <span>Mono Only</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="addon-box">
-                <div class="addon-header">
-                    <span>Retail Value Pack (Add-on)</span>
-                    <span style="font-size:0.85rem; font-weight:400;">Rates: €0.005 / €0.05</span>
-                </div>
+            <div class="dashboard-container">
                 
-                <div style="margin-bottom: 15px;">
-                    <label style="font-size:0.8rem; color:#166534;">
-                        Extra Mono (60mo): <span id="dispAddonMono" class="slider-val">0</span>
-                    </label>
-                    <input type="range" id="addonMono" min="0" max="10000000" step="1000" value="0">
+                <div class="control-column">
+                    <span class="tag tag-blue">Hardware Included</span>
+                    <div class="col-header">Allocation Mix<br>(Safe Margin)</div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="mixSlider" orient="vertical" min="0" max="100" value="75" step="1">
+                    </div>
+                    <div class="col-val" id="ratioDisplay" style="color:var(--primary)">75% Mono</div>
+                    <div class="col-sub">Base Credit Mix</div>
                 </div>
 
-                <div>
-                    <label style="font-size:0.8rem; color:#166534;">
-                        Extra Colour (60mo): <span id="dispAddonCol" class="slider-val">0</span>
-                    </label>
-                    <input type="range" id="addonColour" min="0" max="10000000" step="1000" value="0">
+                <div class="control-column">
+                    <span class="tag tag-green">Retail Add-on</span>
+                    <div class="col-header">Extra Mono<br>(€0.005)</div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="addonMono" orient="vertical" min="0" max="10000000" step="1000" value="0">
+                    </div>
+                    <div class="col-val" id="dispAddonMono">0</div>
+                    <div class="col-sub">Pages (60mo)</div>
                 </div>
 
-                <div style="text-align:right; margin-top:10px; font-weight:bold; color:#166534;">
-                    Add-on Cost: <span id="addonCostDisplay">+€0.00 / mo</span>
+                <div class="control-column">
+                    <span class="tag tag-green">Retail Add-on</span>
+                    <div class="col-header">Extra Colour<br>(€0.05)</div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="addonColour" orient="vertical" min="0" max="10000000" step="1000" value="0">
+                    </div>
+                    <div class="col-val" id="dispAddonCol">0</div>
+                    <div class="col-sub">Pages (60mo)</div>
                 </div>
+
             </div>
-
+            
+            <div style="text-align:center; padding: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
+                <span style="color:#166534; font-weight:bold;">Total Add-on Cost: <span id="addonCostDisplay" style="font-size:1.2rem">+€0.00</span> / mo</span>
+            </div>
         </div>
 
         <div class="section">
@@ -356,7 +393,7 @@
 
             const monoPct = parseInt(document.getElementById('mixSlider').value) / 100;
             const colourPct = 1.0 - monoPct;
-            document.getElementById('ratioDisplay').textContent = `Mix: ${Math.round(monoPct*100)}% Mono / ${Math.round(colourPct*100)}% Colour`;
+            document.getElementById('ratioDisplay').textContent = `${Math.round(monoPct*100)}% Mono`;
 
             const compositeCost = (monoPct * RICOH_CPP.mono) + (colourPct * RICOH_CPP.colour);
 
@@ -375,7 +412,7 @@
             const m = parseInt(document.getElementById('addonMono').value) || 0;
             const c = parseInt(document.getElementById('addonColour').value) || 0;
             const retailVal = (m * RETAIL_CPP.mono) + (c * RETAIL_CPP.colour);
-            document.getElementById('addonCostDisplay').textContent = `+€${(retailVal/60).toFixed(2)} / mo`;
+            document.getElementById('addonCostDisplay').textContent = `+€${(retailVal/60).toFixed(2)}`;
         }
 
         // --- CALCULATION ---
