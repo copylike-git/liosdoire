@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liosdoire — Order Preview</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { padding: 20px; max-width: 800px; margin: 0 auto; background: #f8fafc; color: #334155; }
+        .page { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1e3a8a; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .header-grid { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 30px; gap: 20px; }
+        .header-item strong { display: block; color: #64748b; font-size: 0.85rem; text-transform: uppercase; }
+        .header-item span { font-size: 1.1rem; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; }
+        .total-box { background: #eff6ff; padding: 20px; border-radius: 8px; border: 1px solid #dbeafe; margin-top: 20px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .price-row.total { font-size: 1.25rem; font-weight: 700; color: #1e3a8a; border-top: 1px solid #bfdbfe; padding-top: 12px; }
+        .btn { background: #16a34a; color: white; border: none; padding: 14px 28px; border-radius: 6px; cursor: pointer; display: block; margin: 30px auto; width: 100%; max-width: 300px; }
+        @media print { .btn { display: none; } body { background: white; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>Liosdoire Quotation & Order</h1>
+        
+        <div class="header-grid">
+            <div class="header-item"><strong>Client</strong><span id="pClient"></span></div>
+            <div class="header-item"><strong>Date</strong><span id="pDate"></span></div>
+            <div class="header-item"><strong>Email</strong><span id="pEmail"></span></div>
+            <div class="header-item"><strong>Sector</strong><span id="pSector"></span></div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <h3>Hardware & Services</h3>
+            <table>
+                <thead><tr><th>Qty</th><th>Description</th></tr></thead>
+                <tbody id="pDeviceTable"></tbody>
+            </table>
+        </div>
+
+        <div class="total-box">
+            <div class="price-row"><span>Monthly Hardware & Service (Ex VAT)</span><span>€<span id="pExVat"></span></span></div>
+            <div class="price-row"><span>VAT (23%)</span><span>€<span id="pVat"></span></span></div>
+            <div class="price-row total"><span>Total Monthly Charge</span><span>€<span id="pIncVat"></span></span></div>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 0.9rem; padding: 15px; background: #f8fafc; border-radius: 6px;">
+            <strong>Included Print Allowance:</strong>
+            <ul style="margin-top: 5px;">
+                <li><span id="pMono">0</span> Mono Pages (Total 60-Month Pool)</li>
+                <li><span id="pColour">0</span> Colour Pages (Total 60-Month Pool)</li>
+            </ul>
+            <div id="addonNote" style="margin-top:10px; font-style:italic; color:green; display:none;">
+                ✅ Includes "Service & Supplies Value Pack" add-on.
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <h3>Authorisation</h3>
+            <div style="height: 100px; border: 2px dashed #cbd5e1; margin-top: 10px; background: #fcfcfc;"></div>
+            <p style="text-align: center; color: #64748b; font-size: 0.8rem; margin-top: 5px;">Client Signature</p>
+        </div>
+
+        <button onclick="window.print()" class="btn">🖨️ Print Quote</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(sessionStorage.getItem('quoteData'));
+            if (!data) return;
+
+            document.getElementById('pClient').textContent = data.clientName;
+            document.getElementById('pEmail').textContent = data.clientEmail;
+            document.getElementById('pDate').textContent = data.date;
+            document.getElementById('pSector').textContent = data.clientSector;
+            
+            document.getElementById('pExVat').textContent = data.monthlyExVat;
+            document.getElementById('pVat').textContent = (data.monthlyExVat * 0.23).toFixed(2);
+            document.getElementById('pIncVat').textContent = data.monthlyIncVat;
+
+            document.getElementById('pMono').textContent = parseInt(data.monoCredit).toLocaleString();
+            document.getElementById('pColour').textContent = parseInt(data.colourCredit).toLocaleString();
+            
+            if (data.useAddon) document.getElementById('addonNote').style.display = 'block';
+
+            const tbody = document.getElementById('pDeviceTable');
+            for (const [model, qty] of Object.entries(data.quantities)) {
+                if (qty > 0) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${qty}</td><td>${model}</td>`;
+                    tbody.appendChild(tr);
+                }
+            }
+            if (data.useAddon) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>1</td><td><strong>Service & Supplies Value Pack</strong> (Toner/Parts Add-on)</td>`;
+                tbody.appendChild(tr);
+            }
+        });
+    </script>
+</body>
+</html>
