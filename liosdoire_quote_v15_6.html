@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire Quote v15.4 — Final Polish</title>
+    <title>Liosdoire Quote v15.4 — Detailed Analysis</title>
     <style>
         :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -23,8 +23,7 @@
         .device-info { flex: 1; }
         .device-name { font-weight: 700; color: #1e293b; }
         .device-financials { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
-        .device-rec { font-size: 0.75rem; background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
-
+        
         /* CONTROLS */
         .qty-controls { display: flex; align-items: center; gap: 8px; }
         button { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 10px 16px; font-weight: 600; cursor: pointer; }
@@ -67,11 +66,12 @@
         .live-label { color: #0369a1; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.9rem; }
         .live-amount { color: #0c4a6e; font-weight: 800; font-size: 2rem; display: block; margin-top: 5px; }
 
-        /* RESULTS TABLE */
+        /* RESULTS TABLE - Detailed */
         .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; }
-        .result-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-        .result-table th, .result-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; }
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.9rem; }
+        .result-table th, .result-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; vertical-align: top; }
         .result-table th { background: #e2e8f0; font-weight: 600; }
+        .calc-detail { font-size: 0.75rem; color: #64748b; display: block; margin-top: 4px; font-family: monospace; }
         
         .client-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .hidden { display: none; }
@@ -139,22 +139,20 @@
             
             <div class="dashboard-container">
                 <div class="control-group" style="background:#f8fafc; border-color:#94a3b8;">
-                    <span class="tag tag-blue">Hardware Mix</span>
-                    <div class="col-header">Included<br>Mono %</div>
+                    <span class="tag tag-blue">Hardware Included</span>
+                    <div class="col-header">Included<br>Mono</div>
                     <div class="slider-wrapper">
-                        <input type="range" id="sliderBaseMono" class="slider-black" orient="vertical" min="0" max="100" value="75" step="1">
+                        <input type="range" id="sliderBaseMono" class="slider-black" orient="vertical" min="0" max="1000" step="1000" value="0">
                     </div>
-                    <div class="display-val" id="dispPctMono">75%</div>
                     <input type="text" id="readBaseMono" class="manual-input" readonly style="background:#e2e8f0; color:#64748b;" value="0">
                 </div>
 
                 <div class="control-group" style="background:#f8fafc; border-color:#94a3b8;">
-                    <span class="tag tag-blue">Hardware Mix</span>
-                    <div class="col-header">Included<br>Colour %</div>
+                    <span class="tag tag-blue">Hardware Included</span>
+                    <div class="col-header">Included<br>Colour</div>
                     <div class="slider-wrapper">
-                        <input type="range" id="sliderBaseColour" class="slider-rainbow" orient="vertical" min="0" max="100" value="25" step="1">
+                        <input type="range" id="sliderBaseColour" class="slider-rainbow" orient="vertical" min="0" max="1000" step="1000" value="0">
                     </div>
-                    <div class="display-val" id="dispPctCol">25%</div>
                     <input type="text" id="readBaseColour" class="manual-input" readonly style="background:#e2e8f0; color:#64748b;" value="0">
                 </div>
 
@@ -188,27 +186,70 @@
         </div>
 
         <div class="section">
-            <div class="section-title">5. Quote Summary</div>
+            <div class="section-title">5. Quote Summary & Logic</div>
             <button id="calculateBtn" class="success">Show Detailed Breakdown & Profit</button>
             
             <div id="result" class="result hidden">
                 <table class="result-table">
-                    <thead><tr><th>Item</th><th>Details</th><th>Amount (€)</th></tr></thead>
+                    <thead><tr><th>Item</th><th>Dynamic Calculation Logic</th><th>Amount (€)</th></tr></thead>
                     <tbody>
-                        <tr><td>Hardware Lease</td><td>60 Months</td><td id="deviceAmt"></td></tr>
-                        <tr><td>MPS Pack</td><td>Active Units Only</td><td id="mpsAmt"></td></tr>
-                        <tr><td>Retail Value Pack</td><td>Add-on Volume</td><td id="retailAddonAmt" style="color:green"></td></tr>
-                        <tr style="background:#e0f2fe"><td><strong>Total Monthly Revenue</strong></td><td>(Ex. VAT)</td><td id="totalMonthlyAmt" style="font-weight:bold"></td></tr>
-                        
-                        <tr><td colspan="3" style="padding-top:15px; font-size:0.8rem; color:#64748b;">INTERNAL MARGIN ANALYSIS:</td></tr>
-                        <tr><td>Less: Grenke Fee</td><td id="grenkeRateDisplay"></td><td id="grenkeAmt" style="color:red"></td></tr>
-                        <tr><td>Net Cash Profit</td><td>(After CapEx & Ricoh)</td><td id="profitAmt"></td></tr>
-                        <tr><td>Net Margin %</td><td>Target > 50%</td><td id="marginAmt" style="font-weight:bold"></td></tr>
+                        <tr>
+                            <td><strong>Total Monthly Revenue</strong></td>
+                            <td><span class="calc-detail">Sum of Hardware + MPS + Add-on</span></td>
+                            <td id="totalMonthlyAmt" style="font-weight:bold; color:var(--primary)"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;↳ Hardware Lease</td>
+                            <td><span class="calc-detail">Device Monthly × Qty</span></td>
+                            <td id="deviceAmt"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;↳ MPS Pack</td>
+                            <td><span class="calc-detail">Pack Cost × Active Units</span></td>
+                            <td id="mpsAmt"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;↳ Retail Add-on</td>
+                            <td><span class="calc-detail">(Mono × €0.005 + Col × €0.05) / 60</span></td>
+                            <td id="retailAddonAmt"></td>
+                        </tr>
+
+                        <tr style="border-top: 2px solid #cbd5e1;">
+                            <td><strong>Less: Direct Costs</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;↳ Grenke Finance Fee</td>
+                            <td><span id="grenkeLogic" class="calc-detail"></span></td>
+                            <td id="grenkeAmt" style="color:red"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;↳ Hardware CapEx</td>
+                            <td><span id="capexLogic" class="calc-detail">Sum of Device Purchase Costs</span></td>
+                            <td id="capexAmt" style="color:red"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;↳ Ricoh Service (CPP)</td>
+                            <td><span id="ricohLogic" class="calc-detail"></span></td>
+                            <td id="ricohAmt" style="color:red"></td>
+                        </tr>
+
+                        <tr style="background:#e0f2fe; border-top: 2px solid #cbd5e1;">
+                            <td><strong>Net Cash Profit</strong></td>
+                            <td><span class="calc-detail">Cash Received - (CapEx + Service + Fees)</span></td>
+                            <td id="profitAmt" style="font-weight:bold"></td>
+                        </tr>
+                        <tr>
+                            <td>Net Margin %</td>
+                            <td><span class="calc-detail">Profit / (Revenue × 60)</span></td>
+                            <td id="marginAmt" style="font-weight:bold"></td>
+                        </tr>
                     </tbody>
                 </table>
 
                 <div style="margin-top:20px; text-align:right;">
-                    <div style="font-size:1.2rem; color:var(--primary);"><strong>Monthly Total: <span id="monthlyDisplay">€0.00</span></strong></div>
+                    <div style="font-size:1.2rem; color:var(--primary);"><strong>Monthly Client Bill: <span id="monthlyDisplay">€0.00</span></strong></div>
                     <div style="font-size:1rem; color:#64748b;">Inc VAT (23%): <span id="monthlyVatDisplay">€0.00</span></div>
                 </div>
 
@@ -231,6 +272,8 @@
         ];
         const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
 
+        let safeBudget = 0; // Total € available for Base Credit
+
         function init() {
             const list = document.getElementById('deviceList');
             list.innerHTML = DEVICES.map(d => {
@@ -249,13 +292,28 @@
                 </div>`;
             }).join('');
 
-            // MIX SLIDERS
+            // --- LISTENERS ---
             const sBaseMono = document.getElementById('sliderBaseMono');
             const sBaseCol = document.getElementById('sliderBaseColour');
-            sBaseMono.addEventListener('input', (e) => { sBaseCol.value = 100 - parseInt(e.target.value); updateMix(); });
-            sBaseCol.addEventListener('input', (e) => { sBaseMono.value = 100 - parseInt(e.target.value); updateMix(); });
 
-            // ADD-ON SLIDERS
+            sBaseMono.addEventListener('input', (e) => {
+                const usedCost = parseInt(e.target.value) * RICOH_CPP.mono;
+                const remBudget = Math.max(0, safeBudget - usedCost);
+                const maxCol = Math.floor(remBudget / RICOH_CPP.colour / 1000) * 1000;
+                sBaseCol.value = maxCol; 
+                updateBaseDisplays();
+                calculateLiveTotal();
+            });
+
+            sBaseCol.addEventListener('input', (e) => {
+                const usedCost = parseInt(e.target.value) * RICOH_CPP.colour;
+                const remBudget = Math.max(0, safeBudget - usedCost);
+                const maxMono = Math.floor(remBudget / RICOH_CPP.mono / 1000) * 1000;
+                sBaseMono.value = maxMono;
+                updateBaseDisplays();
+                calculateLiveTotal();
+            });
+
             const sync = () => { updateAddonCost(); calculateLiveTotal(); };
             const ids = [['sliderAddonMono', 'inputAddonMono'], ['sliderAddonColour', 'inputAddonColour']];
             ids.forEach(([sId, iId]) => {
@@ -270,18 +328,11 @@
             document.getElementById('previewBtn').addEventListener('click', goToPreview);
         }
 
-        function updateMix() {
-            document.getElementById('dispPctMono').textContent = document.getElementById('sliderBaseMono').value + '%';
-            document.getElementById('dispPctCol').textContent = document.getElementById('sliderBaseColour').value + '%';
-            recalculateBaseCredit();
-            calculateLiveTotal();
-        }
-
         function adjustQty(modelSafe, delta) {
             const el = document.getElementById(`qty-${modelSafe}`);
             el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
-            recalculateBaseCredit();
-            renderMpsList(); 
+            renderMpsList();
+            updateSafeBudget();
             calculateLiveTotal();
         }
 
@@ -309,14 +360,19 @@
                         const chkId = `mps-chk-${safeModel}-${i}`;
                         const locId = `mps-loc-${safeModel}-${i}`;
                         const divId = `mps-div-${safeModel}-${i}`;
+                        
+                        // Default to Unchecked for new
+                        let isChecked = false;
+                        if (currentState[chkId] !== undefined) isChecked = currentState[chkId];
+
                         html += `
                         <div class="mps-item">
                             <div class="mps-row-main">
-                                <input type="checkbox" id="${chkId}" data-model="${d.model}" onchange="toggleLocInput('${divId}', this); calculateLiveTotal();">
+                                <input type="checkbox" id="${chkId}" data-model="${d.model}" ${isChecked ? 'checked' : ''} onchange="toggleLocInput('${divId}', this); calculateLiveTotal();">
                                 <label for="${chkId}"><span>${d.model}</span><span class="mps-unit-badge">Unit #${i}</span></label>
                             </div>
-                            <div id="${divId}" class="mps-location-input">
-                                <input type="text" id="${locId}" placeholder="Location / Name" style="width:100%">
+                            <div id="${divId}" class="mps-location-input ${isChecked ? 'visible' : ''}">
+                                <input type="text" id="${locId}" placeholder="Location / Name" style="width:100%" value="${currentState[locId] || ''}">
                             </div>
                         </div>`;
                     }
@@ -324,16 +380,6 @@
             });
 
             container.innerHTML = hasDevices ? html : '<div style="padding:15px; color:#64748b; text-align:center;">No devices selected.</div>';
-
-            // Restore state (Defaults to unchecked if new)
-            container.querySelectorAll('input').forEach(input => {
-                if (currentState[input.id] !== undefined) {
-                    if (input.type === 'checkbox') {
-                        input.checked = currentState[input.id];
-                        if(input.checked) document.getElementById(input.id.replace('mps-chk-', 'mps-div-'))?.classList.add('visible');
-                    } else input.value = currentState[input.id];
-                }
-            });
         }
 
         window.toggleLocInput = function(divId, checkbox) {
@@ -342,31 +388,39 @@
             else div.classList.remove('visible');
         }
 
-        function recalculateBaseCredit() {
-            // ONLY HARDWARE MARGIN USED FOR BASE CREDIT
-            let availableBudget = 0;
+        function updateSafeBudget() {
+            // Recalculate safe margin based on HARDWARE REVENUE ONLY
+            safeBudget = 0;
             DEVICES.forEach(d => {
                 const q = getQty(d.model);
                 if (q > 0) {
                     const revenue = d.cost * 60;
                     const safe = Math.max(0, revenue - d.capex - (revenue * MARGIN_TARGET));
-                    availableBudget += safe * q;
+                    safeBudget += safe * q;
                 }
             });
 
-            const monoPct = parseInt(document.getElementById('sliderBaseMono').value) / 100;
-            const colourPct = parseInt(document.getElementById('sliderBaseColour').value) / 100;
-            const compositeCost = (monoPct * RICOH_CPP.mono) + (colourPct * RICOH_CPP.colour);
+            const sMono = document.getElementById('sliderBaseMono');
+            const sCol = document.getElementById('sliderBaseColour');
+            
+            const maxMono = Math.floor(safeBudget / RICOH_CPP.mono / 1000) * 1000;
+            const maxCol = Math.floor(safeBudget / RICOH_CPP.colour / 1000) * 1000;
 
-            if (compositeCost === 0 || availableBudget === 0) {
-                document.getElementById('readBaseMono').value = 0;
-                document.getElementById('readBaseColour').value = 0;
-                return;
-            }
+            sMono.max = maxMono;
+            sCol.max = maxCol;
 
-            const totalSafePages = Math.floor(availableBudget / compositeCost);
-            document.getElementById('readBaseMono').value = Math.floor(totalSafePages * monoPct).toLocaleString();
-            document.getElementById('readBaseColour').value = Math.floor(totalSafePages * colourPct).toLocaleString();
+            // Simple reset logic: try to keep current, clamp if needed
+            if (parseInt(sMono.value) > maxMono) sMono.value = maxMono;
+            if (parseInt(sCol.value) > maxCol) sCol.value = maxCol;
+            
+            updateBaseDisplays();
+        }
+
+        function updateBaseDisplays() {
+            const sMono = document.getElementById('sliderBaseMono');
+            const sCol = document.getElementById('sliderBaseColour');
+            document.getElementById('readBaseMono').value = parseInt(sMono.value).toLocaleString();
+            document.getElementById('readBaseColour').value = parseInt(sCol.value).toLocaleString();
         }
 
         function updateAddonCost() {
@@ -377,10 +431,11 @@
         }
 
         function getFinancials() {
-            const grenkeRate = parseFloat(document.getElementById('grenkeRate').value) / 100;
+            const grenkeRatePct = parseFloat(document.getElementById('grenkeRate').value);
+            const grenkeRate = grenkeRatePct / 100;
+            
             let deviceMonthly = 0, capexTotal = 0;
             const quantities = {};
-            
             DEVICES.forEach(d => {
                 const qty = getQty(d.model);
                 if(qty > 0) {
@@ -396,21 +451,26 @@
 
             const addMono = parseInt(document.getElementById('inputAddonMono').value) || 0;
             const addCol = parseInt(document.getElementById('inputAddonColour').value) || 0;
-            const addonMonthly = ((addMono * RETAIL_CPP.mono) + (addCol * RETAIL_CPP.colour)) / 60;
+            const addonRevenueTotal = (addMono * RETAIL_CPP.mono) + (addCol * RETAIL_CPP.colour);
+            const addonMonthly = addonRevenueTotal / 60;
 
             const totalMonthly = deviceMonthly + mpsMonthly + addonMonthly;
             const grossContractVal = totalMonthly * 60;
             const grenkeFee = grossContractVal * grenkeRate;
             const cashInBank = grossContractVal - grenkeFee;
 
-            const baseMono = parseInt(document.getElementById('readBaseMono').value.replace(/,/g, '')) || 0;
-            const baseCol = parseInt(document.getElementById('readBaseColour').value.replace(/,/g, '')) || 0;
+            const baseMono = parseInt(document.getElementById('sliderBaseMono').value) || 0;
+            const baseCol = parseInt(document.getElementById('sliderBaseColour').value) || 0;
             const serviceCost = ((baseMono + addMono) * RICOH_CPP.mono) + ((baseCol + addCol) * RICOH_CPP.colour);
             
             const netProfit = cashInBank - capexTotal - serviceCost;
-            const margin = (netProfit / (grossContractVal || 1)) * 100; // avoid div/0
+            const margin = (netProfit / (grossContractVal || 1)) * 100;
 
-            return { deviceMonthly, mpsMonthly, addonMonthly, totalMonthly, grenkeFee, netProfit, margin, quantities, baseMono, baseCol, addMono, addCol };
+            return { 
+                deviceMonthly, mpsMonthly, addonMonthly, totalMonthly, 
+                grenkeFee, netProfit, margin, capexTotal, serviceCost, grossContractVal,
+                baseMono, baseCol, addMono, addCol, grenkeRatePct
+            };
         }
 
         function calculateLiveTotal() {
@@ -424,15 +484,23 @@
             const data = getFinancials();
             if (data.totalMonthly === 0) { alert("Please select at least one device."); return; }
 
+            // Render Standard Totals
             document.getElementById('deviceAmt').textContent = `€${data.deviceMonthly.toFixed(2)}`;
             document.getElementById('mpsAmt').textContent = `€${data.mpsMonthly.toFixed(2)}`;
             document.getElementById('retailAddonAmt').textContent = `€${data.addonMonthly.toFixed(2)}`;
             document.getElementById('totalMonthlyAmt').textContent = `€${data.totalMonthly.toFixed(2)}`;
             
-            // VERIFICATION: Grenke Fee
-            document.getElementById('grenkeRateDisplay').textContent = `Finance Fee (${(document.getElementById('grenkeRate').value)}%)`;
+            // Render Detailed Breakdown Logic
+            document.getElementById('grenkeLogic').textContent = `Gross €${data.grossContractVal.toFixed(0)} × ${data.grenkeRatePct}%`;
             document.getElementById('grenkeAmt').textContent = `-€${data.grenkeFee.toFixed(2)}`;
             
+            document.getElementById('capexAmt').textContent = `-€${data.capexTotal.toFixed(2)}`;
+            
+            const totalMono = data.baseMono + data.addMono;
+            const totalCol = data.baseCol + data.addCol;
+            document.getElementById('ricohLogic').textContent = `(${totalMono.toLocaleString()}m × €${RICOH_CPP.mono}) + (${totalCol.toLocaleString()}c × €${RICOH_CPP.colour})`;
+            document.getElementById('ricohAmt').textContent = `-€${data.serviceCost.toFixed(2)}`;
+
             document.getElementById('profitAmt').textContent = `€${data.netProfit.toFixed(2)}`;
             const marginEl = document.getElementById('marginAmt');
             marginEl.textContent = `${data.margin.toFixed(1)}%`;
@@ -443,6 +511,7 @@
             
             document.getElementById('result').classList.remove('hidden');
 
+            // Capture Preview State
             const finalDeviceList = [];
             document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => {
                 const parts = chk.id.split('-');
@@ -472,7 +541,7 @@
         function goToPreview() {
             if (!quoteState) calculateQuote();
             sessionStorage.setItem('quoteData', JSON.stringify(quoteState));
-            window.location.href = 'liosdoire_preview_v15_4.html';
+            window.location.href = 'liosdoire_preview_v15_6.html';
         }
 
         document.addEventListener('DOMContentLoaded', init);
