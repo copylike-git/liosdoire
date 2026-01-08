@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liosdoire Quote v14 — Location Logic</title>
+    <style>
+        :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--light); color: #1e293b; padding: 16px; max-width: 900px; margin: 0 auto; }
+        
+        header { text-align: center; padding: 20px 0; border-bottom: 2px solid #e2e8f0; }
+        .subtitle { color: #64748b; font-size: 0.9rem; }
+        
+        .section { background: white; border-radius: 12px; padding: 20px; margin: 16px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+        .section-desc { font-size: 0.85rem; color: #64748b; margin-bottom: 16px; font-style: italic; }
+
+        /* DEVICE LIST */
+        .device-grid { display: grid; gap: 12px; }
+        .device-item { 
+            display: flex; align-items: center; padding: 12px; 
+            border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.2s; 
+        }
+        .device-item:hover { border-color: var(--primary); background: #f0f9ff; }
+        .device-info { flex: 1; }
+        .device-name { font-weight: 700; color: #1e293b; }
+        .device-financials { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
+        .device-rec { font-size: 0.75rem; background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+
+        /* CONTROLS */
+        .qty-controls { display: flex; align-items: center; gap: 8px; }
+        button { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 10px 16px; font-weight: 600; cursor: pointer; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; background: #94a3b8; }
+        button.secondary { background: #64748b; }
+        button.success { background: var(--success); }
+        input[type="number"], select, input[type="text"], input[type="tel"], input[type="email"] { 
+            padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; width: 100%; 
+        }
+        input[readonly] { background: #f1f5f9; color: #64748b; cursor: not-allowed; }
+
+        /* MPS SELECTION LIST */
+        .mps-list { margin-top: 10px; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; }
+        .mps-item { display: flex; flex-direction: column; padding: 10px; background: #fff; border-bottom: 1px solid #f1f5f9; }
+        .mps-item:last-child { border-bottom: none; }
+        .mps-row-main { display: flex; align-items: center; width: 100%; }
+        .mps-row-main label { margin: 0 0 0 10px; cursor: pointer; flex: 1; display: flex; justify-content: space-between; }
+        .mps-qty-badge { background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+        
+        .mps-location-input { margin-top: 8px; margin-left: 25px; display: none; }
+        .mps-location-input.visible { display: block; }
+        .mps-location-input input { font-size: 0.9rem; padding: 6px; border-color: #93c5fd; background: #eff6ff; }
+
+        /* SLIDER STYLES */
+        .slider-box { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
+        input[type=range] { width: 100%; margin: 10px 0; }
+        .ratio-labels { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: #475569; }
+
+        /* ADD-ON BOX */
+        .addon-box { border: 1px solid #bbf7d0; background: #f0fdf4; padding: 15px; border-radius: 8px; }
+        .addon-header { font-weight: 700; color: #166534; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        
+        /* RESULTS TABLE */
+        .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; }
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .result-table th, .result-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; }
+        .result-table th { background: #e2e8f0; font-weight: 600; }
+        
+        .client-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        label { display: block; margin: 4px 0; font-weight: 500; font-size: 0.9rem; }
+        .hidden { display: none; }
+
+        @media (max-width: 600px) {
+            .client-info-grid { grid-template-columns: 1fr; }
+            .device-item { flex-direction: column; align-items: flex-start; }
+            .qty-controls { width: 100%; justify-content: space-between; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="subtitle">
+            <img src="https://liosdoirecomputers.com/wp-content/uploads/2023/01/LiosdoireComputerslogo-o8.png" width="120" alt="Liosdoire Logo">
+        </div>
+        <br><strong>Liosdoire Computers - Quote v14</strong>
+    </header>
+
+    <div id="app">
+        <div class="section">
+            <div class="section-title">1. Client Information</div>
+            <div class="client-info-grid">
+                <div><label>Client Name *</label><input type="text" id="clientName" placeholder="e.g. St. Brendan's School" required></div>
+                <div><label>Email *</label><input type="email" id="clientEmail" placeholder="admin@school.ie" required></div>
+                <div><label>Phone</label><input type="tel" id="clientPhone" placeholder="08x xxx xxxx"></div>
+                <div><label>Sector *</label><select id="clientSector" required>
+                    <option value="">Select...</option><option value="Education">Education</option><option value="Business">Business</option>
+                </select></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">2. Select Devices</div>
+            <div class="device-grid" id="deviceList"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">3. Managed Print (Per Device)</div>
+            <div class="section-desc">Select managed devices and specify location/name for clarity.</div>
+            
+            <div style="margin: 16px 0;">
+                <label>Select Pack Level:</label>
+                <select id="packSelect" style="margin-top: 4px;">
+                    <option value="Basic">RSI Basic — €20/mo</option>
+                    <option value="Plus">RSI Plus — €35/mo</option>
+                    <option value="Platinum">RSI Platinum — €45/mo</option>
+                </select>
+            </div>
+
+            <label><strong>Select Managed Devices:</strong></label>
+            <div id="mpsDeviceContainer" class="mps-list">
+                <div style="padding:15px; color:#64748b; text-align:center;">No devices selected in Section 2.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">4. Print Credit Configuration</div>
+            <div class="section-desc">
+                <strong>Base Credit:</strong> Included in hardware lease (Safe Margin).<br>
+                <strong>Add-on Credit:</strong> Extra volume added to monthly bill.
+            </div>
+            
+            <div class="slider-box">
+                <label><strong>Included Base Credit (Hardware Absorbed)</strong></label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                    <div><label style="font-size:0.8rem">Base Mono (60mo)</label><input type="number" id="baseMono" readonly></div>
+                    <div><label style="font-size:0.8rem">Base Colour (60mo)</label><input type="number" id="baseColour" readonly></div>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <label style="font-size: 0.9rem; color: var(--primary);">Adjust Allocation Mix:</label>
+                    <input type="range" id="mixSlider" min="0" max="100" value="75" step="5">
+                    <div class="ratio-labels">
+                        <span>Colour Heavy (0/100)</span>
+                        <span id="ratioDisplay" style="color:var(--primary)">Mix: 75% Mono / 25% Colour</span>
+                        <span>Mono Only (100/0)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addon-box">
+                <div class="addon-header">
+                    <span>Retail Value Pack (Add-on)</span>
+                    <span style="font-size:0.85rem; font-weight:400;">Rates: €0.005 / €0.05</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div>
+                        <label style="font-size:0.8rem; color:#166534;">Extra Mono (60mo)</label>
+                        <input type="number" id="addonMono" placeholder="0" value="0">
+                    </div>
+                    <div>
+                        <label style="font-size:0.8rem; color:#166534;">Extra Colour (60mo)</label>
+                        <input type="number" id="addonColour" placeholder="0" value="0">
+                    </div>
+                </div>
+                <div style="text-align:right; margin-top:10px; font-weight:bold; color:#166534;">
+                    Add-on Cost: <span id="addonCostDisplay">+€0.00 / mo</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="margin-bottom: 16px; padding: 0 20px;">
+            <label>Grenke Finance Rate:</label>
+            <select id="grenkeRate">
+                <option value="3.5">3.5% (Best Case)</option>
+                <option value="4.0">4.0% (Standard)</option>
+                <option value="5.0" selected>5.0% (Safe)</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <div class="section-title">5. Quote Summary</div>
+            <button id="calculateBtn" class="success">Calculate Full Quote</button>
+            
+            <div id="result" class="result hidden">
+                <table class="result-table">
+                    <thead><tr><th>Item</th><th>Details</th><th>Amount (€)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Hardware Lease</td><td>60 Months</td><td id="deviceAmt"></td></tr>
+                        <tr><td>MPS Pack</td><td>Selected Devices</td><td id="mpsAmt"></td></tr>
+                        <tr><td>Retail Value Pack</td><td>Add-on Volume</td><td id="retailAddonAmt" style="color:green"></td></tr>
+                        <tr style="background:#e0f2fe"><td><strong>Total Monthly Revenue</strong></td><td>(Ex. VAT)</td><td id="totalMonthlyAmt" style="font-weight:bold"></td></tr>
+                        
+                        <tr><td colspan="3" style="padding-top:15px; font-size:0.8rem; color:#64748b;">INTERNAL MARGIN ANALYSIS:</td></tr>
+                        <tr><td>Net Cash Profit</td><td>(After CapEx & Ricoh)</td><td id="profitAmt"></td></tr>
+                        <tr><td>Net Margin %</td><td>Target > 50%</td><td id="marginAmt" style="font-weight:bold"></td></tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top:20px; text-align:right;">
+                    <div style="font-size:1.2rem; color:var(--primary);"><strong>Monthly Total: <span id="monthlyDisplay">€0.00</span></strong></div>
+                    <div style="font-size:1rem; color:#64748b;">Inc VAT (23%): <span id="monthlyVatDisplay">€0.00</span></div>
+                </div>
+
+                <div style="margin-top:20px; padding:12px; background:#fff; border:1px solid #cbd5e1; border-radius:6px; font-size:0.75rem; color:#475569;">
+                    <strong>Terms:</strong> Included volume calculated at 5% coverage. Excess usage charged at standard rates.
+                </div>
+
+                <button id="previewBtn" class="secondary" style="margin-top: 15px; width: 100%;">📄 Proceed to Order / Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIG
+        const RICOH_CPP = { mono: 0.0038, colour: 0.038 }; 
+        const RETAIL_CPP = { mono: 0.005, colour: 0.05 };  
+        const MARGIN_TARGET = 0.50;
+
+        const DEVICES = [
+            { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono)", cost: 300.00, capex: 4150 },
+            { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Colour)", cost: 150.00, capex: 2000 },
+            { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Colour)", cost: 50.00, capex: 1000 },
+            { model: "Ricoh IM 370", desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700 },
+            { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710 }
+        ];
+        const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
+
+        function init() {
+            const list = document.getElementById('deviceList');
+            list.innerHTML = DEVICES.map(d => {
+                const safeModel = d.model.replace(/\s+/g, '_');
+                return `
+                <div class="device-item">
+                    <div class="device-info">
+                        <div class="device-name">${d.desc} <span class="device-rec">Rec: 75/25 Mix</span></div>
+                        <div class="device-financials">€${d.cost}/mo</div>
+                    </div>
+                    <div class="qty-controls">
+                        <button onclick="adjustQty('${safeModel}', -1)">-</button>
+                        <input type="number" id="qty-${safeModel}" value="0" readonly style="width:50px; text-align:center; background:#f1f5f9;">
+                        <button onclick="adjustQty('${safeModel}', 1)">+</button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Listeners
+            document.getElementById('mixSlider').addEventListener('input', recalculateBaseCredit);
+            document.getElementById('addonMono').addEventListener('input', updateAddonCost);
+            document.getElementById('addonColour').addEventListener('input', updateAddonCost);
+            
+            document.getElementById('calculateBtn').addEventListener('click', calculateQuote);
+            document.getElementById('previewBtn').addEventListener('click', goToPreview);
+        }
+
+        function adjustQty(modelSafe, delta) {
+            const el = document.getElementById(`qty-${modelSafe}`);
+            el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
+            recalculateBaseCredit();
+            renderMpsList(); // Update section 3 list
+        }
+
+        function getQty(model) {
+            return parseInt(document.getElementById(`qty-${model.replace(/\s+/g, '_')}`).value) || 0;
+        }
+
+        // --- SECTION 3 LOGIC (MPS + LOCATION) ---
+        function renderMpsList() {
+            const container = document.getElementById('mpsDeviceContainer');
+            let hasDevices = false;
+            let html = "";
+
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if (qty > 0) {
+                    hasDevices = true;
+                    const safeModel = d.model.replace(/\s+/g, '_');
+                    
+                    // Maintain previous state if re-rendering
+                    const prevCheck = document.getElementById(`mps-chk-${safeModel}`)?.checked || false;
+                    const prevLoc = document.getElementById(`mps-loc-${safeModel}`)?.value || "";
+
+                    html += `
+                        <div class="mps-item">
+                            <div class="mps-row-main">
+                                <input type="checkbox" id="mps-chk-${safeModel}" data-model="${d.model}" ${prevCheck ? 'checked' : ''} onchange="toggleLocInput('${safeModel}')">
+                                <label for="mps-chk-${safeModel}">
+                                    <span>${d.model}</span>
+                                    <span class="mps-qty-badge">Qty: ${qty}</span>
+                                </label>
+                            </div>
+                            <div id="mps-div-${safeModel}" class="mps-location-input ${prevCheck ? 'visible' : ''}">
+                                <input type="text" id="mps-loc-${safeModel}" placeholder="Location / Name (e.g. Reception, 2nd Floor)" value="${prevLoc}" style="width:100%">
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (!hasDevices) {
+                container.innerHTML = '<div style="padding:15px; color:#64748b; text-align:center;">No devices selected in Section 2.</div>';
+            } else {
+                container.innerHTML = html;
+            }
+        }
+
+        // GLOBAL function for onchange event
+        window.toggleLocInput = function(safeModel) {
+            const chk = document.getElementById(`mps-chk-${safeModel}`);
+            const div = document.getElementById(`mps-div-${safeModel}`);
+            if (chk.checked) div.classList.add('visible');
+            else div.classList.remove('visible');
+        }
+
+        // --- SAFETY MIX LOGIC ---
+
+        function recalculateBaseCredit() {
+            let availableBudget = 0;
+            DEVICES.forEach(d => {
+                const q = getQty(d.model);
+                if (q > 0) {
+                    const revenue = d.cost * 60;
+                    const safe = Math.max(0, revenue - d.capex - (revenue * MARGIN_TARGET));
+                    availableBudget += safe * q;
+                }
+            });
+
+            const monoPct = parseInt(document.getElementById('mixSlider').value) / 100;
+            const colourPct = 1.0 - monoPct;
+            document.getElementById('ratioDisplay').textContent = `Mix: ${Math.round(monoPct*100)}% Mono / ${Math.round(colourPct*100)}% Colour`;
+
+            const compositeCost = (monoPct * RICOH_CPP.mono) + (colourPct * RICOH_CPP.colour);
+
+            if (compositeCost === 0 || availableBudget === 0) {
+                document.getElementById('baseMono').value = 0;
+                document.getElementById('baseColour').value = 0;
+                return;
+            }
+
+            const totalSafePages = Math.floor(availableBudget / compositeCost);
+            document.getElementById('baseMono').value = Math.floor(totalSafePages * monoPct);
+            document.getElementById('baseColour').value = Math.floor(totalSafePages * colourPct);
+        }
+
+        function updateAddonCost() {
+            const m = parseInt(document.getElementById('addonMono').value) || 0;
+            const c = parseInt(document.getElementById('addonColour').value) || 0;
+            const retailVal = (m * RETAIL_CPP.mono) + (c * RETAIL_CPP.colour);
+            document.getElementById('addonCostDisplay').textContent = `+€${(retailVal/60).toFixed(2)} / mo`;
+        }
+
+        // --- CALCULATION ---
+        let quoteState = null;
+
+        function calculateQuote() {
+            const clientName = document.getElementById('clientName').value;
+            if(!clientName) { alert("Please enter Client Name"); return; }
+            
+            const grenkeRate = parseFloat(document.getElementById('grenkeRate').value) / 100;
+            let deviceMonthly = 0, capexTotal = 0, quantities = {};
+            
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if(qty > 0) {
+                    quantities[d.model] = qty;
+                    deviceMonthly += qty * d.cost;
+                    capexTotal += qty * d.capex;
+                }
+            });
+
+            if (deviceMonthly === 0) { alert("Select at least one device"); return; }
+
+            // MPS Calculation
+            let mpsMonthly = 0;
+            let managedDetails = {}; // Store location info
+            const packCost = PACKS[document.getElementById('packSelect').value];
+
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if (qty > 0) {
+                    const safeModel = d.model.replace(/\s+/g, '_');
+                    const chk = document.getElementById(`mps-chk-${safeModel}`);
+                    if (chk && chk.checked) {
+                        mpsMonthly += qty * packCost;
+                        const loc = document.getElementById(`mps-loc-${safeModel}`).value.trim();
+                        managedDetails[d.model] = loc || "Managed (No Location specified)";
+                    }
+                }
+            });
+
+            // VOLUMES
+            const baseMono = parseInt(document.getElementById('baseMono').value) || 0;
+            const baseCol = parseInt(document.getElementById('baseColour').value) || 0;
+            const addMono = parseInt(document.getElementById('addonMono').value) || 0;
+            const addCol = parseInt(document.getElementById('addonColour').value) || 0;
+
+            const totalMono = baseMono + addMono;
+            const totalCol = baseCol + addCol;
+
+            // FINANCIALS
+            const addonRevenueTotal = (addMono * RETAIL_CPP.mono) + (addCol * RETAIL_CPP.colour);
+            const addonMonthly = addonRevenueTotal / 60;
+            const totalMonthly = deviceMonthly + mpsMonthly + addonMonthly;
+            const grossContractVal = totalMonthly * 60;
+            const cashInBank = grossContractVal - (grossContractVal * grenkeRate);
+
+            // COSTS (Service)
+            const serviceCost = (totalMono * RICOH_CPP.mono) + (totalCol * RICOH_CPP.colour);
+
+            // PROFIT
+            const netProfit = cashInBank - capexTotal - serviceCost;
+            const margin = (netProfit / cashInBank) * 100;
+
+            // RENDER
+            document.getElementById('deviceAmt').textContent = `€${deviceMonthly.toFixed(2)}`;
+            document.getElementById('mpsAmt').textContent = `€${mpsMonthly.toFixed(2)}`;
+            document.getElementById('retailAddonAmt').textContent = `€${addonMonthly.toFixed(2)}`;
+            document.getElementById('totalMonthlyAmt').textContent = `€${totalMonthly.toFixed(2)}`;
+            
+            document.getElementById('profitAmt').textContent = `€${netProfit.toFixed(2)}`;
+            const marginEl = document.getElementById('marginAmt');
+            marginEl.textContent = `${margin.toFixed(1)}%`;
+            marginEl.style.color = margin >= 50 ? 'green' : 'orange';
+
+            document.getElementById('monthlyDisplay').textContent = `€${totalMonthly.toFixed(2)}`;
+            document.getElementById('monthlyVatDisplay').textContent = `€${(totalMonthly*1.23).toFixed(2)}`;
+            
+            document.getElementById('result').classList.remove('hidden');
+
+            // STORE STATE
+            quoteState = {
+                clientName,
+                clientEmail: document.getElementById('clientEmail').value,
+                clientSector: document.getElementById('clientSector').value,
+                date: new Date().toLocaleDateString('en-IE'),
+                quantities,
+                managedDetails, // Pass the location map
+                baseMono, baseCol,
+                addMono, addCol,
+                monthlyExVat: totalMonthly.toFixed(2),
+                monthlyIncVat: (totalMonthly*1.23).toFixed(2)
+            };
+        }
+
+        function goToPreview() {
+            if (!quoteState) calculateQuote();
+            sessionStorage.setItem('quoteData', JSON.stringify(quoteState));
+            window.location.href = 'liosdoire_preview_v14.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
