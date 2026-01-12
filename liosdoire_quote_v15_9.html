@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire Quote v15.9 — Percentage Mix</title>
+    <title>Liosdoire Quote v15.9 — Financial Waterfall</title>
     <style>
         :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -66,14 +66,22 @@
         .live-label { color: #0369a1; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.9rem; }
         .live-amount { color: #0c4a6e; font-weight: 800; font-size: 2rem; display: block; margin-top: 5px; }
 
-        .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; }
+        /* RESULTS TABLE */
+        .result { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-top: 16px; display: none; }
+        .result.visible { display: block; animation: fadeIn 0.3s ease-in-out; }
+        
         .result-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.9rem; }
         .result-table th, .result-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; vertical-align: top; }
         .result-table th { background: #e2e8f0; font-weight: 600; }
-        .calc-detail { font-size: 0.75rem; color: #64748b; display: block; margin-top: 4px; font-family: monospace; }
+        
+        /* Logic Column Styling */
+        .calc-detail { font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px; font-family: monospace; }
+        .sub-row td { padding-left: 25px; border-bottom: 1px solid #e2e8f0; }
+        .total-row { background: #e0f2fe; font-weight: bold; border-top: 2px solid #cbd5e1; }
         
         .client-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .hidden { display: none; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 600px) {
             .client-info-grid { grid-template-columns: 1fr; }
@@ -187,63 +195,53 @@
         </div>
 
         <div class="section">
-            <div class="section-title">5. Quote Summary & Logic</div>
-            <button id="calculateBtn" class="success">Show Detailed Breakdown & Profit</button>
+            <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>5. Quote Summary & Logic</span>
+                <button id="toggleBtn" class="success" style="font-size:0.9rem; padding:8px 12px;">Show Breakdown ▼</button>
+            </div>
             
-            <div id="result" class="result hidden">
+            <div id="result" class="result">
                 <table class="result-table">
                     <thead><tr><th>Item</th><th>Dynamic Calculation Logic</th><th>Amount (€)</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Total Monthly Revenue</strong></td>
-                            <td><span class="calc-detail">Sum of Hardware + MPS + Add-on</span></td>
-                            <td id="totalMonthlyAmt" style="font-weight:bold; color:var(--primary)"></td>
+                        <tr style="background:#f0f9ff; border-bottom: 2px solid #cbd5e1;">
+                            <td><strong>Total Contract Revenue (60 Months)</strong></td>
+                            <td><span class="calc-detail">Monthly Total × 60</span></td>
+                            <td id="grossContractAmt" style="font-weight:bold; color:var(--primary); font-size:1.1rem;"></td>
                         </tr>
+                        
                         <tr>
-                            <td>&nbsp;&nbsp;↳ Hardware Lease</td>
-                            <td><span class="calc-detail">Device Monthly × Qty</span></td>
-                            <td id="deviceAmt"></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;↳ MPS Pack</td>
-                            <td><span class="calc-detail">Pack Cost × Active Units</span></td>
-                            <td id="mpsAmt"></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;↳ Retail Add-on</td>
-                            <td><span class="calc-detail">(Mono × €0.005 + Col × €0.05) / 60</span></td>
-                            <td id="retailAddonAmt"></td>
-                        </tr>
-
-                        <tr style="border-top: 2px solid #cbd5e1;">
-                            <td><strong>Less: Direct Costs</strong></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;↳ Grenke Finance Fee</td>
-                            <td><span id="grenkeLogic" class="calc-detail"></span></td>
+                            <td><strong>(-) Grenke Finance Fee</strong></td>
+                            <td><span id="grenkeLogic" class="calc-detail">Contract Value × Rate %</span></td>
                             <td id="grenkeAmt" style="color:red"></td>
                         </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;↳ Hardware CapEx</td>
+
+                        <tr style="background:#fff7ed; border-top:1px solid #cbd5e1; border-bottom:1px solid #cbd5e1;">
+                            <td><strong>(=) Cash In Bank</strong></td>
+                            <td><span class="calc-detail">Contract Revenue - Finance Fee</span></td>
+                            <td id="cashInBankAmt" style="font-weight:bold; color:#d97706;"></td>
+                        </tr>
+
+                        <tr class="sub-row">
+                            <td>(-) Hardware Cost (CapEx)</td>
                             <td><span id="capexLogic" class="calc-detail">Sum of Device Purchase Costs</span></td>
                             <td id="capexAmt" style="color:red"></td>
                         </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;↳ Ricoh Service (CPP)</td>
-                            <td><span id="ricohLogic" class="calc-detail"></span></td>
+
+                        <tr class="sub-row">
+                            <td>(-) Service Cost (Ricoh CPP)</td>
+                            <td><span id="ricohLogic" class="calc-detail">Total Pages × Click Rate</span></td>
                             <td id="ricohAmt" style="color:red"></td>
                         </tr>
 
                         <tr style="background:#e0f2fe; border-top: 2px solid #cbd5e1;">
-                            <td><strong>Net Cash Profit</strong></td>
-                            <td><span class="calc-detail">Cash Received - (CapEx + Service + Fees)</span></td>
-                            <td id="profitAmt" style="font-weight:bold"></td>
+                            <td><strong>(=) Net Cash Profit</strong></td>
+                            <td><span class="calc-detail">Cash In Bank - (Hardware + Service)</span></td>
+                            <td id="profitAmt" style="font-weight:bold; font-size:1.1rem; color:var(--success);"></td>
                         </tr>
                         <tr>
-                            <td>Net Margin %</td>
-                            <td><span class="calc-detail">Profit / (Revenue × 60)</span></td>
+                            <td><strong>Net Margin %</strong></td>
+                            <td><span class="calc-detail">Profit / Cash In Bank</span></td>
                             <td id="marginAmt" style="font-weight:bold"></td>
                         </tr>
                     </tbody>
@@ -273,6 +271,8 @@
         ];
         const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
 
+        let safeBudget = 0; // Total € available for Base Credit
+
         function init() {
             const list = document.getElementById('deviceList');
             list.innerHTML = DEVICES.map(d => {
@@ -292,11 +292,9 @@
             }).join('');
 
             // --- LISTENERS ---
-            // 1. MIX SLIDERS (Percentage Logic)
             const sBaseMono = document.getElementById('sliderBaseMono');
             const sBaseCol = document.getElementById('sliderBaseColour');
 
-            // Interactive Seesaw Effect (Total 100%)
             sBaseMono.addEventListener('input', (e) => {
                 sBaseCol.value = 100 - parseInt(e.target.value);
                 updateMix();
@@ -306,7 +304,6 @@
                 updateMix();
             });
 
-            // 2. ADD-ON SLIDERS
             const sync = () => { updateAddonCost(); calculateLiveTotal(); };
             const ids = [['sliderAddonMono', 'inputAddonMono'], ['sliderAddonColour', 'inputAddonColour']];
             ids.forEach(([sId, iId]) => {
@@ -317,17 +314,30 @@
 
             document.getElementById('grenkeRate').addEventListener('change', calculateLiveTotal);
             document.getElementById('packSelect').addEventListener('change', calculateLiveTotal);
-            document.getElementById('calculateBtn').addEventListener('click', calculateQuote);
+            
+            // TOGGLE BUTTON LOGIC
+            const resultDiv = document.getElementById('result');
+            const toggleBtn = document.getElementById('toggleBtn');
+            toggleBtn.addEventListener('click', () => {
+                const isVisible = resultDiv.classList.contains('visible');
+                if (isVisible) {
+                    resultDiv.classList.remove('visible');
+                    toggleBtn.textContent = "Show Breakdown ▼";
+                } else {
+                    calculateQuote(); // Ensure fresh data
+                    resultDiv.classList.add('visible');
+                    toggleBtn.textContent = "Hide Breakdown ▲";
+                }
+            });
+
             document.getElementById('previewBtn').addEventListener('click', goToPreview);
         }
 
         function updateMix() {
             const m = parseInt(document.getElementById('sliderBaseMono').value);
             const c = parseInt(document.getElementById('sliderBaseColour').value);
-            
             document.getElementById('dispPctMono').textContent = m + '%';
             document.getElementById('dispPctCol').textContent = c + '%';
-            
             recalculateBaseCredit();
             calculateLiveTotal();
         }
@@ -336,7 +346,7 @@
             const el = document.getElementById(`qty-${modelSafe}`);
             el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
             renderMpsList();
-            recalculateBaseCredit(); // Budget changes when qty changes
+            recalculateBaseCredit(); 
             calculateLiveTotal();
         }
 
@@ -393,7 +403,6 @@
 
         // --- CORE MATH LOGIC ---
         function recalculateBaseCredit() {
-            // 1. Calculate Budget (Hardware Only Margin)
             let safeBudget = 0;
             DEVICES.forEach(d => {
                 const q = getQty(d.model);
@@ -404,11 +413,8 @@
                 }
             });
 
-            // 2. Get Percentages
             const monoPct = parseInt(document.getElementById('sliderBaseMono').value) / 100;
             const colourPct = parseInt(document.getElementById('sliderBaseColour').value) / 100;
-
-            // 3. Composite Cost Weighted Average
             const compositeCost = (monoPct * RICOH_CPP.mono) + (colourPct * RICOH_CPP.colour);
 
             if (compositeCost === 0 || safeBudget === 0) {
@@ -417,10 +423,7 @@
                 return;
             }
 
-            // 4. Calculate Total Pages
             const totalSafePages = Math.floor(safeBudget / compositeCost);
-            
-            // 5. Split back to Mono/Colour Volume
             const monoVol = Math.floor(totalSafePages * monoPct);
             const colVol = Math.floor(totalSafePages * colourPct);
 
@@ -440,11 +443,9 @@
             const grenkeRate = grenkeRatePct / 100;
             
             let deviceMonthly = 0, capexTotal = 0;
-            const quantities = {};
             DEVICES.forEach(d => {
                 const qty = getQty(d.model);
                 if(qty > 0) {
-                    quantities[d.model] = qty;
                     deviceMonthly += qty * d.cost;
                     capexTotal += qty * d.capex;
                 }
@@ -466,14 +467,17 @@
 
             const baseMono = parseInt(document.getElementById('readBaseMono').value.replace(/,/g, '')) || 0;
             const baseCol = parseInt(document.getElementById('readBaseColour').value.replace(/,/g, '')) || 0;
+            
+            // Calculate Service Cost
             const serviceCost = ((baseMono + addMono) * RICOH_CPP.mono) + ((baseCol + addCol) * RICOH_CPP.colour);
             
             const netProfit = cashInBank - capexTotal - serviceCost;
-            const margin = (netProfit / (grossContractVal || 1)) * 100;
+            const margin = (netProfit / (cashInBank || 1)) * 100; // Use Cash In Bank as denominator for margin calculation? Or Gross? Usually Gross for Grenke.
+            // Correction: Standard lease margin usually uses "Net Proceeds" (Cash in Bank) as the denominator for internal margin, but let's stick to Cash In Bank to be safe.
 
             return { 
                 deviceMonthly, mpsMonthly, addonMonthly, totalMonthly, 
-                grenkeFee, netProfit, margin, capexTotal, serviceCost, grossContractVal,
+                grenkeFee, netProfit, margin, capexTotal, serviceCost, grossContractVal, cashInBank,
                 baseMono, baseCol, addMono, addCol, grenkeRatePct
             };
         }
@@ -487,33 +491,35 @@
 
         function calculateQuote() {
             const data = getFinancials();
-            if (data.totalMonthly === 0) { alert("Please select at least one device."); return; }
-
-            document.getElementById('deviceAmt').textContent = `€${data.deviceMonthly.toFixed(2)}`;
-            document.getElementById('mpsAmt').textContent = `€${data.mpsMonthly.toFixed(2)}`;
-            document.getElementById('retailAddonAmt').textContent = `€${data.addonMonthly.toFixed(2)}`;
-            document.getElementById('totalMonthlyAmt').textContent = `€${data.totalMonthly.toFixed(2)}`;
             
-            document.getElementById('grenkeLogic').textContent = `Gross €${data.grossContractVal.toFixed(0)} × ${data.grenkeRatePct}%`;
+            // 1. REVENUE
+            document.getElementById('grossContractAmt').textContent = `€${data.grossContractVal.toFixed(2)}`;
+            
+            // 2. GRENKE DEDUCTION
+            document.getElementById('grenkeLogic').textContent = `€${data.grossContractVal.toFixed(0)} × ${data.grenkeRatePct}%`;
             document.getElementById('grenkeAmt').textContent = `-€${data.grenkeFee.toFixed(2)}`;
-            document.getElementById('capexAmt').textContent = `-€${data.capexTotal.toFixed(2)}`;
             
+            // 3. CASH IN BANK
+            document.getElementById('cashInBankAmt').textContent = `€${data.cashInBank.toFixed(2)}`;
+
+            // 4. COSTS
+            document.getElementById('capexAmt').textContent = `-€${data.capexTotal.toFixed(2)}`;
             const totalMono = data.baseMono + data.addMono;
             const totalCol = data.baseCol + data.addCol;
             document.getElementById('ricohLogic').textContent = `(${totalMono.toLocaleString()}m × €${RICOH_CPP.mono}) + (${totalCol.toLocaleString()}c × €${RICOH_CPP.colour})`;
             document.getElementById('ricohAmt').textContent = `-€${data.serviceCost.toFixed(2)}`;
 
+            // 5. PROFIT
             document.getElementById('profitAmt').textContent = `€${data.netProfit.toFixed(2)}`;
             const marginEl = document.getElementById('marginAmt');
             marginEl.textContent = `${data.margin.toFixed(1)}%`;
             marginEl.style.color = data.margin >= 50 ? 'green' : 'orange';
 
+            // FOOTER
             document.getElementById('monthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
             document.getElementById('monthlyVatDisplay').textContent = `€${(data.totalMonthly*1.23).toFixed(2)}`;
             
-            document.getElementById('result').classList.remove('hidden');
-
-            // Save for Preview
+            // Save state for Preview
             const finalDeviceList = [];
             document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => {
                 const parts = chk.id.split('-');
