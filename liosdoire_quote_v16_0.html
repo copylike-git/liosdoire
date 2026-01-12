@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire Quote v16.0 — Office Approval Edition</title>
+    <title>Liosdoire Quote v16.0 — Live Sync Fixed</title>
     <style>
         :root { --primary: #1e3a8a; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -21,7 +21,8 @@
         .device-item { display: flex; align-items: center; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.2s; }
         .device-item:hover { border-color: var(--primary); background: #f0f9ff; }
         .device-info { flex: 1; }
-        .device-name { font-weight: 700; }
+        .device-name { font-weight: 700; color: #1e293b; }
+        .device-financials { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
         
         /* Controls */
         .qty-controls { display: flex; align-items: center; gap: 8px; }
@@ -147,6 +148,9 @@
                     <input type="number" id="inputAddonColour" class="manual-input" value="0" step="1000">
                 </div>
             </div>
+            <div style="text-align:center; padding: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
+                <span style="color:#166534; font-weight:bold;">Total Retail Add-on Cost: <span id="addonCostDisplay" style="font-size:1.2rem">+€0.00</span> / mo</span>
+            </div>
             <div class="live-total-box">
                 <span class="live-label">Estimated Monthly Total (Ex VAT)</span>
                 <span id="liveMonthlyDisplay" class="live-amount">€0.00</span>
@@ -213,22 +217,56 @@
             const ids = [['sliderAddonMono', 'inputAddonMono'], ['sliderAddonColour', 'inputAddonColour']];
             ids.forEach(([sId, iId]) => {
                 const s = document.getElementById(sId), i = document.getElementById(iId);
-                const sync = () => { updateAddonCost(); calculateLiveTotal(); };
+                const sync = () => { updateAddonCost(); calculateAll(); }; // CHANGED TO calculateAll()
                 s.addEventListener('input', (e) => { i.value = e.target.value; sync(); });
                 i.addEventListener('input', (e) => { s.value = e.target.value; sync(); });
             });
 
-            document.getElementById('grenkeRate').addEventListener('change', calculateLiveTotal);
-            document.getElementById('packSelect').addEventListener('change', calculateLiveTotal);
+            document.getElementById('grenkeRate').addEventListener('change', calculateAll);
+            document.getElementById('packSelect').addEventListener('change', calculateAll);
             
             const resultDiv = document.getElementById('result');
             const toggleBtn = document.getElementById('toggleBtn');
             toggleBtn.addEventListener('click', () => {
                 if (resultDiv.classList.contains('visible')) { resultDiv.classList.remove('visible'); toggleBtn.textContent = "Show Breakdown ▼"; }
-                else { calculateQuote(); resultDiv.classList.add('visible'); toggleBtn.textContent = "Hide Breakdown ▲"; }
+                else { calculateAll(); resultDiv.classList.add('visible'); toggleBtn.textContent = "Hide Breakdown ▲"; }
             });
 
             document.getElementById('previewBtn').addEventListener('click', goToPreview);
+        }
+
+        // UNIFIED CALCULATION FUNCTION
+        // Handles BOTH the live dashboard and the detailed table at the same time
+        function calculateAll() {
+            const data = getFinancials();
+            
+            // 1. Update Live Dashboard Box
+            document.getElementById('liveMonthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
+            
+            // 2. Update Table (Always update data, even if hidden)
+            if (data.totalMonthly === 0) return;
+
+            document.getElementById('grossContractAmt').textContent = `€${data.grossContractVal.toFixed(2)}`;
+            document.getElementById('grenkeLogic').textContent = `€${data.grossContractVal.toFixed(0)} × ${data.grenkeRatePct}%`;
+            document.getElementById('grenkeAmt').textContent = `-€${data.grenkeFee.toFixed(2)}`;
+            document.getElementById('cashInBankAmt').textContent = `€${data.cashInBank.toFixed(2)}`;
+            document.getElementById('capexAmt').textContent = `-€${data.capexTotal.toFixed(2)}`;
+            
+            const totalMono = data.baseMono + data.addMono;
+            const totalCol = data.baseCol + data.addCol;
+            document.getElementById('ricohLogic').textContent = `(${totalMono.toLocaleString()}m × €${RICOH_CPP.mono}) + (${totalCol.toLocaleString()}c × €${RICOH_CPP.colour})`;
+            document.getElementById('ricohAmt').textContent = `-€${data.serviceCost.toFixed(2)}`;
+
+            document.getElementById('profitAmt').textContent = `€${data.netProfit.toFixed(2)}`;
+            const marginEl = document.getElementById('marginAmt');
+            marginEl.textContent = `${data.margin.toFixed(1)}%`;
+            marginEl.style.color = data.margin >= 50 ? 'green' : 'orange';
+
+            document.getElementById('monthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
+            document.getElementById('monthlyVatDisplay').textContent = `€${(data.totalMonthly*1.23).toFixed(2)}`;
+            
+            // Save state for Preview
+            saveState(data);
         }
 
         function updateMix() {
@@ -236,13 +274,13 @@
             const c = parseInt(document.getElementById('sliderBaseColour').value);
             document.getElementById('dispPctMono').textContent = m + '%';
             document.getElementById('dispPctCol').textContent = c + '%';
-            recalculateBaseCredit(); calculateLiveTotal();
+            recalculateBaseCredit(); calculateAll();
         }
 
         function adjustQty(modelSafe, delta) {
             const el = document.getElementById(`qty-${modelSafe}`);
             el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
-            renderMpsList(); recalculateBaseCredit(); calculateLiveTotal();
+            renderMpsList(); recalculateBaseCredit(); calculateAll();
         }
 
         function getQty(model) { return parseInt(document.getElementById(`qty-${model.replace(/\s+/g, '_')}`).value) || 0; }
@@ -269,7 +307,7 @@
                         if(currentState[chkId] !== undefined) isChecked = currentState[chkId];
                         
                         html += `<div class="mps-item"><div class="mps-row-main">
-                            <label><input type="checkbox" id="${chkId}" data-model="${d.model}" ${isChecked ? 'checked' : ''} onchange="toggleLocInput('${divId}', this); calculateLiveTotal();"> <span>${d.model} <span style="font-size:0.8rem; color:#64748b;">(Unit #${i})</span></span></label>
+                            <label><input type="checkbox" id="${chkId}" data-model="${d.model}" ${isChecked ? 'checked' : ''} onchange="toggleLocInput('${divId}', this); calculateAll();"> <span>${d.model} <span style="font-size:0.8rem; color:#64748b;">(Unit #${i})</span></span></label>
                         </div><div id="${divId}" class="mps-location-input ${isChecked ? 'visible' : ''}"><input type="text" id="${locId}" placeholder="Location / Name" style="width:100%" value="${currentState[locId] || ''}"></div></div>`;
                     }
                 }
@@ -350,36 +388,9 @@
             };
         }
 
-        function calculateLiveTotal() {
-            const data = getFinancials();
-            document.getElementById('liveMonthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
-        }
-
         let quoteState = null;
 
-        function calculateQuote() {
-            const data = getFinancials();
-            if (data.totalMonthly === 0) { alert("Please select at least one device."); return; }
-
-            document.getElementById('grossContractAmt').textContent = `€${data.grossContractVal.toFixed(2)}`;
-            document.getElementById('grenkeLogic').textContent = `€${data.grossContractVal.toFixed(0)} × ${data.grenkeRatePct}%`;
-            document.getElementById('grenkeAmt').textContent = `-€${data.grenkeFee.toFixed(2)}`;
-            document.getElementById('cashInBankAmt').textContent = `€${data.cashInBank.toFixed(2)}`;
-            document.getElementById('capexAmt').textContent = `-€${data.capexTotal.toFixed(2)}`;
-            
-            const totalMono = data.baseMono + data.addMono;
-            const totalCol = data.baseCol + data.addCol;
-            document.getElementById('ricohLogic').textContent = `(${totalMono.toLocaleString()}m × €${RICOH_CPP.mono}) + (${totalCol.toLocaleString()}c × €${RICOH_CPP.colour})`;
-            document.getElementById('ricohAmt').textContent = `-€${data.serviceCost.toFixed(2)}`;
-
-            document.getElementById('profitAmt').textContent = `€${data.netProfit.toFixed(2)}`;
-            document.getElementById('marginAmt').textContent = `${data.margin.toFixed(1)}%`;
-            document.getElementById('marginAmt').style.color = data.margin >= 50 ? 'green' : 'orange';
-
-            document.getElementById('monthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
-            document.getElementById('monthlyVatDisplay').textContent = `€${(data.totalMonthly*1.23).toFixed(2)}`;
-            document.getElementById('result').classList.remove('hidden');
-
+        function saveState(data) {
             const finalDeviceList = [];
             document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => {
                 const parts = chk.id.split('-');
@@ -393,7 +404,6 @@
                 });
             });
 
-            // Store everything for Preview (Including Financials)
             quoteState = {
                 clientName: document.getElementById('clientName').value || "Draft Quote",
                 clientEmail: document.getElementById('clientEmail').value || "",
@@ -404,7 +414,6 @@
                 addMono: data.addMono, addCol: data.addCol,
                 monthlyExVat: data.totalMonthly.toFixed(2),
                 monthlyIncVat: (data.totalMonthly*1.23).toFixed(2),
-                // IMPORTANT: Saving detailed financials for the office email
                 financials: {
                     grossContract: data.grossContractVal.toFixed(2),
                     grenkeFee: data.grenkeFee.toFixed(2),
@@ -417,8 +426,13 @@
             };
         }
 
+        function calculateQuote() {
+            calculateAll();
+            document.getElementById('result').classList.remove('hidden');
+        }
+
         function goToPreview() {
-            if (!quoteState) calculateQuote();
+            if (!quoteState) calculateAll();
             sessionStorage.setItem('quoteData', JSON.stringify(quoteState));
             window.location.href = 'liosdoire_preview_v16_0.html';
         }
