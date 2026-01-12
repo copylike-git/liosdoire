@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liosdoire Quote v16.9 — Data Capture</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .required-star { color: red; font-weight: bold; margin-left: 3px; }
+        input.error { border-color: red; background-color: #fff5f5; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="subtitle">
+            <img src="https://liosdoirecomputers.com/wp-content/uploads/2023/01/LiosdoireComputerslogo-o8.png" width="120" alt="Liosdoire Logo">
+        </div>
+        <br><strong>Liosdoire Computers - Quote v16.9</strong>
+    </header>
+
+    <div id="app">
+        <div class="section">
+            <div class="section-title">1. Client Information</div>
+            <div class="client-info-grid">
+                <div><label>Business / School Name<span class="required-star">*</span></label><input type="text" id="clientBusiness" placeholder="e.g. St. Brendan's College"></div>
+                <div><label>Contact Person Name<span class="required-star">*</span></label><input type="text" id="clientName" placeholder="e.g. John Doe"></div>
+                
+                <div><label>Email Address<span class="required-star">*</span></label><input type="email" id="clientEmail" placeholder="admin@school.ie"></div>
+                <div><label>Phone Number<span class="required-star">*</span></label><input type="tel" id="clientPhone" placeholder="08x xxx xxxx"></div>
+                
+                <div style="grid-column: span 2;"><label>Billing Address<span class="required-star">*</span></label><input type="text" id="clientAddress" placeholder="Street, Town, County, Eircode"></div>
+
+                <div><label>Sector</label><select id="clientSector"><option value="Education">Education</option><option value="Business">Business</option></select></div>
+                
+                <div>
+                    <label style="color:var(--primary);"><strong>Grenke Rate (Internal):</strong></label>
+                    <select id="grenkeRate" style="border: 2px solid #cbd5e1; background-color: #f8fafc;">
+                        <option value="0">0% (Direct/Cash)</option>
+                        <option value="1.5">1.5% (Promo)</option>
+                        <option value="3.0">3.0% (Standard)</option>
+                        <option value="4.5" selected>4.5% (Safe/High Risk)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">2. Select Devices</div>
+            <div class="device-grid" id="deviceList"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">3. Managed Print (Per Unit)</div>
+            <div style="margin: 16px 0;">
+                <label>Select Pack Level (€20 Basic):</label>
+                <select id="packSelect" style="margin-top: 4px;">
+                    <option value="Basic">RSI Basic — €20/mo</option>
+                    <option value="Plus">RSI Plus — €35/mo</option>
+                    <option value="Platinum">RSI Platinum — €45/mo</option>
+                </select>
+            </div>
+            <div id="mpsDeviceContainer" class="mps-list">
+                <div style="padding:15px; color:#64748b; text-align:center;">No devices selected.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">4. Print Credit Dashboard</div>
+            <div class="dashboard-container">
+                <div class="control-group" style="background:#f8fafc; border-color:#94a3b8;">
+                    <span class="tag tag-blue">Hardware Mix</span>
+                    <div class="col-header">Mono Mix %</div>
+                    <div class="slider-wrapper"><input type="range" id="sliderBaseMono" class="slider-black" orient="vertical" min="0" max="100" value="75" step="1"></div>
+                    <div class="display-val" id="dispPctMono">75%</div>
+                    <input type="text" id="readBaseMono" class="manual-input" readonly style="background:#e2e8f0; color:#64748b;" value="0">
+                </div>
+                <div class="control-group" style="background:#f8fafc; border-color:#94a3b8;">
+                    <span class="tag tag-blue">Hardware Mix</span>
+                    <div class="col-header">Colour Mix %</div>
+                    <div class="slider-wrapper"><input type="range" id="sliderBaseColour" class="slider-rainbow" orient="vertical" min="0" max="100" value="25" step="1"></div>
+                    <div class="display-val" id="dispPctCol">25%</div>
+                    <input type="text" id="readBaseColour" class="manual-input" readonly style="background:#e2e8f0; color:#64748b;" value="0">
+                </div>
+                <div class="control-group">
+                    <span class="tag tag-green">Add-on</span>
+                    <div class="col-header">Extra Mono</div>
+                    <div class="slider-wrapper"><input type="range" id="sliderAddonMono" class="slider-black" orient="vertical" min="0" max="1000000" step="1000" value="0"></div>
+                    <input type="number" id="inputAddonMono" class="manual-input" value="0" step="1000">
+                </div>
+                <div class="control-group">
+                    <span class="tag tag-green">Add-on</span>
+                    <div class="col-header">Extra Colour</div>
+                    <div class="slider-wrapper"><input type="range" id="sliderAddonColour" class="slider-rainbow" orient="vertical" min="0" max="1000000" step="1000" value="0"></div>
+                    <input type="number" id="inputAddonColour" class="manual-input" value="0" step="1000">
+                </div>
+            </div>
+            <div style="text-align:center; padding: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
+                <span style="color:#166534; font-weight:bold;">Total Retail Add-on Cost: <span id="addonCostDisplay" style="font-size:1.2rem">+€0.00</span> / mo</span>
+            </div>
+            <div class="live-total-box">
+                <span class="live-label">Estimated Monthly Total (Ex VAT)</span>
+                <span id="liveMonthlyDisplay" class="live-amount">€0.00</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">5. Finalize Quote</div>
+            
+            <div class="action-bar">
+                <button id="calculateBtn" class="success" style="flex:1;">Calculate / Preview Quote</button>
+                <label class="action-checkbox">
+                    <input type="checkbox" id="showBreakdownChk"> 
+                    Review Internal Margin & Costs
+                </label>
+            </div>
+            
+            <div id="result" class="result">
+                <h3 style="color:var(--primary); border-bottom:1px solid #cbd5e1; padding-bottom:5px;">Internal Financial Breakdown</h3>
+                <table class="result-table">
+                    <thead><tr><th>Item</th><th>Logic</th><th>Amount (€)</th></tr></thead>
+                    <tbody>
+                        <tr><td>(+) Hardware Lease</td><td><span class="calc-detail">Device Monthly Total</span></td><td id="deviceAmt"></td></tr>
+                        <tr><td>(+) MPS Pack</td><td><span class="calc-detail">Pack Cost × Active Units</span></td><td id="mpsAmt"></td></tr>
+                        <tr style="background:#f0fdf4"><td><strong>(+) Retail Add-on</strong></td><td><span class="calc-detail">Extra Pages Revenue / 60</span></td><td id="retailAddonAmt" style="font-weight:bold; color:#166534"></td></tr>
+                        <tr style="background:#e0f2fe; border-top: 2px solid #cbd5e1; border-bottom: 2px solid #cbd5e1;"><td><strong>(=) Monthly Revenue</strong></td><td><span class="calc-detail">Sum of above</span></td><td id="totalMonthlyAmt" style="font-weight:bold; color:var(--primary);"></td></tr>
+                        <tr style="background:#f8fafc"><td><strong>Total Contract Revenue (60 Mo)</strong></td><td><span class="calc-detail">Monthly × 60</span></td><td id="grossContractAmt" style="font-weight:bold;"></td></tr>
+                        <tr><td>(-) Grenke Finance Fee</td><td><span id="grenkeLogic" class="calc-detail"></span></td><td id="grenkeAmt" style="color:red"></td></tr>
+                        
+                        <tr><td>(-) Device Purchase (Base)</td><td><span id="deviceCapexLogic" class="calc-detail">Sum of HW Costs</span></td><td id="deviceCapexAmt" style="color:red"></td></tr>
+                        <tr id="papercutRow" style="background:#fff1f2;">
+                            <td>(-) PaperCut Licenses</td>
+                            <td><span id="papercutLogic" class="calc-detail"></span></td>
+                            <td id="papercutAmt" style="color:red; font-weight:bold;"></td>
+                        </tr>
+
+                        <tr><td>(-) Service Cost (Ricoh)</td><td><span id="ricohLogic" class="calc-detail"></span></td><td id="ricohAmt" style="color:red"></td></tr>
+                        <tr style="background:#e0f2fe; border-top: 2px solid #cbd5e1;"><td><strong>(=) Net Cash Profit</strong></td><td><span class="calc-detail">Cash In Bank - Costs</span></td><td id="profitAmt" style="font-weight:bold; font-size:1.1rem; color:var(--success);"></td></tr>
+                        <tr><td><strong>Net Margin %</strong></td><td><span class="calc-detail">Profit / Cash In Bank</span></td><td id="marginAmt" style="font-weight:bold"></td></tr>
+                    </tbody>
+                </table>
+                <button id="previewBtn" class="secondary" style="margin-top: 15px; width: 100%;">📄 Proceed to Order / Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const RICOH_CPP = { mono: 0.0038, colour: 0.038 }; 
+        const RETAIL_CPP = { mono: 0.005, colour: 0.05 };  
+        const MARGIN_TARGET = 0.50;
+        const PAPERCUT_COST = 770.00; 
+
+        const DEVICES = [
+            { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono)", cost: 300.00, capex: 4150 },
+            { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Colour)", cost: 150.00, capex: 2000 },
+            { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Colour)", cost: 50.00, capex: 1000 },
+            { model: "Ricoh IM 370", desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700 },
+            { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono)", cost: 100.00, capex: 1710 }
+        ];
+        const PACKS = { Basic: 20.00, Plus: 35.00, Platinum: 45.00 };
+        let safeBudget = 0;
+
+        function init() {
+            const list = document.getElementById('deviceList');
+            list.innerHTML = DEVICES.map(d => {
+                const safeModel = d.model.replace(/\s+/g, '_');
+                return `<div class="device-item">
+                    <div class="device-info"><div class="device-name">${d.desc}</div><div class="device-financials">€${d.cost}/mo</div></div>
+                    <div class="qty-controls"><button onclick="adjustQty('${safeModel}', -1)">-</button><input type="number" id="qty-${safeModel}" value="0" readonly style="width:50px; text-align:center; background:#f1f5f9;"><button onclick="adjustQty('${safeModel}', 1)">+</button></div>
+                </div>`;
+            }).join('');
+
+            const sBaseMono = document.getElementById('sliderBaseMono'), sBaseCol = document.getElementById('sliderBaseColour');
+            sBaseMono.addEventListener('input', (e) => { sBaseCol.value = 100 - parseInt(e.target.value); updateMix(); });
+            sBaseCol.addEventListener('input', (e) => { sBaseMono.value = 100 - parseInt(e.target.value); updateMix(); });
+
+            const ids = [['sliderAddonMono', 'inputAddonMono'], ['sliderAddonColour', 'inputAddonColour']];
+            ids.forEach(([sId, iId]) => {
+                const s = document.getElementById(sId), i = document.getElementById(iId);
+                const sync = () => { updateAddonCost(); calculateAll(); }; 
+                s.addEventListener('input', (e) => { i.value = e.target.value; sync(); });
+                i.addEventListener('input', (e) => { s.value = e.target.value; sync(); });
+            });
+
+            document.getElementById('grenkeRate').addEventListener('change', calculateAll);
+            document.getElementById('packSelect').addEventListener('change', calculateAll);
+            document.getElementById('calculateBtn').addEventListener('click', handleCalculateClick);
+            document.getElementById('previewBtn').addEventListener('click', goToPreview);
+        }
+
+        // --- VALIDATION & NAVIGATION ---
+        function handleCalculateClick() {
+            // VALIDATE MANDATORY FIELDS
+            const fields = ['clientBusiness', 'clientName', 'clientEmail', 'clientPhone', 'clientAddress'];
+            let isValid = true;
+            
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if(!el.value.trim()) {
+                    el.classList.add('error');
+                    isValid = false;
+                } else {
+                    el.classList.remove('error');
+                }
+            });
+
+            if(!isValid) {
+                alert("Please fill in all mandatory client fields marked with *");
+                document.getElementById('clientBusiness').scrollIntoView({behavior: "smooth"});
+                return;
+            }
+
+            calculateAll();
+            
+            const showBreakdown = document.getElementById('showBreakdownChk').checked;
+            if (showBreakdown) {
+                document.getElementById('result').classList.add('visible');
+                document.getElementById('result').scrollIntoView({behavior: "smooth"});
+            } else {
+                goToPreview();
+            }
+        }
+
+        function calculateAll() {
+            const data = getFinancials();
+            document.getElementById('liveMonthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
+            
+            if (data.totalMonthly === 0) return;
+
+            document.getElementById('deviceAmt').textContent = `€${data.deviceMonthly.toFixed(2)}`;
+            document.getElementById('mpsAmt').textContent = `€${data.mpsMonthly.toFixed(2)}`;
+            document.getElementById('retailAddonAmt').textContent = `€${data.addonMonthly.toFixed(2)}`;
+            document.getElementById('totalMonthlyAmt').textContent = `€${data.totalMonthly.toFixed(2)}`;
+            document.getElementById('grossContractAmt').textContent = `€${data.grossContractVal.toFixed(2)}`;
+            document.getElementById('grenkeLogic').textContent = `€${data.grossContractVal.toFixed(0)} × ${data.grenkeRatePct}%`;
+            document.getElementById('grenkeAmt').textContent = `-€${data.grenkeFee.toFixed(2)}`;
+            
+            // CAPEX BREAKDOWN
+            document.getElementById('deviceCapexAmt').textContent = `-€${data.deviceOnlyCapex.toFixed(2)}`;
+            
+            if(data.papercutCapex > 0) {
+                document.getElementById('papercutRow').style.display = 'table-row';
+                document.getElementById('papercutLogic').textContent = `€${PAPERCUT_COST} × ${data.mpsCount} Units`;
+                document.getElementById('papercutAmt').textContent = `-€${data.papercutCapex.toFixed(2)}`;
+            } else {
+                document.getElementById('papercutRow').style.display = 'none';
+            }
+
+            document.getElementById('ricohLogic').textContent = `(${data.baseMono.toLocaleString()}m + ${data.addMono.toLocaleString()}m) ...`;
+            document.getElementById('ricohAmt').textContent = `-€${data.serviceCost.toFixed(2)}`;
+
+            document.getElementById('profitAmt').textContent = `€${data.netProfit.toFixed(2)}`;
+            const marginEl = document.getElementById('marginAmt');
+            marginEl.textContent = `${data.margin.toFixed(1)}%`;
+            marginEl.style.color = data.margin >= 50 ? 'green' : 'orange';
+            
+            saveState(data);
+        }
+
+        function updateMix() {
+            const m = parseInt(document.getElementById('sliderBaseMono').value);
+            const c = parseInt(document.getElementById('sliderBaseColour').value);
+            document.getElementById('dispPctMono').textContent = m + '%';
+            document.getElementById('dispPctCol').textContent = c + '%';
+            recalculateBaseCredit(); calculateAll();
+        }
+
+        function adjustQty(modelSafe, delta) {
+            const el = document.getElementById(`qty-${modelSafe}`);
+            el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
+            renderMpsList(); recalculateBaseCredit(); calculateAll();
+        }
+
+        function getQty(model) { return parseInt(document.getElementById(`qty-${model.replace(/\s+/g, '_')}`).value) || 0; }
+
+        function renderMpsList() {
+            const container = document.getElementById('mpsDeviceContainer');
+            const currentState = {};
+            container.querySelectorAll('input').forEach(input => {
+                if(input.type === 'checkbox') currentState[input.id] = input.checked;
+                if(input.type === 'text') currentState[input.id] = input.value;
+            });
+
+            let html = ""; let hasDevices = false;
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if (qty > 0) {
+                    hasDevices = true;
+                    const safeModel = d.model.replace(/\s+/g, '_');
+                    for (let i = 1; i <= qty; i++) {
+                        const chkId = `mps-chk-${safeModel}-${i}`;
+                        const locId = `mps-loc-${safeModel}-${i}`;
+                        const divId = `mps-div-${safeModel}-${i}`;
+                        let isChecked = false;
+                        if(currentState[chkId] !== undefined) isChecked = currentState[chkId];
+                        html += `<div class="mps-item"><div class="mps-row-main">
+                            <input type="checkbox" id="${chkId}" data-model="${d.model}" ${isChecked ? 'checked' : ''} onchange="toggleLocInput('${divId}', this); calculateAll();">
+                            <label for="${chkId}"><span>${d.model}</span><span class="mps-unit-badge">Unit #${i}</span></label>
+                        </div><div id="${divId}" class="mps-location-input ${isChecked ? 'visible' : ''}"><input type="text" id="${locId}" placeholder="Location / Name" value="${currentState[locId] || ''}"></div></div>`;
+                    }
+                }
+            });
+            container.innerHTML = hasDevices ? html : '<div style="padding:15px; color:#64748b; text-align:center;">No devices selected.</div>';
+        }
+
+        window.toggleLocInput = function(divId, checkbox) {
+            const div = document.getElementById(divId);
+            if(checkbox.checked) div.classList.add('visible'); else div.classList.remove('visible');
+        }
+
+        function recalculateBaseCredit() {
+            safeBudget = 0;
+            DEVICES.forEach(d => {
+                const q = getQty(d.model);
+                if(q > 0) {
+                    const revenue = d.cost * 60;
+                    const safe = Math.max(0, revenue - d.capex - (revenue * MARGIN_TARGET));
+                    safeBudget += safe * q;
+                }
+            });
+
+            const monoPct = parseInt(document.getElementById('sliderBaseMono').value) / 100;
+            const colourPct = parseInt(document.getElementById('sliderBaseColour').value) / 100;
+            const compositeCost = (monoPct * RICOH_CPP.mono) + (colourPct * RICOH_CPP.colour);
+
+            if (compositeCost === 0 || safeBudget === 0) {
+                document.getElementById('readBaseMono').value = 0; document.getElementById('readBaseColour').value = 0; return;
+            }
+
+            const totalSafePages = Math.floor(safeBudget / compositeCost);
+            document.getElementById('readBaseMono').value = Math.floor(totalSafePages * monoPct).toLocaleString();
+            document.getElementById('readBaseColour').value = Math.floor(totalSafePages * colourPct).toLocaleString();
+        }
+
+        function updateAddonCost() {
+            const m = parseInt(document.getElementById('inputAddonMono').value) || 0;
+            const c = parseInt(document.getElementById('inputAddonColour').value) || 0;
+            const retailVal = (m * RETAIL_CPP.mono) + (c * RETAIL_CPP.colour);
+            document.getElementById('addonCostDisplay').textContent = `+€${(retailVal/60).toFixed(2)}`;
+        }
+
+        function getFinancials() {
+            const grenkeRatePct = parseFloat(document.getElementById('grenkeRate').value);
+            const grenkeRate = grenkeRatePct / 100;
+            let deviceMonthly = 0, deviceOnlyCapex = 0;
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if(qty > 0) { deviceMonthly += qty * d.cost; deviceOnlyCapex += qty * d.capex; }
+            });
+
+            let mpsMonthly = 0, mpsCount = 0;
+            const packCost = PACKS[document.getElementById('packSelect').value];
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { if(chk.checked) { mpsMonthly += packCost; mpsCount++; } });
+
+            // CAPEX LOGIC
+            const papercutCapex = mpsCount * PAPERCUT_COST;
+            const totalCapex = deviceOnlyCapex + papercutCapex;
+
+            const addMono = parseInt(document.getElementById('inputAddonMono').value) || 0;
+            const addCol = parseInt(document.getElementById('inputAddonColour').value) || 0;
+            const addonRevenueTotal = (addMono * RETAIL_CPP.mono) + (addCol * RETAIL_CPP.colour);
+            const addonMonthly = addonRevenueTotal / 60;
+
+            const totalMonthly = deviceMonthly + mpsMonthly + addonMonthly;
+            const grossContractVal = totalMonthly * 60;
+            const grenkeFee = grossContractVal * grenkeRate;
+            const cashInBank = grossContractVal - grenkeFee;
+
+            const baseMono = parseInt(document.getElementById('readBaseMono').value.replace(/,/g, '')) || 0;
+            const baseCol = parseInt(document.getElementById('readBaseColour').value.replace(/,/g, '')) || 0;
+            const serviceCost = ((baseMono + addMono) * RICOH_CPP.mono) + ((baseCol + addCol) * RICOH_CPP.colour);
+            
+            const netProfit = cashInBank - totalCapex - serviceCost;
+            const margin = (netProfit / (cashInBank || 1)) * 100;
+
+            return { 
+                deviceMonthly, mpsMonthly, addonMonthly, totalMonthly, 
+                grenkeFee, netProfit, margin, 
+                deviceOnlyCapex, papercutCapex, capexTotal: totalCapex,
+                serviceCost, grossContractVal, cashInBank,
+                baseMono, baseCol, addMono, addCol, grenkeRatePct, mpsCount
+            };
+        }
+
+        let quoteState = null;
+
+        function saveState(data) {
+            const finalDeviceList = [];
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => {
+                const parts = chk.id.split('-');
+                const unitNum = parts.pop();
+                const locInput = document.getElementById(chk.id.replace('mps-chk-', 'mps-loc-'));
+                finalDeviceList.push({
+                    model: chk.dataset.model,
+                    unitNum: unitNum,
+                    isManaged: chk.checked,
+                    location: locInput ? locInput.value.trim() : `Unit #${unitNum}`
+                });
+            });
+
+            quoteState = {
+                clientBusiness: document.getElementById('clientBusiness').value,
+                clientName: document.getElementById('clientName').value,
+                clientEmail: document.getElementById('clientEmail').value,
+                clientPhone: document.getElementById('clientPhone').value,
+                clientAddress: document.getElementById('clientAddress').value,
+                clientSector: document.getElementById('clientSector').value,
+                date: new Date().toLocaleDateString('en-IE'),
+                finalDeviceList, 
+                baseMono: data.baseMono, baseCol: data.baseCol,
+                addMono: data.addMono, addCol: data.addCol,
+                monthlyExVat: data.totalMonthly.toFixed(2),
+                monthlyIncVat: (data.totalMonthly*1.23).toFixed(2),
+                financials: {
+                    grossContract: data.grossContractVal.toFixed(2),
+                    grenkeFee: data.grenkeFee.toFixed(2),
+                    cashInBank: data.cashInBank.toFixed(2),
+                    capex: data.capexTotal.toFixed(2),
+                    papercutCapex: data.papercutCapex.toFixed(2),
+                    serviceCost: data.serviceCost.toFixed(2),
+                    netProfit: data.netProfit.toFixed(2),
+                    margin: data.margin.toFixed(1) + "%"
+                }
+            };
+        }
+
+        function goToPreview() {
+            if (!quoteState) calculateAll();
+            if (parseFloat(quoteState.monthlyExVat) === 0) { alert("Please select at least one device."); return; }
+            sessionStorage.setItem('quoteData', JSON.stringify(quoteState));
+            window.location.href = 'liosdoire_preview_v16_9.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
