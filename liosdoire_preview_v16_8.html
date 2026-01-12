@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liosdoire — Order Preview (v16.8)</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* A4 Page & Print Styles */
+        body { background: #525659; padding: 40px; margin: 0; font-family: sans-serif; }
+        .page { background: white; width: 210mm; min-height: 297mm; margin: 0 auto; padding: 15mm; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        /* Layout */
+        .header-row { display: flex; justify-content: space-between; border-bottom: 2px solid #1e3a8a; padding-bottom: 15px; margin-bottom: 20px; }
+        h1 { margin: 0; color: #1e3a8a; font-size: 1.6rem; }
+        .sub-header { text-align: right; color: #64748b; font-size: 0.8rem; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 20px; font-size: 0.9rem; }
+        .info-item strong { display: block; font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        th { text-align: left; background: #f1f5f9; padding: 8px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+        
+        .financial-summary { display: flex; justify-content: flex-end; margin-top: 20px; }
+        .financial-table { width: 300px; text-align: right; }
+        .financial-table td { padding: 5px; }
+        .total-row { font-weight: bold; color: #1e3a8a; font-size: 1.1rem; border-top: 2px solid #1e3a8a; }
+        
+        .credit-box { background: #f0f9ff; padding: 15px; border-radius: 6px; border: 1px solid #bae6fd; margin-top: 20px; }
+        .credit-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; }
+        .credit-val { font-size: 1.2rem; font-weight: bold; color: #0284c7; display: block; }
+        .credit-lbl { font-size: 0.75rem; color: #64748b; text-transform: uppercase; }
+        
+        .sig-section { margin-top: 30px; }
+        .sig-box { height: 120px; border: 2px dashed #cbd5e1; background: #fcfcfc; border-radius: 6px; position: relative; }
+        
+        /* Buttons */
+        .actions { text-align: center; margin-top: 40px; }
+        .btn { padding: 15px 30px; background: #1e3a8a; color: white; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; font-weight: bold; margin: 0 10px; }
+        .btn:hover { background: #15803d; }
+        .btn-print { background: #64748b; }
+        .btn-print:hover { background: #475569; }
+
+        #loadingOverlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); color: white; z-index: 999; align-items: center; justify-content: center; flex-direction: column; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #1e3a8a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page { box-shadow: none; margin: 0; padding: 15mm; }
+            .actions, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="loadingText">Processing Order...</div>
+    </div>
+
+    <form id="fs-form" action="https://formspree.io/f/xdannjrl" method="POST" style="display:none;">
+        <input type="hidden" name="_subject" id="fs-subject" value="New Order">
+        
+        <input type="text" name="-- APPROVAL METRICS --" value="" readonly>
+        <input type="text" name="Total Monthly Revenue" id="fs-total">
+        <input type="text" name="Net Cash Profit" id="fs-profit">
+        <input type="text" name="Net Margin %" id="fs-margin">
+        <input type="text" name="Hardware CapEx" id="fs-capex">
+        <input type="text" name="Ricoh Service Cost" id="fs-service">
+        <input type="text" name="Grenke Fee" id="fs-grenke">
+        <input type="text" name="Cash In Bank" id="fs-cash">
+
+        <input type="text" name="-- XERO IMPORT DATA --" value="" readonly>
+        <textarea name="Xero CSV Row" id="fs-xero-csv" rows="4" style="width:100%"></textarea>
+
+        <input type="text" name="-- CLIENT --" value="" readonly>
+        <input type="text" name="Client Name" id="fs-client">
+        <input type="text" name="Email" id="fs-email">
+        <input type="text" name="Date" id="fs-date">
+
+        <input type="text" name="-- ITEMS --" value="" readonly>
+        <div id="fs-device-list"></div>
+        
+        <input type="hidden" name="Signature_Image" id="fs-sig-link">
+    </form>
+
+    <div class="page">
+        <div class="header-row">
+            <h1>Quotation & Order Form</h1>
+            <div class="sub-header">
+                <strong>Liosdoire Computers</strong><br>
+                Managed Print Services<br>
+                Date: <span id="pDate"></span>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item"><strong>Client Name</strong><span id="pClient"></span></div>
+            <div class="info-item"><strong>Sector</strong><span id="pSector"></span></div>
+            <div class="info-item"><strong>Email</strong><span id="pEmail"></span></div>
+            <div class="info-item"><strong>Contract Term</strong><span>60 Months</span></div>
+        </div>
+
+        <h3 style="color:#1e3a8a; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Hardware & Services Schedule</h3>
+        <table>
+            <thead><tr><th>ID</th><th>Description</th><th>Service & Location</th></tr></thead>
+            <tbody id="pDeviceTable"></tbody>
+        </table>
+
+        <div class="financial-summary">
+            <table class="financial-table">
+                <tr><td>Monthly Hardware & Service:</td><td>€<span id="pExVat">0.00</span></td></tr>
+                <tr><td>VAT (23%):</td><td>€<span id="pVat">0.00</span></td></tr>
+                <tr class="total-row"><td>Total Monthly Charge:</td><td>€<span id="pIncVat">0.00</span></td></tr>
+            </table>
+        </div>
+
+        <div class="credit-box">
+            <div style="font-weight:bold; color:#0369a1; margin-bottom:10px; font-size:0.9rem;">INCLUDED PRINT ALLOWANCE (Total Pool for 60 Months)</div>
+            <div class="credit-grid">
+                <div class="credit-item"><span class="credit-val" id="pTotalMono">0</span><span class="credit-lbl">Mono Pages</span></div>
+                <div class="credit-item"><span class="credit-val" id="pTotalCol">0</span><span class="credit-lbl">Colour Pages</span></div>
+                <div class="credit-item">
+                    <div style="font-size:0.8rem; color:#64748b;">Add-on:</div>
+                    <div style="font-size:0.9rem; font-weight:600;" id="pAddonSummary">None</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="font-size:0.7rem; color:#94a3b8; margin-top:30px; text-align:justify; line-height:1.4; border-top:1px solid #e2e8f0; padding-top:10px;">
+            <strong>Terms & Conditions:</strong><br>
+            1. All print credits and Cost Per Page (CPP) rates are calculated based on ISO 19752.<br>
+            2. This agreement is a 60-month lease via Grenke Finance.<br>
+            3. Devices marked "Managed Service" include toner, service, and parts.<br>
+            4. This quotation is valid for 30 days.
+        </div>
+
+        <div class="sig-section">
+            <h3 style="margin-bottom:10px; color:#1e3a8a;">Authorisation</h3>
+            <p style="font-size:0.8rem; color:#64748b;">By signing below, I confirm I am authorised to order on behalf of the client.</p>
+            <div class="sig-box"><canvas id="sigCanvas" style="width: 100%; height: 100%;"></canvas></div>
+            <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                <span style="font-size:0.8rem; color:#64748b;">Client Signature</span>
+                <button onclick="clearSig()" class="no-print" style="font-size:0.75rem; padding:4px 8px; cursor:pointer;">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button onclick="window.print()" class="btn btn-print">🖨️ Print Page</button>
+        <button onclick="submitOrder()" class="btn">🚀 Submit Order to Office</button>
+    </div>
+    
+    <div style="text-align:center; margin-bottom:50px;">
+        <br>
+        <a href="liosdoire_quote_v16_4.html" style="color:#cbd5e1; text-decoration:none;">← Go Back to Calculator</a>
+    </div>
+
+    <script>
+        let quoteData = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            quoteData = JSON.parse(sessionStorage.getItem('quoteData'));
+            if (!quoteData) return;
+
+            // 1. FILL VISUAL PAGE
+            document.getElementById('pClient').textContent = quoteData.clientName;
+            document.getElementById('pEmail').textContent = quoteData.clientEmail;
+            document.getElementById('pDate').textContent = quoteData.date;
+            document.getElementById('pSector').textContent = quoteData.clientSector;
+            document.getElementById('pExVat').textContent = quoteData.monthlyExVat;
+            document.getElementById('pVat').textContent = (parseFloat(quoteData.monthlyExVat)*0.23).toFixed(2);
+            document.getElementById('pIncVat').textContent = quoteData.monthlyIncVat;
+
+            const clean = (v) => typeof v==='string'?parseInt(v.replace(/,/g,'')):v;
+            const bM=clean(quoteData.baseMono), bC=clean(quoteData.baseCol), aM=clean(quoteData.addMono), aC=clean(quoteData.addCol);
+            
+            document.getElementById('pTotalMono').textContent = (bM+aM).toLocaleString();
+            document.getElementById('pTotalCol').textContent = (bC+aC).toLocaleString();
+            document.getElementById('pAddonSummary').textContent = (aM>0||aC>0) ? `${aM.toLocaleString()}m / ${aC.toLocaleString()}c` : "None";
+
+            const tbody = document.getElementById('pDeviceTable');
+            const fsList = document.getElementById('fs-device-list');
+
+            quoteData.finalDeviceList.forEach((d, i) => {
+                const badge = d.isManaged ? '<strong style="color:#16a34a">Managed</strong>' : '<span style="color:#64748b">Hardware</span>';
+                const loc = d.location ? `<br><span style="font-size:0.8rem; font-style:italic;">📍 ${d.location}</span>` : '';
+                tbody.innerHTML += `<tr><td>#${i+1}</td><td><strong>${d.model}</strong></td><td>${badge} ${loc}</td></tr>`;
+                
+                const input = document.createElement('input');
+                input.type = 'text'; input.name = `Item ${i+1}`; input.value = `${d.model} [${d.isManaged?'MPS':'HW'}] - ${d.location}`;
+                fsList.appendChild(input);
+            });
+
+            // 2. FILL FORMSPREE - HIDDEN FIELDS
+            document.getElementById('fs-client').value = quoteData.clientName;
+            document.getElementById('fs-email').value = quoteData.clientEmail;
+            document.getElementById('fs-date').value = quoteData.date;
+            document.getElementById('fs-subject').value = "New Order: " + quoteData.clientName;
+            document.getElementById('fs-total').value = "€" + quoteData.monthlyExVat;
+
+            if(quoteData.financials) {
+                document.getElementById('fs-profit').value = "€" + quoteData.financials.netProfit;
+                document.getElementById('fs-margin').value = quoteData.financials.margin;
+                document.getElementById('fs-capex').value = "-€" + quoteData.financials.capex;
+                document.getElementById('fs-service').value = "-€" + quoteData.financials.serviceCost;
+                document.getElementById('fs-grenke').value = "-€" + quoteData.financials.grenkeFee;
+                document.getElementById('fs-cash').value = "€" + quoteData.financials.cashInBank;
+            }
+
+            // 3. GENERATE XERO CSV STRING
+            const contact = `"${quoteData.clientName}"`;
+            const date = `"${quoteData.date}"`;
+            const desc = `"Managed Print Services Monthly Fee (60 Months) - ${quoteData.finalDeviceList.length} Units"`;
+            const amount = quoteData.monthlyExVat;
+            const xeroRow = `*ContactName,*InvoiceDate,*Description,*Quantity,*UnitAmount,*AccountCode,*TaxType\n${contact},${date},${desc},1,${amount},200,23% VAT on Income`;
+            
+            document.getElementById('fs-xero-csv').value = xeroRow;
+
+            initCanvas();
+        });
+
+        // --- SIGNATURE LOGIC ---
+        let canvas, ctx, isDrawing = false;
+        function initCanvas() {
+            canvas = document.getElementById('sigCanvas');
+            ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * 2; canvas.height = rect.height * 2;
+            ctx.scale(2, 2); ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = "#000";
+            ['mousedown','touchstart'].forEach(ev=>canvas.addEventListener(ev, startDraw));
+            ['mousemove','touchmove'].forEach(ev=>canvas.addEventListener(ev, draw));
+            ['mouseup','touchend','mouseout'].forEach(ev=>canvas.addEventListener(ev, stopDraw));
+        }
+        function startDraw(e) { isDrawing=true; ctx.beginPath(); const p=getPos(e); ctx.moveTo(p.x, p.y); if(e.type!=='mousedown')e.preventDefault(); }
+        function draw(e) { if(!isDrawing)return; const p=getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if(e.type!=='mousemove')e.preventDefault(); }
+        function stopDraw() { isDrawing=false; }
+        function clearSig() { ctx.clearRect(0,0,canvas.width,canvas.height); }
+        function getPos(e) { const r=canvas.getBoundingClientRect(); const c=e.changedTouches?e.changedTouches[0]:e; return {x:c.clientX-r.left, y:c.clientY-r.top}; }
+
+        // --- SUBMIT LOGIC ---
+        async function submitOrder() {
+            const sigCanvas = document.getElementById('sigCanvas');
+            if (!sigCanvas) return alert("Error: Canvas missing.");
+            if(!confirm("Submit Order to Office?")) return;
+
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            try {
+                const dataUrl = sigCanvas.toDataURL("image/png");
+                document.getElementById('fs-sig-link').value = dataUrl;
+
+                const form = document.getElementById('fs-form');
+                const formData = new FormData(form);
+                const response = await fetch("https://formspree.io/f/xdannjrl", { method: "POST", body: formData, headers: { 'Accept': 'application/json' } });
+
+                if (response.ok) alert("✅ Order Sent Successfully!");
+                else alert("⚠️ Email failed to send.");
+
+            } catch (err) { alert("Error: " + err.message); } 
+            finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+        }
+    </script>
+</body>
+</html>
