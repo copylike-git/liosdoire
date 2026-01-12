@@ -27,13 +27,9 @@
         .projection-section { margin-top: 30px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; page-break-inside: avoid; }
         .proj-header { background: #1e3a8a; color: white; padding: 10px 15px; font-weight: bold; font-size: 0.9rem; }
         .proj-body { padding: 15px; }
-        
-        /* 1. POOL GRID */
         .pool-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
         .pool-val { font-size: 1.1rem; font-weight: 800; color: #334155; }
         .pool-lbl { font-size: 0.7rem; text-transform: uppercase; color: #64748b; }
-        
-        /* 2. SEASONAL CHART */
         .chart-row { display: flex; align-items: center; margin-bottom: 4px; font-size: 0.7rem; }
         .chart-label { width: 30px; font-weight: bold; color: #64748b; }
         .chart-bar-bg { flex: 1; height: 10px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
@@ -42,8 +38,6 @@
         .chart-bar.med { background: #3b82f6; }
         .chart-bar.low { background: #10b981; }
         .chart-note { width: 100px; text-align: right; font-style: italic; color: #94a3b8; font-size: 0.65rem; margin-left: 10px; }
-
-        /* 3. CUMULATIVE LIST */
         .cumul-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 20px; background: #f8fafc; padding: 10px; border-radius: 6px; }
         .cumul-item { text-align: center; }
         .cumul-year { font-size: 0.7rem; font-weight: bold; color: #1e3a8a; }
@@ -165,7 +159,7 @@
     
     <div style="text-align:center; margin-bottom:50px;">
         <br>
-        <a href="liosdoire_quote_v16_9.html" style="color:#cbd5e1; text-decoration:none;">← Go Back to Calculator</a>
+        <a href="liosdoire_quote_v16_11.html" style="color:#cbd5e1; text-decoration:none;">← Go Back to Calculator</a>
     </div>
 
     <script>
@@ -215,6 +209,7 @@
             const fsList = document.getElementById('fs-device-list');
             quoteData.finalDeviceList.forEach((d, i) => {
                 const badge = d.isManaged ? '<strong style="color:#16a34a">Managed</strong>' : '<span style="color:#64748b">Hardware</span>';
+                // Show Location even for Hardware (if typed)
                 const loc = d.location ? `<br><span style="font-size:0.8rem; font-style:italic;">📍 ${d.location}</span>` : '';
                 tbody.innerHTML += `<tr><td>#${i+1}</td><td><strong>${d.model}</strong></td><td>${badge} ${loc}</td></tr>`;
                 
