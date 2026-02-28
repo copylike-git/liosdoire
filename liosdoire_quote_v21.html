@@ -2,287 +2,486 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Liosdoire — Order Preview (v19)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liosdoire Quote v21 — Interactive Projection</title>
     <link rel="stylesheet" href="style_v16_14.css">
     <style>
-        body { background: #525659; padding: 40px; }
-        .page { background: white; width: 210mm; min-height: 297mm; margin: 0 auto; padding: 15mm; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .brand-header { display: flex; align-items: center; justify-content: center; padding-bottom: 20px; border-bottom: 2px solid #CF122E; margin-bottom: 20px; }
+        .required-star { color: #CF122E; font-weight: bold; margin-left: 3px; }
+        input.error { border-color: #CF122E; background-color: #fff5f5; }
+        .brand-header { display: flex; align-items: center; justify-content: center; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0; margin-bottom: 20px; }
         .brand-left { text-align: right; padding-right: 20px; border-right: 2px solid #cbd5e1; }
         .brand-name { font-size: 1.4rem; font-weight: bold; color: #333; margin: 0; }
         .brand-status { font-size: 0.8rem; color: #666; margin-top: 4px; font-weight: 500; }
         .brand-right { padding-left: 20px; }
         .ricoh-logo-img { height: 45px; display: block; }
-        .sub-header { text-align: right; color: #64748b; font-size: 0.8rem; margin-top: -15px; margin-bottom: 20px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #fdf2f2; padding: 15px; border-radius: 6px; border: 1px solid #CF122E; margin-bottom: 20px; font-size: 0.9rem; }
-        .info-item strong { display: block; font-size: 0.7rem; color: #CF122E; text-transform: uppercase; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        th { text-align: left; background: #f8fafc; padding: 8px; border-bottom: 2px solid #CF122E; color: #333; }
-        td { padding: 8px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-        .financial-summary { display: flex; justify-content: flex-end; margin-top: 20px; }
-        .financial-table { width: 300px; text-align: right; }
-        .financial-table td { padding: 5px; }
-        .total-row { font-weight: bold; color: #CF122E; font-size: 1.1rem; border-top: 2px solid #CF122E; }
-        .credit-box { background: #fdf2f2; padding: 15px; border-radius: 6px; border: 1px solid #CF122E; margin-top: 20px; }
-        .credit-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; }
-        .credit-val { font-size: 1.2rem; font-weight: bold; color: #CF122E; display: block; }
-        .credit-lbl { font-size: 0.75rem; color: #64748b; text-transform: uppercase; }
         
-        /* PROJECTION CHART */
-        .projection-section { margin-top: 30px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; page-break-inside: avoid; }
-        .proj-header { background: #CF122E; color: white; padding: 10px 15px; font-weight: bold; font-size: 0.9rem; }
-        .proj-body { padding: 15px; }
-        .pool-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
-        .pool-val { font-size: 1.1rem; font-weight: 800; color: #334155; }
-        .pool-lbl { font-size: 0.7rem; text-transform: uppercase; color: #64748b; }
+        .device-options { display: none; background: #f8fafc; padding: 10px; margin-top: 10px; border-top: 1px dashed #cbd5e1; font-size: 0.85rem; }
+        .device-options.active { display: block; }
+        .option-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
         
-        .chart-row { display: flex; align-items: center; margin-bottom: 4px; font-size: 0.7rem; }
-        .chart-label { width: 30px; font-weight: bold; color: #64748b; }
-        .chart-bar-bg { flex: 1; height: 10px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
-        .chart-bar { height: 100%; border-radius: 3px; }
-        .chart-bar.high { background: #CF122E; }
-        .chart-bar.med { background: #3b82f6; }
-        .chart-bar.low { background: #10b981; }
-        .chart-note { width: 100px; text-align: right; font-style: italic; color: #94a3b8; font-size: 0.65rem; margin-left: 10px; }
+        .chart-container { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .chart-bars { display: flex; align-items: flex-end; justify-content: space-between; height: 150px; padding-top: 20px; gap: 4px; }
+        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+        .bar-val { font-size: 0.65rem; color: #64748b; margin-bottom: 4px; font-weight: bold; }
+        .bar-fill { width: 100%; background: #3b82f6; border-radius: 3px 3px 0 0; transition: height 0.3s ease, background 0.3s; }
+        .bar-lbl { font-size: 0.7rem; color: #475569; margin-top: 6px; text-transform: uppercase; }
         
-        .cumul-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 20px; background: #f8fafc; padding: 10px; border-radius: 6px; }
-        .cumul-item { text-align: center; }
-        .cumul-year { font-size: 0.7rem; font-weight: bold; color: #CF122E; }
-        .cumul-vol { font-size: 0.8rem; color: #475569; }
-
-        .sig-section { margin-top: 30px; }
-        .sig-box { height: 120px; border: 2px dashed #cbd5e1; background: #fcfcfc; border-radius: 6px; position: relative; touch-action: none; }
-        canvas#sigCanvas { width: 100%; height: 100%; cursor: crosshair; display: block; }
-        .actions { text-align: center; margin-top: 40px; }
-        .btn { padding: 15px 30px; background: #CF122E; color: white; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; font-weight: bold; margin: 0 10px; }
-        .btn-print { background: #64748b; }
-        #loadingOverlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); color: white; z-index: 999; align-items: center; justify-content: center; flex-direction: column; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #CF122E; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media print { body { background: white; padding: 0; } .page { box-shadow: none; margin: 0; padding: 15mm; } .actions, .no-print { display: none; } }
+        .projection-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: #475569; }
     </style>
 </head>
 <body>
-
-    <div id="loadingOverlay"><div class="spinner"></div><div id="loadingText">Sending to Office...</div></div>
-
-    <form id="fs-form" action="https://formspree.io/f/xdannjrl" method="POST" style="display:none;">
-        <input type="hidden" name="_subject" id="fs-subject" value="New Order">
-        <input type="text" name="Business Name" id="fs-business">
-        <input type="text" name="Total Monthly" id="fs-total">
-        <input type="text" name="Internal Profit" id="fs-profit">
-        <input type="text" name="Hardware CapEx" id="fs-capex">
-        <textarea name="Device List" id="fs-list"></textarea>
-        <input type="hidden" name="Signature_Image" id="fs-sig-link">
-    </form>
-
-    <div class="page">
+    <header>
         <div class="brand-header">
             <div class="brand-left"><div class="brand-name">Liosdoire Computers</div><div class="brand-status">Authorized & Preferred Regional Reseller<br>Co. Kerry</div></div>
-            <div class="brand-right"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Ricoh_logo.svg/1280px-Ricoh_logo.svg.png" class="ricoh-logo-img"></div>
+            <div class="brand-right"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Ricoh_logo.svg/1280px-Ricoh_logo.svg.png" class="ricoh-logo-img" onerror="this.onerror=null; this.src='https://logo.wine/a/logo/Ricoh/Ricoh-Logo.wine.svg'"></div>
         </div>
-        
-        <div class="sub-header"><strong>Quotation & Order Form</strong><br>Date: <span id="pDate"></span></div>
+        <div style="text-align:center; font-size:0.9rem; color:#CF122E; font-weight:bold; margin-top:10px;">INTERNAL QUOTATION CALCULATOR (v21.0)</div>
+    </header>
 
-        <div class="info-grid">
-            <div class="info-item"><strong>Business / School</strong><span id="pBusiness"></span></div>
-            <div class="info-item"><strong>Sector</strong><span id="pSector"></span></div>
-            <div class="info-item"><strong>Contact</strong><span id="pClient"></span></div>
-            <div class="info-item"><strong>Email</strong><span id="pEmail"></span></div>
-            <div class="info-item"><strong>Address</strong><span id="pAddress"></span></div>
-            <div class="info-item"><strong>Phone</strong><span id="pPhone"></span></div>
-        </div>
-
-        <h3 style="color:#CF122E; border-bottom:1px solid #CF122E; padding-bottom:5px;">Hardware & Services Schedule</h3>
-        <table>
-            <thead><tr><th>ID</th><th>Description</th><th>Configuration & Service</th></tr></thead>
-            <tbody id="pDeviceTable"></tbody>
-        </table>
-
-        <div class="financial-summary">
-            <table class="financial-table">
-                <tr><td>Monthly Hardware & Service:</td><td>€<span id="pExVat">0.00</span></td></tr>
-                <tr><td>VAT (23%):</td><td>€<span id="pVat">0.00</span></td></tr>
-                <tr class="total-row"><td>Total Monthly Charge:</td><td>€<span id="pIncVat">0.00</span></td></tr>
-            </table>
-        </div>
-
-        <div class="credit-box">
-            <div style="font-weight:bold; color:#CF122E; margin-bottom:10px; font-size:0.9rem;">INCLUDED PRINT ALLOWANCE (Total Pool for 60 Months)</div>
-            <div class="credit-grid">
-                <div class="credit-item"><span class="credit-val" id="pTotalMono">0</span><span class="credit-lbl">Mono Pages</span></div>
-                <div class="credit-item"><span class="credit-val" id="pTotalCol">0</span><span class="credit-lbl">Colour Pages</span></div>
-                <div class="credit-item">
-                    <div style="font-size:0.8rem; color:#64748b;">Add-on:</div>
-                    <div style="font-size:0.9rem; font-weight:600;" id="pAddonSummary">None</div>
-                </div>
+    <div id="app">
+        <div class="section">
+            <div class="section-title">1. Client Information</div>
+            <div class="client-info-grid">
+                <div><label>Business / School Name<span class="required-star">*</span></label><input type="text" id="clientBusiness" placeholder="e.g. St. Brendan's College"></div>
+                <div><label>Contact Person Name<span class="required-star">*</span></label><input type="text" id="clientName" placeholder="e.g. John Doe"></div>
+                <div><label>Email Address<span class="required-star">*</span></label><input type="email" id="clientEmail" placeholder="admin@school.ie"></div>
+                <div><label>Phone Number<span class="required-star">*</span></label><input type="tel" id="clientPhone" placeholder="08x xxx xxxx"></div>
+                <div style="grid-column: span 2;"><label>Billing Address<span class="required-star">*</span></label><input type="text" id="clientAddress" placeholder="Street, Town, County, Eircode"></div>
+                <div><label>Sector</label><select id="clientSector"><option value="Education">Education</option><option value="Business">Business</option></select></div>
             </div>
         </div>
 
-        <div class="projection-section">
-            <div class="proj-header">STRATEGIC PRINT CONSUMPTION PROJECTION (5-YEAR TERM)</div>
-            <div class="proj-body">
-                <div class="pool-grid">
-                    <div><span class="pool-val" id="projMono">0</span><br><span class="pool-lbl">Total Mono Pages</span></div>
-                    <div><span class="pool-val" id="projCol">0</span><br><span class="pool-lbl">Total Colour Pages</span></div>
-                    <div style="border-left:1px solid #e2e8f0;"><span class="pool-val" id="projTotal" style="color:#CF122E;">0</span><br><span class="pool-lbl">Total Contract Volume</span></div>
+        <div class="section"><div class="section-title">2. Select Devices & Options</div><div id="deviceList"></div></div>
+
+        <div class="section"><div class="section-title">3. Managed Services (Per Unit)</div>
+            <div style="margin: 16px 0;">
+                <label>Select RSI Pack Level:</label>
+                <select id="packSelect" style="margin-top: 4px; padding: 8px; font-weight: bold;">
+                    <option value="Basic">RSI Basic (Remote Support) — €0.00</option>
+                    <option value="Connect">RSI Connect+ (Cloud & Security) — €10.00</option>
+                </select>
+                <div style="font-size: 0.8rem; color: #64748b; margin-top: 5px;" id="packDesc">Client Cost: €0 | Internal Cost: €0</div>
+            </div>
+            <div id="mpsDeviceContainer" class="mps-list"><div style="padding:15px; color:#64748b; text-align:center;">No devices selected.</div></div>
+        </div>
+
+        <div class="section"><div class="section-title">4. Print Credit Dashboard</div>
+            <div class="dashboard-container">
+                <div class="control-group" style="background:#f8fafc; border-color:#94a3b8;"><span class="tag tag-blue">Hardware Mix</span><div class="col-header">Mono Mix %</div><div class="slider-wrapper"><input type="range" id="sliderBaseMono" class="slider-black" orient="vertical" min="0" max="100" value="75" step="1"></div><div class="display-val" id="dispPctMono">75%</div><input type="text" id="readBaseMono" class="manual-input" readonly style="background:#e2e8f0; color:#64748b;" value="0"></div>
+                <div class="control-group" style="background:#f8fafc; border-color:#94a3b8;"><span class="tag tag-blue">Hardware Mix</span><div class="col-header">Colour Mix %</div><div class="slider-wrapper"><input type="range" id="sliderBaseColour" class="slider-rainbow" orient="vertical" min="0" max="100" value="25" step="1"></div><div class="display-val" id="dispPctCol">25%</div><input type="text" id="readBaseColour" class="manual-input" readonly style="background:#e2e8f0; color:#64748b;" value="0"></div>
+                <div class="control-group"><span class="tag tag-green">Add-on</span><div class="col-header">Extra Mono</div><div class="slider-wrapper"><input type="range" id="sliderAddonMono" class="slider-black" orient="vertical" min="0" max="1000000" step="1000" value="0"></div><input type="number" id="inputAddonMono" class="manual-input" value="0" step="1000"></div>
+                <div class="control-group"><span class="tag tag-green">Add-on</span><div class="col-header">Extra Colour</div><div class="slider-wrapper"><input type="range" id="sliderAddonColour" class="slider-rainbow" orient="vertical" min="0" max="1000000" step="1000" value="0"></div><input type="number" id="inputAddonColour" class="manual-input" value="0" step="1000"></div>
+            </div>
+            <div style="text-align:center; padding: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;"><span style="color:#166534; font-weight:bold;">Total Retail Add-on Cost: <span id="addonCostDisplay" style="font-size:1.2rem">+€0.00</span> / mo</span></div>
+            <div class="live-total-box"><span class="live-label">Estimated Monthly Total (Ex VAT)</span><span id="liveMonthlyDisplay" class="live-amount">€0.00</span></div>
+        </div>
+
+        <div class="section"><div class="section-title">5. Consumption Projection</div>
+            <div class="projection-controls">
+                <div>
+                    <div class="slider-label"><span>Usage Pattern</span><span id="seasonLabel">Seasonal (Education)</span></div>
+                    <input type="range" id="seasonSlider" min="0" max="100" value="100" step="10" style="width:100%; accent-color:#CF122E;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#94a3b8; margin-top:5px;">
+                        <span>Flat (Business)</span>
+                        <span>Peaky (School)</span>
+                    </div>
                 </div>
-                
-                <div style="font-size:0.75rem; font-weight:bold; color:#64748b; margin-bottom:8px;">Projected Monthly Consumption (Allocated Distribution)</div>
-                <div id="chartContainer"></div> <div style="font-size:0.75rem; font-weight:bold; color:#64748b; margin-top:15px;">5-Year Cumulative Usage Trajectory (Target Max)</div>
-                <div class="cumul-grid" id="cumulGrid"></div>
+                <div>
+                    <div class="slider-label"><span>Start Month</span></div>
+                    <select id="startMonthSelect" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;">
+                        <option value="0">January (Calendar)</option>
+                        <option value="8" selected>September (Academic)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div style="text-align:center; font-size:0.8rem; font-weight:bold; color:#64748b; margin-bottom:10px;">12-Month Distribution of Allocated Print (<span id="totalPoolDisplay">0</span> Pages)</div>
+                <div class="chart-bars" id="projectionChart">
+                    </div>
             </div>
         </div>
 
-        <div class="sig-section">
-            <h3 style="margin-bottom:10px; color:#CF122E;">Authorisation</h3>
-            <p style="font-size:0.8rem; color:#64748b;">By signing below, I confirm I am authorised to order on behalf of the client.</p>
-            <div class="sig-box"><canvas id="sigCanvas"></canvas></div>
-            <div style="display:flex; justify-content:space-between; margin-top:5px;">
-                <span style="font-size:0.8rem; color:#64748b;">Client Signature</span>
-                <button onclick="clearSig()" class="no-print" style="font-size:0.75rem; padding:4px 8px; cursor:pointer;">Clear</button>
+        <div class="section"><div class="section-title">6. Finalize Quote</div>
+            <div class="action-bar"><button id="calculateBtn" class="success" style="flex:1;">Calculate / Preview Quote</button><label class="action-checkbox"><input type="checkbox" id="showBreakdownChk"> Review Internal Margin & Costs</label></div>
+            <div id="result" class="result">
+                <h3 style="color:var(--primary); border-bottom:1px solid #cbd5e1; padding-bottom:5px;">Internal Financial Breakdown</h3>
+                <table class="result-table"><thead><tr><th>Item</th><th>Logic</th><th>Amount (€)</th></tr></thead>
+                    <tbody>
+                        <tr><td>(+) Hardware Lease</td><td><span class="calc-detail">Devices + Options</span></td><td id="deviceAmt"></td></tr>
+                        <tr><td>(+) MPS Pack</td><td><span class="calc-detail">Pack Cost × Active Units</span></td><td id="mpsAmt"></td></tr>
+                        <tr style="background:#f0fdf4"><td><strong>(+) Retail Add-on</strong></td><td><span class="calc-detail">Extra Pages Revenue / 60</span></td><td id="retailAddonAmt" style="font-weight:bold; color:#166534"></td></tr>
+                        <tr style="background:#fdf2f2; border-top: 2px solid #cbd5e1; border-bottom: 2px solid #cbd5e1;"><td><strong>(=) Monthly Revenue</strong></td><td><span class="calc-detail">Sum of above</span></td><td id="totalMonthlyAmt" style="font-weight:bold; color:var(--primary);"></td></tr>
+                        <tr><td>(-) Grenke Finance Cost</td><td><span class="calc-detail">Calculated @ ~6.57% APR</span></td><td id="grenkeAmt" style="color:red"></td></tr>
+                        <tr><td>(-) Hardware CapEx</td><td><span class="calc-detail">Devices + Options Cost</span></td><td id="deviceCapexAmt" style="color:red"></td></tr>
+                        <tr><td>(-) Service Cost (Ricoh)</td><td><span class="calc-detail">Internal CPP × Vol</span></td><td id="ricohAmt" style="color:red"></td></tr>
+                        <tr><td>(-) RSI Pack Cost</td><td><span class="calc-detail">Internal Cost</span></td><td id="rsiCostAmt" style="color:red"></td></tr>
+                        <tr style="background:#fdf2f2; border-top: 2px solid #cbd5e1;"><td><strong>(=) Net Cash Profit</strong></td><td><span class="calc-detail">Cash In Bank - Costs</span></td><td id="profitAmt" style="font-weight:bold; font-size:1.1rem; color:var(--success);"></td></tr>
+                        <tr><td><strong>Net Margin %</strong></td><td><span class="calc-detail">Profit / Cash In Bank</span></td><td id="marginAmt" style="font-weight:bold"></td></tr>
+                    </tbody>
+                </table>
+                <button id="previewBtn" class="secondary" style="margin-top: 15px; width: 100%;">📄 Proceed to Order / Preview</button>
             </div>
         </div>
     </div>
-
-    <div class="actions">
-        <button onclick="window.print()" class="btn btn-print">🖨️ Print Page</button>
-        <button onclick="submitOrder()" class="btn">🚀 Submit Order to Office</button>
-    </div>
-    <div style="text-align:center; margin-bottom:50px;"><br><a href="liosdoire_quote_v19.html" style="color:#cbd5e1; text-decoration:none;">← Go Back to Calculator</a></div>
 
     <script>
-        // Same Logic as Quote Tool
+        // Blended CPPs Updated
+        const RICOH_CPP = { mono: 0.0038, colour: 0.038 }; 
+        const RETAIL_CPP = { mono: 0.005, colour: 0.05 };  
+        const MARGIN_TARGET = 0.50; 
+        const GRENKE_MONTHLY_RATE = 0.005316; 
+        
+        const PACKS = {
+            "Basic":   { retail: 0.00, cost: 0.00, name: "RSI Basic" },
+            "Connect": { retail: 10.00, cost: 9.00, name: "RSI Connect+" }
+        };
+
+        const COMMON_OPTIONS = [
+            { id: "opt_cab", name: "Cabinet Stand", retail: 5.00, capex: 150 },
+            { id: "opt_tray", name: "Paper Bank (2x550)", retail: 12.00, capex: 350 },
+            { id: "opt_fin", name: "Internal Finisher (Staple)", retail: 15.00, capex: 550 }
+        ];
+
+        const DEVICES = [
+            { model: "Ricoh IM C2010", desc: "Ricoh IM C2010 (A3 Col 20ppm)", cost: 95.00, capex: 1600, options: COMMON_OPTIONS },
+            { model: "Ricoh IM C2510", desc: "Ricoh IM C2510 (A3 Col 25ppm)", cost: 110.00, capex: 1850, options: COMMON_OPTIONS },
+            { model: "Ricoh IM C3010", desc: "Ricoh IM C3010 (A3 Col 30ppm)", cost: 150.00, capex: 2000, options: COMMON_OPTIONS },
+            { model: "Ricoh IM C3510", desc: "Ricoh IM C3510 (A3 Col 35ppm)", cost: 170.00, capex: 2300, options: COMMON_OPTIONS },
+            { model: "Ricoh IM C4510", desc: "Ricoh IM C4510 (A3 Col 45ppm)", cost: 210.00, capex: 3100, options: COMMON_OPTIONS },
+            { model: "Ricoh IM C6010", desc: "Ricoh IM C6010 (A3 Col 60ppm)", cost: 280.00, capex: 4500, options: COMMON_OPTIONS },
+            { model: "Ricoh IM 2500", desc: "Ricoh IM 2500 (A3 Mono 25ppm)", cost: 70.00, capex: 1400, options: COMMON_OPTIONS },
+            { model: "Ricoh IM 3000", desc: "Ricoh IM 3000 (A3 Mono 30ppm)", cost: 80.00, capex: 1500, options: COMMON_OPTIONS }, // Added IM 3000
+            { model: "Ricoh IM 3500", desc: "Ricoh IM 3500 (A3 Mono 35ppm)", cost: 90.00, capex: 1650, options: COMMON_OPTIONS },
+            { model: "Ricoh IM 5000", desc: "Ricoh IM 5000 (A3 Mono 50ppm)", cost: 130.00, capex: 2200, options: COMMON_OPTIONS },
+            { model: "Ricoh IM 7000", desc: "Ricoh IM 7000 (A3 Mono 70ppm)", cost: 300.00, capex: 4150, options: COMMON_OPTIONS },
+            { model: "Ricoh IM C320F", desc: "Ricoh IM C320F (A4 Col)", cost: 50.00, capex: 1000, options: [] },
+            { model: "Ricoh IM 370",   desc: "Ricoh IM 370 (A4 Mono)", cost: 25.00, capex: 700, options: [] }
+        ];
+
         const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
         const PROFILE_EDU = [0.9, 1.2, 0.7, 0.6, 1.2, 0.4, 0.1, 0.1, 0.7, 0.7, 0.8, 0.9]; 
         const PROFILE_FLAT = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-        let quoteData = null;
+        function init() {
+            renderDeviceList();
+            const sBaseMono = document.getElementById('sliderBaseMono'), sBaseCol = document.getElementById('sliderBaseColour');
+            sBaseMono.addEventListener('input', (e) => { sBaseCol.value = 100 - parseInt(e.target.value); updateMix(); });
+            sBaseCol.addEventListener('input', (e) => { sBaseMono.value = 100 - parseInt(e.target.value); updateMix(); });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            quoteData = JSON.parse(sessionStorage.getItem('quoteData'));
-            if (!quoteData) return;
-
-            // Fill Visuals
-            document.getElementById('pBusiness').textContent = quoteData.clientBusiness || "-";
-            document.getElementById('pClient').textContent = quoteData.clientName;
-            document.getElementById('pEmail').textContent = quoteData.clientEmail;
-            document.getElementById('pPhone').textContent = quoteData.clientPhone || "-";
-            document.getElementById('pAddress').textContent = quoteData.clientAddress || "-";
-            document.getElementById('pDate').textContent = quoteData.date;
-            document.getElementById('pSector').textContent = quoteData.clientSector;
-            document.getElementById('pExVat').textContent = quoteData.monthlyExVat;
-            document.getElementById('pVat').textContent = (parseFloat(quoteData.monthlyExVat)*0.23).toFixed(2);
-            document.getElementById('pIncVat').textContent = quoteData.monthlyIncVat;
-
-            // Volumes
-            const clean = (v) => typeof v==='string'?parseInt(v.replace(/,/g,'')):v;
-            const bM=clean(quoteData.baseMono), bC=clean(quoteData.baseCol), aM=clean(quoteData.addMono), aC=clean(quoteData.addCol);
-            const totalMono = bM + aM;
-            const totalCol = bC + aC;
-            const grandTotal = totalMono + totalCol;
-            const annualAvg = Math.round(grandTotal / 5);
-
-            document.getElementById('projMono').textContent = totalMono.toLocaleString();
-            document.getElementById('projCol').textContent = totalCol.toLocaleString();
-            document.getElementById('projTotal').textContent = grandTotal.toLocaleString();
-            document.getElementById('pTotalMono').textContent = totalMono.toLocaleString();
-            document.getElementById('pTotalCol').textContent = totalCol.toLocaleString();
-            const addonText = (aM>0||aC>0) ? `${aM.toLocaleString()}m / ${aC.toLocaleString()}c` : "None";
-            document.getElementById('pAddonSummary').textContent = addonText;
-
-            // --- CHART GENERATION ---
-            const chartHtml = generateChartHtml(quoteData.projection || { seasonality: 100, startMonthIdx: 8 });
-            document.getElementById('chartContainer').innerHTML = chartHtml;
-
-            // Cumulative Grid
-            let cumulHtml = '';
-            for(let y=1; y<=5; y++) {
-                const yearVal = (annualAvg * y).toLocaleString();
-                cumulHtml += `<div class="cumul-item"><div class="cumul-year">Year ${y}</div><div class="cumul-vol">${yearVal}</div></div>`;
-            }
-            document.getElementById('cumulGrid').innerHTML = cumulHtml;
-
-            // Render Table
-            const tbody = document.getElementById('pDeviceTable');
-            let formListText = "";
-            quoteData.finalDeviceList.forEach((d, i) => {
-                const packName = d.isManaged ? quoteData.packName : "Hardware Only";
-                const packStyle = d.isManaged ? "color:#16a34a; font-weight:bold;" : "color:#64748b";
-                let optsHtml = ""; let optsText = "";
-                if(d.options && d.options.length > 0) {
-                    optsHtml = `<div style="font-size:0.75rem; color:#64748b; margin-top:2px;">+ ${d.options.join(', ')}</div>`;
-                    optsText = " + [" + d.options.join(', ') + "]";
-                }
-                const loc = d.location ? `<br><span style="font-size:0.8rem; font-style:italic;">📍 ${d.location}</span>` : '';
-                tbody.innerHTML += `<tr><td>#${i+1}</td><td><strong>${d.model}</strong>${optsHtml}</td><td><span style="${packStyle}">${packName}</span> ${loc}</td></tr>`;
-                formListText += `Unit ${i+1}: ${d.model}${optsText} (${packName}) - ${d.location}\n`;
+            const ids = [['sliderAddonMono', 'inputAddonMono'], ['sliderAddonColour', 'inputAddonColour']];
+            ids.forEach(([sId, iId]) => {
+                const s = document.getElementById(sId), i = document.getElementById(iId);
+                const sync = () => { updateAddonCost(); calculateAll(); }; 
+                s.addEventListener('input', (e) => { i.value = e.target.value; sync(); });
+                i.addEventListener('input', (e) => { s.value = e.target.value; sync(); });
             });
 
-            document.getElementById('fs-business').value = quoteData.clientBusiness;
-            document.getElementById('fs-total').value = quoteData.monthlyExVat;
-            document.getElementById('fs-list').value = formListText;
-            if(quoteData.financials) {
-                document.getElementById('fs-profit').value = "€" + quoteData.financials.netProfit;
-                document.getElementById('fs-capex').value = "-€" + quoteData.financials.capex;
-            }
-
-            initCanvas();
-        });
-
-        function generateChartHtml(settings) {
-            const seasonVal = settings.seasonality / 100;
-            const startIdx = settings.startMonthIdx;
-            let html = "";
+            document.getElementById('packSelect').addEventListener('change', updatePackDesc);
+            document.getElementById('calculateBtn').addEventListener('click', handleCalculateClick);
+            document.getElementById('previewBtn').addEventListener('click', goToPreview);
             
+            document.getElementById('seasonSlider').addEventListener('input', updateChart);
+            document.getElementById('startMonthSelect').addEventListener('change', updateChart);
+
+            updatePackDesc();
+            updateChart(); 
+        }
+
+        function updateChart() {
+            const seasonVal = parseInt(document.getElementById('seasonSlider').value) / 100;
+            const startMonthIdx = parseInt(document.getElementById('startMonthSelect').value);
+            const totalPool = parseInt(document.getElementById('totalPoolDisplay').textContent.replace(/,/g,'')) || 12000;
+            const avgMonthly = totalPool / 60;
+            
+            const seasonLabels = ["Flat (Business)", "Mild Seasonality", "Moderate Seasonality", "High Seasonality", "Extreme (Education)"];
+            const labelIdx = Math.floor(seasonVal * 4);
+            document.getElementById('seasonLabel').textContent = seasonLabels[labelIdx];
+
+            let chartHtml = "";
+            let maxVal = 0;
+            const displayData = [];
+
             for(let i=0; i<12; i++) {
-                const mIdx = (startIdx + i) % 12;
+                const mIdx = (startMonthIdx + i) % 12;
                 const factor = (PROFILE_FLAT[mIdx] * (1 - seasonVal)) + (PROFILE_EDU[mIdx] * seasonVal);
-                
-                // Color Logic
-                let colorClass = "med"; 
-                let note = "";
-                if(factor > 1.1) { colorClass = "high"; if(MONTHS[mIdx]==="MAY" || MONTHS[mIdx]==="FEB") note = "EXAMS"; }
-                if(factor < 0.5) { colorClass = "low"; note = "Idle"; }
-                
-                const width = Math.min(100, factor * 80); // Scale for visuals
-
-                html += `
-                <div class="chart-row">
-                    <div class="chart-label">${MONTHS[mIdx]}</div>
-                    <div class="chart-bar-bg"><div class="chart-bar ${colorClass}" style="width: ${width}%;"></div></div>
-                    <div class="chart-note">${note}</div>
-                </div>`;
+                const val = avgMonthly * factor; 
+                displayData.push({ month: MONTHS[mIdx], val: val, factor: factor });
+                if(val > maxVal) maxVal = val;
             }
-            return html;
+
+            displayData.forEach(d => {
+                const h = (d.val / (maxVal * 1.1)) * 100;
+                let color = "#3b82f6";
+                if (d.factor > 1.1) color = "#CF122E";
+                if (d.factor < 0.5) color = "#10b981";
+
+                chartHtml += `
+                <div class="bar-col">
+                    <div class="bar-val">${Math.round(d.val).toLocaleString()}</div>
+                    <div class="bar-fill" style="height:${h}%; background:${color};"></div>
+                    <div class="bar-lbl">${d.month}</div>
+                </div>`;
+            });
+            
+            document.getElementById('projectionChart').innerHTML = chartHtml;
         }
 
-        // --- SIGNATURE LOGIC ---
-        let canvas, ctx, isDrawing = false;
-        function initCanvas() {
-            canvas = document.getElementById('sigCanvas');
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width; canvas.height = rect.height;
-            ctx = canvas.getContext('2d');
-            ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = "#000";
-            canvas.addEventListener("pointerdown", (e)=>{ e.preventDefault(); isDrawing=true; canvas.setPointerCapture(e.pointerId); ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); });
-            canvas.addEventListener("pointermove", (e)=>{ if(isDrawing) { e.preventDefault(); ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); } });
-            canvas.addEventListener("pointerup", (e)=>{ isDrawing=false; canvas.releasePointerCapture(e.pointerId); });
-        }
-        function clearSig() { ctx.clearRect(0,0,canvas.width,canvas.height); }
+        function renderDeviceList() {
+            const list = document.getElementById('deviceList');
+            const featuredModels = ["Ricoh IM C3010", "Ricoh IM 3000", "Ricoh IM C320F", "Ricoh IM 370"];
+            
+            const renderHTML = (d) => {
+                const safeModel = d.model.replace(/\s+/g, '_');
+                let optionsHtml = '';
+                if(d.options && d.options.length > 0) {
+                    optionsHtml = `<div class="device-options" id="opts-${safeModel}">
+                        <div style="font-weight:bold; margin-bottom:5px; color:#CF122E;">Optional Extras:</div>
+                        ${d.options.map((opt) => `
+                            <div class="option-row"><label class="option-label"><input type="checkbox" class="opt-chk" data-parent="${safeModel}" data-retail="${opt.retail}" data-capex="${opt.capex}" data-name="${opt.name}" onchange="calculateAll()"> ${opt.name}</label><span class="option-cost">+€${opt.retail.toFixed(2)}/mo</span></div>
+                        `).join('')}
+                    </div>`;
+                }
+                return `
+                <div class="device-item" style="flex-direction:column; align-items:stretch; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="device-info"><div class="device-name" style="font-weight:bold;">${d.desc}</div><div class="device-financials" style="color:#64748b; font-size:0.85rem;">Base: €${d.cost.toFixed(2)}/mo</div></div>
+                        <div class="qty-controls" style="display:flex; align-items:center;">
+                            <button onclick="adjustQty('${safeModel}', -1)" style="padding:5px 10px; cursor:pointer;">-</button>
+                            <input type="number" id="qty-${safeModel}" value="0" readonly style="width:50px; text-align:center; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; margin:0 5px; padding:5px;">
+                            <button onclick="adjustQty('${safeModel}', 1)" style="padding:5px 10px; cursor:pointer;">+</button>
+                        </div>
+                    </div>${optionsHtml}
+                </div>`;
+            };
 
-        async function submitOrder() {
-            if(!confirm("Submit Order to Office?")) return;
-            document.getElementById('loadingOverlay').style.display = 'flex';
-            try {
-                document.getElementById('fs-sig-link').value = canvas.toDataURL("image/png");
-                const form = document.getElementById('fs-form');
-                const formData = new FormData(form);
-                await fetch("https://formspree.io/f/xdannjrl", { method: "POST", body: formData, headers: { 'Accept': 'application/json' } });
-                alert("✅ Order Sent Successfully!");
-            } catch (err) { alert("Error: " + err.message); } 
-            finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+            const featured = DEVICES.filter(d => featuredModels.includes(d.model)).map(renderHTML).join('');
+            const other = DEVICES.filter(d => !featuredModels.includes(d.model)).map(renderHTML).join('');
+
+            list.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color:#CF122E; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; text-transform:uppercase; font-size:0.9rem;">Featured Models (30ppm)</h4>
+                    ${featured}
+                </div>
+                
+                <button type="button" onclick="const e = document.getElementById('otherDevices'); const isHidden = e.style.display === 'none'; e.style.display = isHidden ? 'block' : 'none'; this.textContent = isHidden ? '− Hide Additional Models' : '+ Show Full Device Catalog';" style="width:100%; padding:12px; background:#f8fafc; color:#475569; border:1px dashed #cbd5e1; border-radius:6px; cursor:pointer; font-weight:bold; margin-bottom:15px; transition:0.2s;">+ Show Full Device Catalog</button>
+                
+                <div id="otherDevices" style="display:none; padding-top:10px;">
+                    <h4 style="color:#64748b; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; text-transform:uppercase; font-size:0.9rem;">Additional Models</h4>
+                    ${other}
+                </div>
+            `;
         }
+
+        function updatePackDesc() {
+            const p = PACKS[document.getElementById('packSelect').value];
+            document.getElementById('packDesc').textContent = `Client Cost: €${p.retail.toFixed(2)} | Internal Cost: €${p.cost.toFixed(2)}`;
+            calculateAll();
+        }
+
+        function adjustQty(modelSafe, delta) { 
+            const el = document.getElementById(`qty-${modelSafe}`);
+            const optsDiv = document.getElementById(`opts-${modelSafe}`);
+            let newQty = Math.max(0, (parseInt(el.value)||0)+delta);
+            el.value = newQty;
+            if(optsDiv) {
+                if(newQty > 0) optsDiv.classList.add('active');
+                else { optsDiv.classList.remove('active'); optsDiv.querySelectorAll('input').forEach(i => i.checked = false); }
+            }
+            renderMpsList(); recalculateBaseCredit(); calculateAll(); 
+        }
+        
+        function getQty(model) { return parseInt(document.getElementById(`qty-${model.replace(/\s+/g, '_')}`).value) || 0; }
+
+        function calculateAll() {
+            const data = getFinancials();
+            document.getElementById('liveMonthlyDisplay').textContent = `€${data.totalMonthly.toFixed(2)}`;
+            if (data.totalMonthly === 0) return;
+
+            document.getElementById('deviceAmt').textContent = `€${data.hwMonthly.toFixed(2)}`;
+            document.getElementById('mpsAmt').textContent = `€${data.mpsMonthly.toFixed(2)}`;
+            document.getElementById('retailAddonAmt').textContent = `€${data.addonMonthly.toFixed(2)}`;
+            document.getElementById('totalMonthlyAmt').textContent = `€${data.totalMonthly.toFixed(2)}`;
+            document.getElementById('grenkeAmt').textContent = `-€${data.grenkeFee.toFixed(2)}`;
+            document.getElementById('deviceCapexAmt').textContent = `-€${data.totalCapex.toFixed(2)}`;
+            document.getElementById('ricohAmt').textContent = `-€${data.serviceCost.toFixed(2)}`;
+            document.getElementById('rsiCostAmt').textContent = `-€${data.rsiInternalCost.toFixed(2)}`;
+            document.getElementById('profitAmt').textContent = `€${data.netProfit.toFixed(2)}`;
+            document.getElementById('marginAmt').textContent = `${data.margin.toFixed(1)}%`;
+            
+            const grandTotalPool = data.baseMono + data.baseCol + data.addMono + data.addCol;
+            document.getElementById('totalPoolDisplay').textContent = grandTotalPool.toLocaleString();
+            updateChart();
+
+            saveState(data);
+        }
+
+        function getFinancials() {
+            let hwMonthly = 0, totalCapex = 0;
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if(qty > 0) { 
+                    hwMonthly += qty * d.cost; totalCapex += qty * d.capex; 
+                    const optsDiv = document.getElementById(`opts-${d.model.replace(/\s+/g, '_')}`);
+                    if(optsDiv) optsDiv.querySelectorAll('input:checked').forEach(opt => { hwMonthly += (parseFloat(opt.dataset.retail)*qty); totalCapex += (parseFloat(opt.dataset.capex)*qty); });
+                }
+            });
+
+            let mpsMonthly = 0, rsiInternalCost = 0, mpsCount = 0;
+            const packData = PACKS[document.getElementById('packSelect').value];
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { if(chk.checked) { mpsMonthly += packData.retail; rsiInternalCost += packData.cost; mpsCount++; } });
+            const rsiTotalCost = rsiInternalCost * 60;
+
+            const addMono = parseInt(document.getElementById('inputAddonMono').value) || 0;
+            const addCol = parseInt(document.getElementById('inputAddonColour').value) || 0;
+            const addonMonthly = ((addMono * RETAIL_CPP.mono) + (addCol * RETAIL_CPP.colour)) / 60;
+
+            const totalMonthly = hwMonthly + mpsMonthly + addonMonthly;
+            const grossContractVal = totalMonthly * 60;
+            
+            const n = 60;
+            const r = GRENKE_MONTHLY_RATE;
+            const pvFactor = (1 - Math.pow(1 + r, -n)) / r;
+            const cashInBank = totalMonthly > 0 ? totalMonthly * pvFactor : 0;
+            
+            const grenkeFee = grossContractVal - cashInBank; 
+
+            const baseMono = parseInt(document.getElementById('readBaseMono').value.replace(/,/g, '')) || 0;
+            const baseCol = parseInt(document.getElementById('readBaseColour').value.replace(/,/g, '')) || 0;
+            const serviceCost = ((baseMono + addMono) * RICOH_CPP.mono) + ((baseCol + addCol) * RICOH_CPP.colour);
+            
+            const netProfit = cashInBank - totalCapex - serviceCost - rsiTotalCost;
+            const margin = (netProfit / (cashInBank || 1)) * 100;
+            
+            return { hwMonthly, mpsMonthly, addonMonthly, totalMonthly, grossContractVal, grenkeFee, totalCapex, serviceCost, rsiInternalCost: rsiTotalCost, netProfit, margin, baseMono, baseCol, addMono, addCol, mpsCount };
+        }
+
+        function updateMix() { const sBaseMono = document.getElementById('sliderBaseMono'); const sBaseCol = document.getElementById('sliderBaseColour'); document.getElementById('dispPctMono').textContent = sBaseMono.value + '%'; document.getElementById('dispPctCol').textContent = sBaseCol.value + '%'; recalculateBaseCredit(); calculateAll(); }
+        function updateAddonCost() { const m = parseInt(document.getElementById('inputAddonMono').value)||0; const c = parseInt(document.getElementById('inputAddonColour').value)||0; const val = (m*RETAIL_CPP.mono)+(c*RETAIL_CPP.colour); document.getElementById('addonCostDisplay').textContent = `+€${(val/60).toFixed(2)}`; }
+        
+        function handleCalculateClick() {
+            const fields = ['clientBusiness', 'clientName', 'clientEmail', 'clientPhone', 'clientAddress'];
+            let isValid = true;
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if(!el.value.trim()) { el.classList.add('error'); isValid = false; } 
+                else { el.classList.remove('error'); }
+            });
+            if(!isValid) { alert("Please fill in all mandatory fields."); return; }
+            calculateAll();
+            document.getElementById('showBreakdownChk').checked ? document.getElementById('result').classList.add('visible') : goToPreview();
+        }
+
+        function recalculateBaseCredit() { 
+            const r = GRENKE_MONTHLY_RATE; const n = 60;
+            const pvFactor = (1 - Math.pow(1 + r, -n)) / r;
+
+            let hwMonthly = 0, totalCapex = 0;
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if(qty > 0) { 
+                    hwMonthly += qty * d.cost; totalCapex += qty * d.capex; 
+                    const optsDiv = document.getElementById(`opts-${d.model.replace(/\s+/g, '_')}`);
+                    if(optsDiv) optsDiv.querySelectorAll('input:checked').forEach(opt => { hwMonthly += (parseFloat(opt.dataset.retail)*qty); totalCapex += (parseFloat(opt.dataset.capex)*qty); });
+                }
+            });
+
+            let mpsMonthly = 0, rsiTotalCost = 0;
+            const packData = PACKS[document.getElementById('packSelect').value];
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { if(chk.checked) { mpsMonthly += packData.retail; rsiTotalCost += (packData.cost * 60); } });
+
+            const baseMonthly = hwMonthly + mpsMonthly;
+            if(baseMonthly === 0) { document.getElementById('readBaseMono').value=0; document.getElementById('readBaseColour').value=0; return; }
+
+            const cashInBank = baseMonthly * pvFactor;
+            const targetProfit = cashInBank * MARGIN_TARGET; 
+            
+            let safeBudget = cashInBank - totalCapex - rsiTotalCost - targetProfit;
+            safeBudget = Math.max(0, safeBudget);
+
+            const mPct = parseInt(document.getElementById('sliderBaseMono').value)/100;
+            const cPct = parseInt(document.getElementById('sliderBaseColour').value)/100;
+            const blendedCost = (mPct * RICOH_CPP.mono) + (cPct * RICOH_CPP.colour);
+            
+            if(blendedCost === 0 || safeBudget === 0) { document.getElementById('readBaseMono').value=0; document.getElementById('readBaseColour').value=0; return; }
+            
+            const totalPages = Math.floor(safeBudget / blendedCost);
+            document.getElementById('readBaseMono').value = Math.floor(totalPages * mPct).toLocaleString();
+            document.getElementById('readBaseColour').value = Math.floor(totalPages * cPct).toLocaleString();
+        }
+
+        function renderMpsList() { 
+            const container = document.getElementById('mpsDeviceContainer');
+            const checkedStates = {};
+            container.querySelectorAll('input[type="checkbox"]').forEach(c => checkedStates[c.id] = c.checked);
+            const locationStates = {};
+            container.querySelectorAll('input[type="text"]').forEach(c => locationStates[c.id] = c.value);
+            let html = "";
+            DEVICES.forEach(d => {
+                const qty = getQty(d.model);
+                if (qty > 0) {
+                    const safeModel = d.model.replace(/\s+/g, '_');
+                    for (let i = 1; i <= qty; i++) {
+                        const chkId = `mps-chk-${safeModel}-${i}`;
+                        const locId = `mps-loc-${safeModel}-${i}`;
+                        const isChecked = checkedStates[chkId] !== undefined ? checkedStates[chkId] : false;
+                        html += `
+                        <div class="mps-item">
+                            <div class="mps-row-main"><input type="checkbox" id="${chkId}" data-model="${d.model}" ${isChecked ? 'checked' : ''} onchange="calculateAll();"><label for="${chkId}"><span>${d.model}</span><span class="mps-unit-badge">Unit #${i}</span></label></div>
+                            <div class="mps-location-input" style="display:block !important; margin-top:8px; margin-left:35px;"><input type="text" id="${locId}" placeholder="Location / Name" value="${locationStates[locId] || ''}"></div>
+                        </div>`;
+                    }
+                }
+            });
+            container.innerHTML = html || '<div style="padding:15px; color:#64748b; text-align:center;">No devices selected.</div>';
+        }
+
+        function saveState(data) {
+            const finalDeviceList = [];
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => {
+                const parts = chk.id.split('-');
+                const unitNum = parts.pop();
+                const safeModel = chk.dataset.model.replace(/\s+/g, '_');
+                const locInput = document.getElementById(chk.id.replace('mps-chk-', 'mps-loc-'));
+                const selectedOptions = [];
+                const optsDiv = document.getElementById(`opts-${safeModel}`);
+                if(optsDiv) optsDiv.querySelectorAll('input:checked').forEach(opt => selectedOptions.push(opt.dataset.name));
+                finalDeviceList.push({ model: chk.dataset.model, unitNum: unitNum, isManaged: chk.checked, location: locInput && locInput.value.trim() ? locInput.value.trim() : `Unit #${unitNum}`, options: selectedOptions });
+            });
+
+            quoteState = {
+                clientBusiness: document.getElementById('clientBusiness').value,
+                clientName: document.getElementById('clientName').value,
+                clientEmail: document.getElementById('clientEmail').value,
+                clientPhone: document.getElementById('clientPhone').value,
+                clientAddress: document.getElementById('clientAddress').value,
+                clientSector: document.getElementById('clientSector').value,
+                date: new Date().toLocaleDateString('en-IE'),
+                finalDeviceList, 
+                baseMono: data.baseMono, baseCol: data.baseCol,
+                addMono: data.addMono, addCol: data.addCol,
+                monthlyExVat: data.totalMonthly.toFixed(2),
+                monthlyIncVat: (data.totalMonthly*1.23).toFixed(2),
+                packName: PACKS[document.getElementById('packSelect').value].name,
+                
+                projection: {
+                    seasonality: parseInt(document.getElementById('seasonSlider').value),
+                    startMonthIdx: parseInt(document.getElementById('startMonthSelect').value)
+                },
+
+                financials: { netProfit: data.netProfit.toFixed(2), margin: data.margin.toFixed(1) + "%", capex: data.totalCapex.toFixed(2) }
+            };
+        }
+
+        function goToPreview() {
+            if (!quoteState) calculateAll();
+            if (parseFloat(quoteState.monthlyExVat) === 0) { alert("Please select at least one device."); return; }
+            sessionStorage.setItem('quoteData', JSON.stringify(quoteState));
+            window.location.href = 'liosdoire_preview_v20.html'; // Points to the V20 Preview page perfectly
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
