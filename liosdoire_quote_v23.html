@@ -56,12 +56,12 @@
 
         <div class="section"><div class="section-title">3. Managed Services (Per Unit)</div>
             <div style="margin: 16px 0;">
-                <label>Select RSI Pack Level:</label>
+                <label>Select Service Level:</label>
                 <select id="packSelect" style="margin-top: 4px; padding: 8px; font-weight: bold;">
-                    <option value="Basic">RSI Basic (Remote Support) — €0.00</option>
-                    <option value="Connect">RSI Connect+ (Cloud & Security) — €10.00</option>
+                    <option value="Basic">Basic (Remote Support) — €0.00</option>
+                    <option value="Connect">Managed Cloud Print Services — €20.00</option>
                 </select>
-                <div style="font-size: 0.8rem; color: #64748b; margin-top: 5px;" id="packDesc">Client Cost: €0 | Internal Cost: €0</div>
+                <div style="font-size: 0.8rem; color: #64748b; margin-top: 5px;" id="packDesc">Client Cost: €0 | Internal Cost: €0 | Capex: €0</div>
             </div>
             <div id="mpsDeviceContainer" class="mps-list"><div style="padding:15px; color:#64748b; text-align:center;">No devices selected.</div></div>
         </div>
@@ -115,9 +115,9 @@
                         <tr style="background:#f0fdf4"><td><strong>(+) Retail Add-on</strong></td><td><span class="calc-detail">Extra Pages Revenue / 60</span></td><td id="retailAddonAmt" style="font-weight:bold; color:#166534"></td></tr>
                         <tr style="background:#fdf2f2; border-top: 2px solid #cbd5e1; border-bottom: 2px solid #cbd5e1;"><td><strong>(=) Monthly Revenue</strong></td><td><span class="calc-detail">Sum of above</span></td><td id="totalMonthlyAmt" style="font-weight:bold; color:var(--primary);"></td></tr>
                         <tr><td>(-) Grenke Finance Cost</td><td><span class="calc-detail">Calculated @ ~6.57% APR</span></td><td id="grenkeAmt" style="color:red"></td></tr>
-                        <tr><td>(-) Hardware CapEx</td><td><span class="calc-detail">Devices + Options Cost</span></td><td id="deviceCapexAmt" style="color:red"></td></tr>
+                        <tr><td>(-) Total CapEx</td><td><span class="calc-detail">Devices + Options + MPS</span></td><td id="deviceCapexAmt" style="color:red"></td></tr>
                         <tr><td>(-) Service Cost (Ricoh)</td><td><span class="calc-detail">Internal CPP × Vol</span></td><td id="ricohAmt" style="color:red"></td></tr>
-                        <tr><td>(-) RSI Pack Cost</td><td><span class="calc-detail">Internal Cost</span></td><td id="rsiCostAmt" style="color:red"></td></tr>
+                        <tr><td>(-) Service Pack Cost</td><td><span class="calc-detail">Internal Cost</span></td><td id="rsiCostAmt" style="color:red"></td></tr>
                         <tr style="background:#fdf2f2; border-top: 2px solid #cbd5e1;"><td><strong>(=) Net Cash Profit</strong></td><td><span class="calc-detail">Cash In Bank - Costs</span></td><td id="profitAmt" style="font-weight:bold; font-size:1.1rem; color:var(--success);"></td></tr>
                         <tr><td><strong>Net Margin %</strong></td><td><span class="calc-detail">Profit / Cash In Bank</span></td><td id="marginAmt" style="font-weight:bold"></td></tr>
                     </tbody>
@@ -135,8 +135,8 @@
         const GRENKE_MONTHLY_RATE = 0.005316; 
         
         const PACKS = {
-            "Basic":   { retail: 0.00, cost: 0.00, name: "RSI Basic" },
-            "Connect": { retail: 10.00, cost: 9.00, name: "RSI Connect+" }
+            "Basic":   { retail: 0.00, cost: 0.00, capex: 0.00, name: "Basic Support" },
+            "Connect": { retail: 20.00, cost: 20.00, capex: 20.00, name: "Managed Cloud Print Services" }
         };
 
         const COMMON_OPTIONS = [
@@ -297,7 +297,7 @@
 
         function updatePackDesc() {
             const p = PACKS[document.getElementById('packSelect').value];
-            document.getElementById('packDesc').textContent = `Client Cost: €${p.retail.toFixed(2)} | Internal Cost: €${p.cost.toFixed(2)}`;
+            document.getElementById('packDesc').textContent = `Client Cost: €${p.retail.toFixed(2)} | Internal Cost: €${p.cost.toFixed(2)} | Capex: €${(p.capex || 0).toFixed(2)}`;
             calculateAll();
         }
 
@@ -360,7 +360,14 @@
 
             let mpsMonthly = 0, rsiInternalCost = 0, mpsCount = 0;
             const packData = PACKS[document.getElementById('packSelect').value];
-            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { if(chk.checked) { mpsMonthly += packData.retail; rsiInternalCost += packData.cost; mpsCount++; } });
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { 
+                if(chk.checked) { 
+                    mpsMonthly += packData.retail; 
+                    rsiInternalCost += packData.cost; 
+                    totalCapex += (packData.capex || 0);
+                    mpsCount++; 
+                } 
+            });
             const rsiTotalCost = rsiInternalCost * 60;
 
             const baseMonthly = hwMonthly + mpsMonthly;
@@ -437,7 +444,13 @@
 
             let mpsMonthly = 0, rsiTotalCost = 0;
             const packData = PACKS[document.getElementById('packSelect').value];
-            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { if(chk.checked) { mpsMonthly += packData.retail; rsiTotalCost += (packData.cost * 60); } });
+            document.querySelectorAll('[id^="mps-chk-"]').forEach(chk => { 
+                if(chk.checked) { 
+                    mpsMonthly += packData.retail; 
+                    rsiTotalCost += (packData.cost * 60); 
+                    totalCapex += (packData.capex || 0); 
+                } 
+            });
 
             const baseMonthly = hwMonthly + mpsMonthly;
             if(baseMonthly === 0) { document.getElementById('readBaseMono').value=0; document.getElementById('readBaseColour').value=0; return; }
