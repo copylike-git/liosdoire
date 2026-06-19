@@ -164,6 +164,32 @@
             cursor: pointer;
         }
 
+        /* Specialized Technician Print Checklist styling */
+        .tech-checklist-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .tech-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tech-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
         .legal-box {
             background-color: #f9f9fb;
             border: 1px solid var(--border-color);
@@ -246,6 +272,8 @@
             .print-sig-col { width: 48%; border-top: 1px solid #000; padding-top: 5px; font-size: 11px; }
             .sig-img { max-height: 50px; display: block; margin-bottom: 2px; }
             .print-hidden { display: none !important; }
+            .print-check-list { list-style: none; padding-left: 0; margin: 5px 0; font-size: 11px; }
+            .print-check-list li { margin-bottom: 3px; }
         }
     </style>
 </head>
@@ -445,8 +473,34 @@
             <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions.</p>
         </div>
 
+        <!-- TECHNICIAN SIGN-OFF WITH ADDED LIABILITY PHYSICAL INSPECTION CHECKLIST -->
         <div class="signature-section" style="margin-top:20px;">
-            <label>Technician Intake Signature</label>
+            <label>Technician Intake Sign-off & Inspection Verification</label>
+            
+            <div id="tech-checklist-container" class="tech-checklist-box">
+                <label style="font-size:13px; color:var(--primary-color); margin-bottom:8px; text-transform:uppercase;">Mandatory Pre-Repair Audit Checklist</label>
+                <div class="tech-item">
+                    <input type="checkbox" id="chk-chassis" name="tech_audit" value="Chassis/Dents checked">
+                    <label for="chk-chassis" style="font-weight:500; font-size:14px;">Chassis Corners & Base checked for pre-existing drops/dents</label>
+                </div>
+                <div class="tech-item">
+                    <input type="checkbox" id="chk-screen" name="tech_audit" value="Screen cracks/blemishes logged">
+                    <label for="chk-screen" style="font-weight:500; font-size:14px;">Screen inspected under light for hair-cracks, scratches, or delamination</label>
+                </div>
+                <div class="tech-item">
+                    <input type="checkbox" id="chk-liquid" name="tech_audit" value="Liquid indicators verified">
+                    <label for="chk-liquid" style="font-weight:500; font-size:14px;">Ports checked for green oxidation or active liquid ingress signs</label>
+                </div>
+                <div class="tech-item">
+                    <input type="checkbox" id="chk-hinge" name="tech_audit" value="Hinge/Clamshell stress verified">
+                    <label for="chk-hinge" style="font-weight:500; font-size:14px;">Hinge tension and structural screen assembly flex verified</label>
+                </div>
+                <div class="tech-item">
+                    <input type="checkbox" id="chk-missing" name="tech_audit" value="Missing hardware logged">
+                    <label for="chk-missing" style="font-weight:500; font-size:14px;">Rubber feet, base screws, or external structural components verified</label>
+                </div>
+            </div>
+
             <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
             <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
             <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client.</p>
@@ -486,7 +540,7 @@
         <table>
             <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
-            <tr><th>Physical Inspection</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
+            <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Diagnostic Fee</th><td>€50.00 (Non-Refundable)</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
         </table>
 
@@ -514,13 +568,18 @@
         </table>
     </div>
 
+    <!-- INTAKE SIGNATURES & VERIFICATION REPORT ON SHEET -->
     <div class="print-sig-block" style="margin-top: 30px;">
         <div class="print-sig-col">
             <img id="img-sig-customer" class="sig-img" src="" alt="">
             <strong>Client / Authorised Signatory</strong>
         </div>
         <div class="print-sig-col">
-            <img id="img-sig-tech" class="sig-img" src="" alt="">
+            <div id="print-tech-checklist-section">
+                <strong style="font-size:10px; text-transform:uppercase; color:#444;">Verified Pre-Admission Bench Auditing:</strong>
+                <ul id="p-audit-results" class="print-check-list"></ul>
+            </div>
+            <img id="img-sig-tech" class="sig-img" src="" alt="" style="margin-top:10px;">
             <strong>Intake Technician Sign-off</strong>
         </div>
     </div>
@@ -545,6 +604,7 @@
         const btnPickup = document.getElementById('btn-purpose-pickup');
         const serviceOnlySection = document.getElementById('section-service-only');
         const pickupOnlySection = document.getElementById('section-pickup-only');
+        const techChecklistContainer = document.getElementById('tech-checklist-container');
         
         const groupServiceId = document.getElementById('group-service-id');
         const groupStudentIdTop = document.getElementById('group-student-id-top');
@@ -556,8 +616,8 @@
             btnPickup.classList.remove('active');
             serviceOnlySection.classList.remove('hidden');
             pickupOnlySection.classList.add('hidden');
+            techChecklistContainer.classList.remove('hidden'); // Show audit checklist for repairs
             
-            // Swap Top IDs & Requirement Properties
             groupServiceId.classList.remove('hidden');
             groupStudentIdTop.classList.add('hidden');
             inputServiceId.required = true;
@@ -567,8 +627,8 @@
             btnService.classList.remove('active');
             pickupOnlySection.classList.remove('hidden');
             serviceOnlySection.classList.add('hidden');
+            techChecklistContainer.classList.add('hidden'); // Hide audit checklist for brand new deployments
             
-            // Swap Top IDs & Requirement Properties
             groupStudentIdTop.classList.remove('hidden');
             groupServiceId.classList.add('hidden');
             inputStudentIdTop.required = true;
@@ -613,7 +673,6 @@
         document.getElementById('p-selected-purpose').innerText = intakePurpose === 'service' ? "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION" : "NEW HARDWARE ASSIGNMENT PICKUP DELIVERY";
         document.getElementById('p-name').innerText = document.getElementById('c-name').value;
         
-        // Format Timestamp nicely for printed document
         const dateVal = document.getElementById('c-date').value;
         document.getElementById('p-date').innerText = dateVal ? dateVal.replace('T', ' ') : 'Unspecified';
         
@@ -622,14 +681,18 @@
 
         const printDeviceBlock = document.getElementById('print-meta-service-device-block');
         const printStudentBlock = document.getElementById('print-meta-student-credential-block');
+        const printTechChecklistSection = document.getElementById('print-tech-checklist-section');
+        const auditListUl = document.getElementById('p-audit-results');
+        
+        auditListUl.innerHTML = ''; // Clear previous print run data out
 
         if (intakePurpose === 'service') {
-            // Service Unique Target Print Setup
             document.getElementById('p-uid-label').innerText = "Service ID";
             document.getElementById('p-uid-value').innerText = document.getElementById('c-service-id').value;
 
             printDeviceBlock.classList.remove('print-hidden');
             printStudentBlock.classList.add('print-hidden');
+            printTechChecklistSection.classList.remove('print-hidden');
 
             document.getElementById('p-model').innerText = document.getElementById('d-model').value || 'N/A';
             document.getElementById('p-serial').innerText = document.getElementById('d-serial').value || 'N/A';
@@ -646,13 +709,22 @@
             if(document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");
             if(document.getElementById('srv-other').value) srvList.push("Other: " + document.getElementById('srv-other').value);
             document.getElementById('p-services').innerText = srvList.length ? srvList.join(', ') : 'None Selected';
+
+            // Extract values out of Technician Inspection Items explicitly onto paper summary
+            const checkedAuditItems = document.querySelectorAll('input[name="tech_audit"]');
+            checkedAuditItems.forEach(item => {
+                const status = item.checked ? "☑" : "☒";
+                const li = document.createElement('li');
+                li.innerText = `${status} ${item.parentElement.innerText}`;
+                auditListUl.appendChild(li);
+            });
         } else {
-            // Student Pickup Unique Target Print Setup
             document.getElementById('p-uid-label').innerText = "Student ID (Unique Assignment ID)";
             document.getElementById('p-uid-value').innerText = document.getElementById('c-student-id-top').value;
 
             printStudentBlock.classList.remove('print-hidden');
             printDeviceBlock.classList.add('print-hidden');
+            printTechChecklistSection.classList.add('print-hidden'); // No hardware checklist for pickup logs
 
             document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value || 'N/A';
             document.getElementById('p-password').innerText = document.getElementById('sch-password').value || 'N/A';
@@ -676,7 +748,7 @@
         document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();
         document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
 
-        // Print Outward Document Sheet via Printer Spool
+        // Print Outward Document Sheet via Local Network Printer
         window.print();
 
         // Interface Reset Sequence
