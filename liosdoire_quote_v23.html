@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liosdoire Quote v23 — PRICE updated 2nd Mar 2026</title>
+    <title>Liosdoire Quote v23 — PRICE updated</title>
     <link rel="stylesheet" href="style_v16_14.css">
     <style>
         .required-star { color: #CF122E; font-weight: bold; margin-left: 3px; }
@@ -114,7 +114,7 @@
                         <tr id="discountRow" style="display:none; background:#fff5f5; color:#CF122E;"><td><strong>(-) Print Allocation Discount</strong></td><td><span class="calc-detail">Unused Base Credit Savings</span></td><td id="discountAmt" style="font-weight:bold;"></td></tr>
                         <tr style="background:#f0fdf4"><td><strong>(+) Retail Add-on</strong></td><td><span class="calc-detail">Extra Pages Revenue / 60</span></td><td id="retailAddonAmt" style="font-weight:bold; color:#166534"></td></tr>
                         <tr style="background:#fdf2f2; border-top: 2px solid #cbd5e1; border-bottom: 2px solid #cbd5e1;"><td><strong>(=) Monthly Revenue</strong></td><td><span class="calc-detail">Sum of above</span></td><td id="totalMonthlyAmt" style="font-weight:bold; color:var(--primary);"></td></tr>
-                        <tr><td>(-) Grenke Finance Cost</td><td><span class="calc-detail">Calculated @ ~6.57% APR</span></td><td id="grenkeAmt" style="color:red"></td></tr>
+                        <tr><td>(-) Grenke Finance Cost</td><td><span class="calc-detail">17% of Total Instalment Income</span></td><td id="grenkeAmt" style="color:red"></td></tr>
                         <tr><td>(-) Total CapEx</td><td><span class="calc-detail">Devices + Options + MPS</span></td><td id="deviceCapexAmt" style="color:red"></td></tr>
                         <tr><td>(-) Service Cost (Ricoh)</td><td><span class="calc-detail">Internal CPP × Vol</span></td><td id="ricohAmt" style="color:red"></td></tr>
                         <tr><td>(-) Service Pack Cost</td><td><span class="calc-detail">Internal Cost</span></td><td id="rsiCostAmt" style="color:red"></td></tr>
@@ -132,7 +132,7 @@
         const RICOH_CPP = { mono: 0.0038, colour: 0.038 }; 
         const RETAIL_CPP = { mono: 0.005, colour: 0.05 };  
         const MARGIN_TARGET = 0.50; 
-        const GRENKE_MONTHLY_RATE = 0.005316; 
+        const GRENKE_FINANCE_RATE = 0.17; // 17% of total instalment income
         
         const PACKS = {
             "Basic":   { retail: 0.00, cost: 0.00, capex: 0.00, name: "Basic Support" },
@@ -372,9 +372,8 @@
 
             const baseMonthly = hwMonthly + mpsMonthly;
 
-            const r = GRENKE_MONTHLY_RATE;
             const n = 60;
-            const pvFactor = (1 - Math.pow(1 + r, -n)) / r;
+            const pvFactor = n * (1 - GRENKE_FINANCE_RATE);
 
             const CIB_base = baseMonthly > 0 ? baseMonthly * pvFactor : 0;
             const safeBudget_original = (CIB_base * MARGIN_TARGET) - totalCapex - rsiTotalCost;
@@ -400,7 +399,7 @@
             const grossContractVal = totalMonthly * 60;
             
             const cashInBank = totalMonthly > 0 ? totalMonthly * pvFactor : 0;
-            const grenkeFee = grossContractVal - cashInBank; 
+            const grenkeFee = grossContractVal * GRENKE_FINANCE_RATE; 
 
             const baseMono = parseInt(document.getElementById('readBaseMono').value.replace(/,/g, '')) || 0;
             const baseCol = parseInt(document.getElementById('readBaseColour').value.replace(/,/g, '')) || 0;
@@ -429,8 +428,8 @@
         }
 
         function recalculateBaseCredit() { 
-            const r = GRENKE_MONTHLY_RATE; const n = 60;
-            const pvFactor = (1 - Math.pow(1 + r, -n)) / r;
+            const n = 60;
+            const pvFactor = n * (1 - GRENKE_FINANCE_RATE);
 
             let hwMonthly = 0, totalCapex = 0;
             DEVICES.forEach(d => {
