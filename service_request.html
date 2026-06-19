@@ -66,8 +66,18 @@
             gap: 15px;
         }
 
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
         .form-group {
             margin-bottom: 15px;
+        }
+
+        .full-width {
+            grid-column: span 2;
         }
 
         label {
@@ -77,9 +87,14 @@
             font-size: 15px;
         }
 
+        .required-star {
+            color: #df2020;
+            margin-left: 3px;
+        }
+
         input[type="text"],
         input[type="email"],
-        input[type="date"],
+        input[type="datetime-local"],
         select,
         textarea {
             width: 100%;
@@ -240,6 +255,7 @@
     <h1>ITEIREANN</h1>
     <div class="subtitle">Service Request & Device Admission System</div>
 
+    <!-- PURPOSE CHANGER BAR -->
     <label style="text-align: center; display: block; margin-bottom: 10px; font-size: 16px;">Select Admission Process Type:</label>
     <div class="purpose-selector">
         <div id="btn-purpose-service" class="purpose-btn active" onclick="setPurpose('service')">Device Inspection / Service</div>
@@ -248,28 +264,42 @@
 
     <form id="admissionForm">
         
-        <h2>1. Customer Admission Details</h2>
+        <!-- SECTION 1: CORE DETAILS -->
+        <h2>1. Customer Admission Details[cite: 1]</h2>
         <div class="grid-2">
+            
+            <!-- DYNAMIC UNIQUE ID FIELDS AT THE VERY TOP -->
+            <div id="group-service-id" class="form-group full-width">
+                <label for="c-service-id">Service ID<span class="required-star">*</span></label>
+                <input type="text" id="c-service-id" required placeholder="e.g. SR-2026-8492">
+            </div>
+            
+            <div id="group-student-id-top" class="form-group full-width hidden">
+                <label for="c-student-id-top">Student ID<span class="required-star">*</span></label>
+                <input type="text" id="c-student-id-top" placeholder="e.g. STU-123456">
+            </div>
+
             <div class="form-group">
-                <label for="c-name">Customer Name</label>
+                <label for="c-name">Customer Name<span class="required-star">*</span></label>
                 <input type="text" id="c-name" required placeholder="John Doe">
             </div>
             <div class="form-group">
-                <label for="c-date">Admission Date</label>
-                <input type="date" id="c-date" required>
+                <label for="c-date">Admission Date & Time</label>
+                <input type="datetime-local" id="c-date" required>
             </div>
             <div class="form-group">
-                <label for="c-phone">Phone Number</label>
+                <label for="c-phone">Phone Number<span class="required-star">*</span></label>
                 <input type="text" id="c-phone" required placeholder="08X XXX XXXX">
             </div>
             <div class="form-group">
-                <label for="c-email">Email Address</label>
+                <label for="c-email">Email Address<span class="required-star">*</span></label>
                 <input type="email" id="c-email" required placeholder="name@example.com">
             </div>
         </div>
 
+        <!-- DYNAMIC SECTION: SERVICE & INSPECTION ONLY -->
         <div id="section-service-only" class="dynamic-section">
-            <h2>2. Service Device Details</h2>
+            <h2>2. Service Device Details[cite: 1]</h2>
             <div class="grid-2">
                 <div class="form-group">
                     <label for="d-model">Make / Model</label>
@@ -289,7 +319,7 @@
                 </div>
             </div>
 
-            <h2>3. Service Request & Assessment</h2>
+            <h2>3. Service Request & Assessment[cite: 1]</h2>
             <div class="form-group">
                 <label for="sr-faults">Reported Fault(s)</label>
                 <textarea id="sr-faults" placeholder="Describe all faults reported by the client..."></textarea>
@@ -338,16 +368,23 @@
             </p>
         </div>
 
+        <!-- DYNAMIC SECTION: NEW LAPTOP / MOBILE PICKUP ONLY -->
         <div id="section-pickup-only" class="dynamic-section hidden">
             <h2>2. Institutional Security Identification & Assignment</h2>
+            <div class="form-group">
+                <label for="sch-use">School Name / Assignment</label>
+                <input type="text" id="sch-use" placeholder="Name of school">
+            </div>
+            
+            <!-- SPLIT CREDENTIAL FIELDS -->
             <div class="grid-2">
                 <div class="form-group">
-                    <label for="sch-use">School Name / Assignment</label>
-                    <input type="text" id="sch-use" placeholder="Name of school">
+                    <label for="sch-password">Account Password</label>
+                    <input type="text" id="sch-password" placeholder="Account Password">
                 </div>
                 <div class="form-group">
-                    <label for="sch-creds">Student Code & Password</label>
-                    <input type="text" id="sch-creds" placeholder="Enter student authentication keys">
+                    <label for="sch-mfa">MFA Contact Field</label>
+                    <input type="text" id="sch-mfa" placeholder="Phone or Email for MFA verification">
                 </div>
             </div>
 
@@ -373,6 +410,7 @@
                     <label for="hw-mob">Android Mobile Phone Assignment (€99)</label>
                 </div>
 
+                <!-- ESET CONTENT FILTERING DROPDOWN -->
                 <div class="form-group" style="margin-top:15px;">
                     <label for="opt-content-filtering">ESET Content Filtering Install (1 PC 1 Mobile)</label>
                     <select id="opt-content-filtering">
@@ -382,6 +420,7 @@
                     </select>
                 </div>
 
+                <!-- PROTECTION PLAN DROPDOWN -->
                 <div class="form-group">
                     <label for="opt-protection-plan">Protection Plan Selection</label>
                     <select id="opt-protection-plan">
@@ -398,6 +437,7 @@
             </p>
         </div>
 
+        <!-- CANVAS SIGNATURE SIGNBOXES (ALWAYS VISIBLE) -->
         <div class="signature-section">
             <label>Customer / Authorised Signature</label>
             <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
@@ -416,21 +456,27 @@
     </form>
 </div>
 
+<!-- PRINT INTERFACE ENGINE LAYER -->
 <div id="print-rendering-zone">
     <div class="print-title">ITEIREANN - INTAKE ADMISSION ACCOUNT SUMMARY</div>
-    <div style="text-align:right; font-size:11px; margin-bottom:10px;"><strong>Processed:</strong> <span id="p-timestamp"></span></div>
+    <div style="text-align:right; font-size:11px; margin-bottom:10px;"><strong>Printed:</strong> <span id="p-timestamp"></span></div>
     
     <div class="print-sec-title">Intake Process Category</div>
     <p style="font-size:14px; font-weight:bold; margin: 5px 0;" id="p-selected-purpose"></p>
 
-    <div class="print-sec-title">1. Customer Admission Details</div>
+    <div class="print-sec-title">1. Customer Admission Details[cite: 1]</div>
     <table>
-        <tr><th>Customer Name</th><td id="p-name"></td><th>Admission Date</th><td id="p-date"></td></tr>
+        <tr>
+            <th id="p-uid-label">Service ID</th>
+            <td id="p-uid-value" colspan="3" style="font-weight: bold; font-size: 14px;"></td>
+        </tr>
+        <tr><th>Customer Name</th><td id="p-name"></td><th>Admission Date & Time</th><td id="p-date"></td></tr>
         <tr><th>Phone Number</th><td id="p-phone"></td><th>Email Address</th><td id="p-email"></td></tr>
     </table>
 
+    <!-- PRINT VIEW: REPAIR ENGINE VALUES -->
     <div id="print-meta-service-device-block">
-        <div class="print-sec-title">2. Service Device Details</div>
+        <div class="print-sec-title">2. Service Device Details[cite: 1]</div>
         <table>
             <tr><th>Make / Model</th><td id="p-model"></td><th>Serial Number</th><td id="p-serial"></td></tr>
             <tr><th>Mobile Phone</th><td id="p-mobile"></td><th>IMEI Number</th><td id="p-imei"></td></tr>
@@ -446,14 +492,19 @@
 
         <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
         <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable. Financial parts processing totals must be processed upfront[cite: 11]. Quote metrics are valid for 1 working day (E&OE)[cite: 12]. ITEIREANN disclaims all data liability during hardware bench interaction stress tests[cite: 15]. Items left past 60 days will trigger asset liquidation channels[cite: 19, 20].
+            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable. Financial parts processing totals must be processed upfront. Quote metrics are valid for 1 working day (E&OE). ITEIREANN disclaims all data liability during hardware bench interaction stress tests. Items left past 60 days will trigger asset liquidation channels.
         </div>
     </div>
 
+    <!-- PRINT VIEW: PICKUP ENGINE VALUES -->
     <div id="print-meta-student-credential-block" class="print-hidden">
         <div class="print-sec-title">2. Institutional Security Identification</div>
         <table>
-            <tr><th>School Use</th><td id="p-sch-use"></td><th>Student Code & Pass</th><td id="p-sch-creds"></td></tr>
+            <tr><th>School Use</th><td id="p-sch-use" colspan="3"></td></tr>
+            <tr>
+                <th>Password</th><td id="p-password"></td>
+                <th>MFA Contact</th><td id="p-mfa"></td>
+            </tr>
         </table>
 
         <div class="print-sec-title">3. Setup Allocations & Protection Metrics</div>
@@ -477,7 +528,14 @@
 
 <script>
     let intakePurpose = 'service';
-    document.getElementById('c-date').valueAsDate = new Date();
+    
+    // Sets the standard input to the client's current tablet timezone metrics automatically on runtime
+    function setDefaultTimestamp() {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('c-date').value = now.toISOString().slice(0, 16);
+    }
+    setDefaultTimestamp();
 
     // DYNAMIC SECTION TOGGLE LOGIC
     function setPurpose(type) {
@@ -487,17 +545,34 @@
         const btnPickup = document.getElementById('btn-purpose-pickup');
         const serviceOnlySection = document.getElementById('section-service-only');
         const pickupOnlySection = document.getElementById('section-pickup-only');
+        
+        const groupServiceId = document.getElementById('group-service-id');
+        const groupStudentIdTop = document.getElementById('group-student-id-top');
+        const inputServiceId = document.getElementById('c-service-id');
+        const inputStudentIdTop = document.getElementById('c-student-id-top');
 
         if (type === 'service') {
             btnService.classList.add('active');
             btnPickup.classList.remove('active');
             serviceOnlySection.classList.remove('hidden');
             pickupOnlySection.classList.add('hidden');
+            
+            // Swap Top IDs & Requirement Properties
+            groupServiceId.classList.remove('hidden');
+            groupStudentIdTop.classList.add('hidden');
+            inputServiceId.required = true;
+            inputStudentIdTop.required = false;
         } else {
             btnPickup.classList.add('active');
             btnService.classList.remove('active');
             pickupOnlySection.classList.remove('hidden');
             serviceOnlySection.classList.add('hidden');
+            
+            // Swap Top IDs & Requirement Properties
+            groupStudentIdTop.classList.remove('hidden');
+            groupServiceId.classList.add('hidden');
+            inputStudentIdTop.required = true;
+            inputServiceId.required = false;
         }
     }
 
@@ -533,11 +608,15 @@
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Populate Core Values
+        // Populate Core Data Fields
         document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
         document.getElementById('p-selected-purpose').innerText = intakePurpose === 'service' ? "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION" : "NEW HARDWARE ASSIGNMENT PICKUP DELIVERY";
         document.getElementById('p-name').innerText = document.getElementById('c-name').value;
-        document.getElementById('p-date').innerText = document.getElementById('c-date').value;
+        
+        // Format Timestamp nicely for printed document
+        const dateVal = document.getElementById('c-date').value;
+        document.getElementById('p-date').innerText = dateVal ? dateVal.replace('T', ' ') : 'Unspecified';
+        
         document.getElementById('p-phone').innerText = document.getElementById('c-phone').value;
         document.getElementById('p-email').innerText = document.getElementById('c-email').value;
 
@@ -545,7 +624,10 @@
         const printStudentBlock = document.getElementById('print-meta-student-credential-block');
 
         if (intakePurpose === 'service') {
-            // Service Mode Active View Engine Route
+            // Service Unique Target Print Setup
+            document.getElementById('p-uid-label').innerText = "Service ID";
+            document.getElementById('p-uid-value').innerText = document.getElementById('c-service-id').value;
+
             printDeviceBlock.classList.remove('print-hidden');
             printStudentBlock.classList.add('print-hidden');
 
@@ -565,12 +647,16 @@
             if(document.getElementById('srv-other').value) srvList.push("Other: " + document.getElementById('srv-other').value);
             document.getElementById('p-services').innerText = srvList.length ? srvList.join(', ') : 'None Selected';
         } else {
-            // New Pickup Active View Engine Route
+            // Student Pickup Unique Target Print Setup
+            document.getElementById('p-uid-label').innerText = "Student ID (Unique Assignment ID)";
+            document.getElementById('p-uid-value').innerText = document.getElementById('c-student-id-top').value;
+
             printStudentBlock.classList.remove('print-hidden');
             printDeviceBlock.classList.add('print-hidden');
 
             document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value || 'N/A';
-            document.getElementById('p-sch-creds').innerText = document.getElementById('sch-creds').value || 'N/A';
+            document.getElementById('p-password').innerText = document.getElementById('sch-password').value || 'N/A';
+            document.getElementById('p-mfa').innerText = document.getElementById('sch-mfa').value || 'N/A';
             
             let setupStrat = [];
             if(document.getElementById('setup-inperson').checked) setupStrat.push("In Person Setup");
@@ -590,14 +676,14 @@
         document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();
         document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
 
-        // Print Outward Document Sheet via Tablet Framework
+        // Print Outward Document Sheet via Printer Spool
         window.print();
 
-        // Interface Clean Up Routine
+        // Interface Reset Sequence
         this.reset();
         clearCanvas('sig-customer');
         clearCanvas('sig-tech');
-        document.getElementById('c-date').valueAsDate = new Date();
+        setDefaultTimestamp();
         setPurpose('service'); 
     });
 </script>
