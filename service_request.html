@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Admission Service Request</title>
+    <title>ITEIREANN - Service Request Admission Form</title>
     <style>
         :root {
             --primary-color: #0070c9;
             --background-color: #f5f5f7;
             --text-color: #1d1d1f;
             --border-color: #d2d2d7;
+            --section-bg: #ffffff;
         }
 
         body {
@@ -22,42 +23,71 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
-            background: #ffffff;
+            background: var(--section-bg);
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
+        h1 {
+            text-align: center;
+            color: #000;
+            font-size: 24px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
         h2 {
-            margin-top: 0;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            background-color: #e8e8ed;
+            padding: 10px 12px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 500;
-            font-size: 16px; /* Optimized for tablet tapping */
+            font-weight: 600;
+            font-size: 15px;
         }
 
         input[type="text"],
         input[type="email"],
+        input[type="date"],
         select,
         textarea {
             width: 100%;
-            padding: 12px; /* Thicker touch targets for Android */
+            padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-sizing: border-box;
-            font-size: 16px; /* Prevents iOS/Android auto-zoom on focus */
+            font-size: 16px; /* Android zoom safeguard */
             background-color: #fff;
         }
 
@@ -67,140 +97,532 @@
             box-shadow: 0 0 0 3px rgba(0, 112, 201, 0.2);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 120px;
+        /* Checkbox & Radio styling optimized for finger-tapping */
+        .check-group, .radio-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 10px;
+            border: 1px solid #e8e8ed;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+
+        .check-group input, .radio-group input {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .check-group label, .radio-group label {
+            margin-bottom: 0;
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+            padding-top: 1px;
+        }
+
+        .inline-note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .legal-box {
+            background-color: #f9f9fb;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 250px;
+            overflow-y: scroll;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .legal-box p {
+            margin-top: 0;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .signature-section {
+            border: 1px dashed #a1a1a6;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fff;
+            margin-top: 15px;
+        }
+
+        .canvas-container {
+            border: 1px solid var(--border-color);
+            background: #f5f5f7;
+            border-radius: 4px;
+            margin-vertical: 8px;
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 120px;
+            cursor: crosshair;
+        }
+
+        .clear-btn {
+            background: #86868b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-top: 5px;
+            cursor: pointer;
         }
 
         .btn-submit {
-            background-color: var(--primary-color);
+            background-color: #00802b; /* Green finish button */
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 16px 20px;
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Hidden layout container used purely for the print job */
-        #print-ticket {
+        /* PRINT INTERFACE CONTAINER */
+        #print-rendering-zone {
             display: none;
         }
 
-        /* TABLET & MOBILE PRINT OVERRIDES */
+        /* TABLET & PAPER PRINT ENGINE CSS */
         @media print {
             body {
-                background: white;
-                color: black;
-                padding: 0;
-                margin: 0;
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
-            #main-interface {
-                display: none !important; /* Completely hides the form from the printer */
+            #interactive-form-zone {
+                display: none !important;
             }
-            #print-ticket {
-                display: block !important; /* Only shows the print layout to the printer */
+            #print-rendering-zone {
+                display: block !important;
                 width: 100%;
-            }
-            .print-header {
-                border-bottom: 2px solid #000;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-            }
-            .print-group {
-                margin-bottom: 15px;
-            }
-            .print-label {
-                font-weight: bold;
                 font-size: 12px;
-                text-transform: uppercase;
-                color: #444;
             }
-            .print-value {
-                font-size: 16px;
-                white-space: pre-wrap;
+            .print-title {
+                text-align: center;
+                text-transform: uppercase;
+                border-bottom: 2px solid #000;
+                padding-bottom: 5px;
+                margin-bottom: 15px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .print-sec-title {
+                background: #f0f0f0 !important;
+                padding: 4px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-top: 15px;
+                margin-bottom: 8px;
+                border: 1px solid #000;
+                font-size: 12px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 10px;
+            }
+            th, td {
+                border: 1px solid #000;
+                padding: 6px;
+                text-align: left;
+                vertical-align: top;
+            }
+            th {
+                background: #fafafa;
+                width: 25%;
+                font-weight: bold;
+            }
+            .print-legal {
+                font-size: 9px;
+                line-height: 1.3;
+                text-align: justify;
+                border: 1px solid #ccc;
+                padding: 8px;
+                background: #fff;
+            }
+            .print-sig-block {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 25px;
+            }
+            .print-sig-col {
+                width: 48%;
+                border-top: 1px solid #000;
+                padding-top: 5px;
+                font-size: 11px;
+            }
+            .sig-img {
+                max-height: 50px;
+                display: block;
+                margin-bottom: 2px;
             }
         }
     </style>
 </head>
 <body>
 
-<div id="main-interface" class="container">
-    <h2>Admission Service Request</h2>
-    <form id="serviceRequestForm">
+<div id="interactive-form-zone" class="container">
+    <h1>ITEIREANN</h1>
+    <div class="subtitle">Service Request & Device Admission System</div>
+
+    <form id="admissionForm">
+        
+        <h2>1. Customer & Device Admission Details</h2>
+        <div class="grid-2">
+            <div class="form-group">
+                <label for="c-name">Customer Name</label>
+                <input type="text" id="c-name" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="c-date">Admission Date</label>
+                <input type="date" id="c-date" required>
+            </div>
+            <div class="form-group">
+                <label for="c-phone">Phone Number</label>
+                <input type="text" id="c-phone" required placeholder="08X XXX XXXX">
+            </div>
+            <div class="form-group">
+                <label for="c-email">Email Address</label>
+                <input type="email" id="c-email" required placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label for="d-model">Make / Model</label>
+                <input type="text" id="d-model" required placeholder="e.g. Apple MacBook Pro / iPhone 15">
+            </div>
+            <div class="form-group">
+                <label for="d-serial">Serial Number</label>
+                <input type="text" id="d-serial" placeholder="Device Serial Number">
+            </div>
+            <div class="form-group">
+                <label for="d-mobile">Mobile Phone (Alt Number)</label>
+                <input type="text" id="d-mobile" placeholder="Alternative contact number">
+            </div>
+            <div class="form-group">
+                <label for="d-imei">IMEI Number</label>
+                <input type="text" id="d-imei" placeholder="IMEI (if applicable)">
+            </div>
+        </div>
+
+        <h2>2. Service Request & Initial Assessment</h2>
         
         <div class="form-group">
-            <label for="requester-name">Full Name</label>
-            <input type="text" id="requester-name" name="name" required placeholder="John Doe">
+            <label for="sr-faults">Reported Fault(s)</label>
+            <textarea id="sr-faults" required placeholder="Describe all faults reported by the client..."></textarea>
+        </div>
+
+        <label>Requested Services (Select all that apply)</label>
+        <div class="check-group">
+            <input type="checkbox" id="srv-diag" value="Inspection & Diagnostics">
+            <label for="srv-diag">Inspection & Diagnostics</label>
+        </div>
+        <div class="check-group">
+            <input type="checkbox" id="srv-soft">
+            <label for="srv-soft">Software Repair / OS Reinstall</label>
+        </div>
+        <div class="check-group">
+            <input type="checkbox" id="srv-hard">
+            <label for="srv-hard">Hardware Replacement</label>
+        </div>
+        <div class="check-group">
+            <input type="checkbox" id="srv-data">
+            <label for="srv-data">Data Recovery / Backup</label>
+        </div>
+        
+        <div class="form-group" style="margin-top:10px;">
+            <label for="srv-other">Other requested items (Specify):</label>
+            <input type="text" id="srv-other" placeholder="Specify other service requirements here...">
         </div>
 
         <div class="form-group">
-            <label for="requester-email">Email Address</label>
-            <input type="email" id="requester-email" name="email" required placeholder="name@example.com">
+            <label for="sr-physical">Physical Inspection Notes</label>
+            <textarea id="sr-physical" placeholder="Describe pre-existing cosmetic condition, dents, cracks, scratches..."></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="request-category">Category of Service</label>
-            <select id="request-category" name="category" required>
-                <option value="" disabled selected>Select a category</option>
-                <option value="Hardware Support">Hardware Support</option>
-                <option value="Software Installation/License">Software Installation/License</option>
-                <option value="Network/Access Issues">Network/Access Issues</option>
-                <option value="Other Inquiry">Other Inquiry</option>
-            </select>
+        <div class="grid-2" style="background:#f1f2f6; padding:15px; border-radius:8px; margin-bottom:15px;">
+            <div class="form-group">
+                <label>Initial Inspection Fee</label>
+                <div class="check-group" style="background:#fff; margin-bottom:0;">
+                    <input type="checkbox" id="fee-diag" checked disabled>
+                    <label for="fee-diag"><strong>€50.00</strong> (Strictly Non-refundable)</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="fee-additional">Additional Work Quoted Amount (€)</label>
+                <input type="text" id="fee-additional" placeholder="0.00">
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="request-priority">Priority</label>
-            <select id="request-priority" name="priority">
-                <option value="Low - Routine inquiry">Low - Routine inquiry</option>
-                <option value="Medium - Normal response required" selected>Medium - Normal response required</option>
-                <option value="High - Operational impact">High - Operational impact</option>
-            </select>
+        <div style="border: 1px solid var(--border-color); padding: 15px; border-radius:8px; background:#fff; margin-bottom:20px;">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="sch-use">School Use</label>
+                    <input type="text" id="sch-use" placeholder="School assignment / name">
+                </div>
+                <div class="form-group">
+                    <label for="sch-creds">Student Code & Password</label>
+                    <input type="text" id="sch-creds" placeholder="Student credentials details">
+                </div>
+            </div>
+
+            <label style="margin-top:10px;">Device Setup Strategy</label>
+            <div class="radio-group">
+                <input type="radio" id="setup-inperson" name="setup_strategy" value="In person setup">
+                <label for="setup-inperson">In person setup</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="setup-pickup" name="setup_strategy" value="Client pickup without setup">
+                <label for="setup-pickup">Client pickup without setup</label>
+            </div>
+
+            <label style="margin-top:10px;">Hardware/Device Costing Assignment</label>
+            <div class="radio-group">
+                <input type="radio" id="hw-lap" name="hw_cost" value="Laptop / PC (€650)">
+                <label for="hw-lap">Laptop / PC (€650)</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="hw-mob" name="hw_cost" value="Android Mobile Phone (€99)">
+                <label for="hw-mob">Android Mobile Phone (€99)</label>
+            </div>
+
+            <label style="margin-top:10px;">Content Filtering Installation (1 PC 1 Mobile)</label>
+            <div class="radio-group">
+                <input type="radio" id="cf-no" name="cf_cost" value="Not required" checked>
+                <label for="cf-no">Not required</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="cf-1y" name="cf_cost" value="€69 - 1 year">
+                <label for="cf-1y">€69 - 1 year</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="cf-3y" name="cf_cost" value="€149 - 3 years">
+                <label for="cf-3y">€149 - 3 years</label>
+            </div>
+
+            <label style="margin-top:10px;">Protection Plan</label>
+            <div class="radio-group">
+                <input type="radio" id="pp-no" name="pp_cost" value="Not required" checked>
+                <label for="pp-no">Not required</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="pp-1y" name="pp_cost" value="€69 - 1 year">
+                <label for="pp-1y">€69 - 1 year</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="pp-3y" name="pp_cost" value="€149 - 3 years">
+                <label for="pp-3y">€149 - 3 years</label>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="request-description">Description of Request</label>
-            <textarea id="request-description" name="description" required placeholder="Please provide detailed information..."></textarea>
+        <h2>3. Legal Terms, Conditions & Liability Disclaimer</h2>
+        <div class="legal-box">
+            <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory, non-refundable inspection fee of €50.00 + VAT applies to all device admissions. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer.</p>
+            <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences.</p>
+            <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE).</p>
+            <p><strong>3.4 Data Liability & Backup Release:</strong> ITEIREANN strongly advises customers to back up all data prior to handing over any device. While we take every reasonable precaution, ITEIREANN accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes. Data recovery is never guaranteed.</p>
+            <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact. ITEIREANN is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation.</p>
+            <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned. In accordance with legal principles regarding uncollected goods, ITEIREANN reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees.</p>
         </div>
 
-        <button type="submit" class="btn-submit">Submit & Print Ticket</button>
+        <h2>4. Customer Declaration & Authorisation</h2>
+        <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
+            By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50+VAT non-refundable inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE). I hereby authorize ITEIREANN to perform the technical assessment.
+        </p>
+
+        <div class="signature-section">
+            <label>Customer / Authorised Signature</label>
+            <div class="canvas-container">
+                <canvas id="sig-customer"></canvas>
+            </div>
+            <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
+            <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions.</p>
+        </div>
+
+        <div class="signature-section" style="margin-top:20px;">
+            <label>Technician Intake Signature</label>
+            <div class="canvas-container">
+                <canvas id="sig-tech"></canvas>
+            </div>
+            <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
+            <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client.</p>
+        </div>
+
+        <button type="submit" class="btn-submit">Complete Admission & Print Ticket</button>
     </form>
 </div>
 
-<div id="print-ticket">
-    <div class="print-header">
-        <h1 style="margin:0; font-size: 22px;">ADMISSION SERVICE REQUEST</h1>
-        <div style="font-size: 12px; margin-top: 5px;">Date/Time: <span id="pt-timestamp"></span></div>
+<div id="print-rendering-zone">
+    <div class="print-title">ITEIREANN - DEVICE ADMISSION SUMMARY</div>
+    <div style="text-align:right; font-size:11px; margin-bottom:10px;"><strong>Processed:</strong> <span id="p-timestamp"></span></div>
+    
+    <div class="print-sec-title">1. Customer & Device Admission Details</div>
+    <table>
+        <tr><th>Customer Name</th><td id="p-name"></td><th>Admission Date</th><td id="p-date"></td></tr>
+        <tr><th>Phone Number</th><td id="p-phone"></td><th>Email Address</th><td id="p-email"></td></tr>
+        <tr><th>Make / Model</th><td id="p-model"></td><th>Serial Number</th><td id="p-serial"></td></tr>
+        <tr><th>Mobile Phone</th><td id="p-mobile"></td><th>IMEI Number</th><td id="p-imei"></td></tr>
+    </table>
+
+    <div class="print-sec-title">2. Service Request Summary</div>
+    <table>
+        <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
+        <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
+        <tr><th>Physical Inspection</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
+        <tr><th>Initial Diagnostic Fee</th><td>€50.00 (Non-Refundable)</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
+    </table>
+
+    <div class="print-sec-title">3. Institutional Setup & Protection Plans</div>
+    <table>
+        <tr><th>School Use</th><td id="p-sch-use"></td><th>Student Code & Pass</th><td id="p-sch-creds"></td></tr>
+        <tr><th>Setup Strategy</th><td id="p-setup-strat"></td><th>Hardware Assignment</th><td id="p-hw-cost"></td></tr>
+        <tr><th>Content Filtering</th><td id="p-cf-cost"></td><th>Protection Plan</th><td id="p-pp-cost"></td></tr>
+    </table>
+
+    <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
+    <div class="print-legal">
+        <strong>Terms Summary (3.1-3.6):</strong> €50+VAT Inspection diagnostic fee applies unconditionally. All parts and additional labor totals must be settled via upfront transaction before repair execution. Quotation metrics are strictly tied to a 1-day temporal availability scale (E&OE). Absolute backup requirement validation—ITEIREANN disclaims electronic data/hardware stress failure liabilities entirely. Items remaining past 60 days following intake categorization are legally classified as abandoned assets subject to immediate liquidation disposal channels.
     </div>
-    <div class="print-group"><div class="print-label">Name</div><div id="pt-name" class="print-value"></div></div>
-    <div class="print-group"><div class="print-label">Email</div><div id="pt-email" class="print-value"></div></div>
-    <div class="print-group"><div class="print-label">Category</div><div id="pt-category" class="print-value"></div></div>
-    <div class="print-group"><div class="print-label">Priority</div><div id="pt-priority" class="print-value"></div></div>
-    <div class="print-group"><div class="print-label">Description</div><div id="pt-description" class="print-value"></div></div>
+
+    <div class="print-sig-block">
+        <div class="print-sig-col">
+            <img id="img-sig-customer" class="sig-img" src="" alt="">
+            <strong>Client / Authorised Signatory</strong><br>
+            "I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions."
+        </div>
+        <div class="print-sig-col">
+            <img id="img-sig-tech" class="sig-img" src="" alt="">
+            <strong>Technician Sign-off</strong><br>
+            "I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client."
+        </div>
+    </div>
 </div>
 
 <script>
-    document.getElementById('serviceRequestForm').addEventListener('submit', function(event) {
+    // 1. Initialize Date input default to today
+    document.getElementById('c-date').valueAsDate = new Date();
+
+    // 2. Set up Tablet HTML5 Canvas Signature Processing Engine
+    const canvases = ['sig-customer', 'sig-tech'];
+    const engines = {};
+
+    canvases.forEach(id => {
+        const cvs = document.getElementById(id);
+        const ctx = cvs.getContext('2d');
+        
+        // Handle canvas sizing for high density displays
+        cvs.width = cvs.parentElement.clientWidth;
+        cvs.height = 120;
+        
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+
+        let drawing = false;
+        
+        function getPos(e) {
+            const rect = cvs.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function start(e) { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }
+        function move(e) { if(!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+        function stop() { drawing = false; }
+
+        // Tablet Touch listeners
+        cvs.addEventListener('touchstart', start, {passive: false});
+        cvs.addEventListener('touchmove', move, {passive: false});
+        cvs.addEventListener('touchend', stop);
+        // Mouse listeners backup
+        cvs.addEventListener('mousedown', start);
+        cvs.addEventListener('mousemove', move);
+        cvs.addEventListener('mouseup', stop);
+    });
+
+    function clearCanvas(id) {
+        const cvs = document.getElementById(id);
+        const ctx = cvs.getContext('2d');
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+    }
+
+    // 3. Handle Form Submission, Engine Data Capture and Print Execution
+    document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // 1. Map data directly into the hidden print layout container
-        document.getElementById('pt-timestamp').innerText = new Date().toLocaleString();
-        document.getElementById('pt-name').innerText = document.getElementById('requester-name').value;
-        document.getElementById('pt-email').innerText = document.getElementById('requester-email').value;
-        document.getElementById('pt-category').innerText = document.getElementById('request-category').value;
-        document.getElementById('pt-priority').innerText = document.getElementById('request-priority').value;
-        document.getElementById('pt-description').innerText = document.getElementById('request-description').value;
+        // Map inputs directly to the paper execution layer
+        document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
+        document.getElementById('p-name').innerText = document.getElementById('c-name').value;
+        document.getElementById('p-date').innerText = document.getElementById('c-date').value;
+        document.getElementById('p-phone').innerText = document.getElementById('c-phone').value;
+        document.getElementById('p-email').innerText = document.getElementById('c-email').value;
+        document.getElementById('p-model').innerText = document.getElementById('d-model').value;
+        document.getElementById('p-serial').innerText = document.getElementById('d-serial').value || 'N/A';
+        document.getElementById('p-mobile').innerText = document.getElementById('d-mobile').value || 'N/A';
+        document.getElementById('p-imei').innerText = document.getElementById('d-imei').value || 'N/A';
+        document.getElementById('p-faults').innerText = document.getElementById('sr-faults').value;
+        document.getElementById('p-physical').innerText = document.getElementById('sr-physical').value || 'No visible damage noted.';
+        
+        const addFee = document.getElementById('fee-additional').value;
+        document.getElementById('p-add-fee').innerText = addFee ? '€' + addFee : '€0.00';
 
-        // 2. Fire the native Android Print Spooler service
-        // The CSS @media print layout cleanly handles what goes to paper vs what stays on screen
+        // Extract requested service check items
+        let services = [];
+        if(document.getElementById('srv-diag').checked || true) services.push("Inspection & Diagnostics (€50)");
+        if(document.getElementById('srv-soft').checked) services.push("Software Repair / OS Reinstall");
+        if(document.getElementById('srv-hard').checked) services.push("Hardware Replacement");
+        if(document.getElementById('srv-data').checked) services.push("Data Recovery / Backup");
+        if(document.getElementById('srv-other').value) services.push("Other: " + document.getElementById('srv-other').value);
+        document.getElementById('p-services').innerText = services.join(', ');
+
+        // Institution / Setup Fields
+        document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value || 'N/A';
+        document.getElementById('p-sch-creds').innerText = document.getElementById('sch-creds').value || 'N/A';
+        
+        const rStrategy = document.querySelector('input[name="setup_strategy"]:checked');
+        document.getElementById('p-setup-strat').innerText = rStrategy ? rStrategy.value : 'None Selected';
+        
+        const rHw = document.querySelector('input[name="hw_cost"]:checked');
+        document.getElementById('p-hw-cost').innerText = rHw ? rHw.value : 'None';
+        
+        const rCf = document.querySelector('input[name="cf_cost"]:checked');
+        document.getElementById('p-cf-cost').innerText = rCf ? rCf.value : 'Not required';
+
+        const rPp = document.querySelector('input[name="pp_cost"]:checked');
+        document.getElementById('p-pp-cost').innerText = rPp ? rPp.value : 'Not required';
+
+        // Convert the dynamic tablet signature canvas configurations to raw images for the print engine
+        document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();
+        document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
+
+        // Execute physical hardware printing
         window.print();
 
-        // 3. Clear form inputs immediately for the next client intake
+        // Soft-wipe layout components to ready standard interface for next intake cycle
         this.reset();
+        clearCanvas('sig-customer');
+        clearCanvas('sig-tech');
+        document.getElementById('c-date').valueAsDate = new Date();
     });
 </script>
 
