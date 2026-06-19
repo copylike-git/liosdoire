@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admission Service Request</title>
+    <style>
+        :root {
+            --primary-color: #0070c9;
+            --background-color: #f5f5f7;
+            --text-color: #1d1d1f;
+            --border-color: #d2d2d7;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 16px; /* Optimized for tablet tapping */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px; /* Thicker touch targets for Android */
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px; /* Prevents iOS/Android auto-zoom on focus */
+            background-color: #fff;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 112, 201, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 18px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Hidden layout container used purely for the print job */
+        #print-ticket {
+            display: none;
+        }
+
+        /* TABLET & MOBILE PRINT OVERRIDES */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+                margin: 0;
+            }
+            #main-interface {
+                display: none !important; /* Completely hides the form from the printer */
+            }
+            #print-ticket {
+                display: block !important; /* Only shows the print layout to the printer */
+                width: 100%;
+            }
+            .print-header {
+                border-bottom: 2px solid #000;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .print-group {
+                margin-bottom: 15px;
+            }
+            .print-label {
+                font-weight: bold;
+                font-size: 12px;
+                text-transform: uppercase;
+                color: #444;
+            }
+            .print-value {
+                font-size: 16px;
+                white-space: pre-wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="main-interface" class="container">
+    <h2>Admission Service Request</h2>
+    <form id="serviceRequestForm">
+        
+        <div class="form-group">
+            <label for="requester-name">Full Name</label>
+            <input type="text" id="requester-name" name="name" required placeholder="John Doe">
+        </div>
+
+        <div class="form-group">
+            <label for="requester-email">Email Address</label>
+            <input type="email" id="requester-email" name="email" required placeholder="name@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="request-category">Category of Service</label>
+            <select id="request-category" name="category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option value="Hardware Support">Hardware Support</option>
+                <option value="Software Installation/License">Software Installation/License</option>
+                <option value="Network/Access Issues">Network/Access Issues</option>
+                <option value="Other Inquiry">Other Inquiry</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="request-priority">Priority</label>
+            <select id="request-priority" name="priority">
+                <option value="Low - Routine inquiry">Low - Routine inquiry</option>
+                <option value="Medium - Normal response required" selected>Medium - Normal response required</option>
+                <option value="High - Operational impact">High - Operational impact</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="request-description">Description of Request</label>
+            <textarea id="request-description" name="description" required placeholder="Please provide detailed information..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit & Print Ticket</button>
+    </form>
+</div>
+
+<div id="print-ticket">
+    <div class="print-header">
+        <h1 style="margin:0; font-size: 22px;">ADMISSION SERVICE REQUEST</h1>
+        <div style="font-size: 12px; margin-top: 5px;">Date/Time: <span id="pt-timestamp"></span></div>
+    </div>
+    <div class="print-group"><div class="print-label">Name</div><div id="pt-name" class="print-value"></div></div>
+    <div class="print-group"><div class="print-label">Email</div><div id="pt-email" class="print-value"></div></div>
+    <div class="print-group"><div class="print-label">Category</div><div id="pt-category" class="print-value"></div></div>
+    <div class="print-group"><div class="print-label">Priority</div><div id="pt-priority" class="print-value"></div></div>
+    <div class="print-group"><div class="print-label">Description</div><div id="pt-description" class="print-value"></div></div>
+</div>
+
+<script>
+    document.getElementById('serviceRequestForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // 1. Map data directly into the hidden print layout container
+        document.getElementById('pt-timestamp').innerText = new Date().toLocaleString();
+        document.getElementById('pt-name').innerText = document.getElementById('requester-name').value;
+        document.getElementById('pt-email').innerText = document.getElementById('requester-email').value;
+        document.getElementById('pt-category').innerText = document.getElementById('request-category').value;
+        document.getElementById('pt-priority').innerText = document.getElementById('request-priority').value;
+        document.getElementById('pt-description').innerText = document.getElementById('request-description').value;
+
+        // 2. Fire the native Android Print Spooler service
+        // The CSS @media print layout cleanly handles what goes to paper vs what stays on screen
+        window.print();
+
+        // 3. Clear form inputs immediately for the next client intake
+        this.reset();
+    });
+</script>
+
+</body>
+</html>
