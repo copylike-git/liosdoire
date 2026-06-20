@@ -278,7 +278,6 @@
 
 <div id="interactive-form-zone" class="container">
     
-    <!-- DIGITAL TOUCH SCREEN CONTEXT SYSTEM HEADER -->
     <div class="brand-header-ui">
         <div class="logo-src-data brand-logo-img"></div>
         <div class="brand-title-area">
@@ -287,7 +286,6 @@
         </div>
     </div>
 
-    <!-- PURPOSE CHANGER BAR -->
     <label style="text-align: center; display: block; margin-bottom: 10px; font-size: 16px;">Select Admission Process Type:</label>
     <div class="purpose-selector">
         <div id="btn-purpose-service" class="purpose-btn active" onclick="setPurpose('service')">Device Inspection / Service</div>
@@ -296,11 +294,9 @@
 
     <form id="admissionForm">
         
-        <!-- SECTION 1: CORE DETAILS -->
-        <h2>1. Customer Admission Details[cite: 1]</h2>
+        <h2>1. Customer Admission Details</h2>
         <div class="grid-2">
             
-            <!-- DYNAMIC UNIQUE ID FIELDS AT THE VERY TOP -->
             <div id="group-service-id" class="form-group full-width">
                 <label for="c-service-id">Service ID <span class="required-star">*</span></label>
                 <input type="text" id="c-service-id" required placeholder="e.g. SR-2026-8492">
@@ -329,9 +325,8 @@
             </div>
         </div>
 
-        <!-- DYNAMIC SECTION: SERVICE & INSPECTION ONLY -->
         <div id="section-service-only" class="dynamic-section">
-            <h2>2. Service Device Details[cite: 1]</h2>
+            <h2>2. Service Device Details</h2>
             <div class="grid-2">
                 <div class="form-group">
                     <label for="d-model">Make / Model</label>
@@ -351,7 +346,7 @@
                 </div>
             </div>
 
-            <h2>3. Service Request & Assessment[cite: 1]</h2>
+            <h2>3. Service Request & Assessment</h2>
             <div class="form-group">
                 <label for="sr-faults">Reported Fault(s)</label>
                 <textarea id="sr-faults" placeholder="Describe all faults reported by the client..."></textarea>
@@ -386,29 +381,31 @@
 
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
             <div class="legal-box">
-                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory, non-refundable inspection fee of €50.00 + VAT applies to all device admissions[cite: 1]. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer[cite: 1].</p>
-                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences[cite: 1].</p>
-                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE)[cite: 1].</p>
-                <p><strong>3.4 Data Liability & Backup Release:</strong> ITEIREANN strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, ITEIREANN accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes[cite: 1]. Data recovery is never guaranteed[cite: 1].</p>
-                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1]. ITEIREANN is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation[cite: 1].</p>
-                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned[cite: 1]. In accordance with legal principles regarding uncollected goods, ITEIREANN reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees[cite: 1].</p>
+                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory, non-refundable inspection fee of €50.00 + VAT applies to all device admissions. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer.</p>
+                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences.</p>
+                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE).</p>
+                <p><strong>3.4 Data Liability & Backup Release:</strong> ITEIREANN strongly advises customers to back up all data prior to handing over any device. While we take every reasonable precaution, ITEIREANN accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes. Data recovery is never guaranteed.</p>
+                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact. ITEIREANN is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation.</p>
+                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned. In accordance with legal principles regarding uncollected goods, ITEIREANN reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees.</p>
             </div>
 
             <h2>5. Customer Declaration & Authorisation</h2>
             <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services[cite: 1]. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50+VAT non-refundable inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE)[cite: 1]. I hereby authorize ITEIREANN to perform the technical assessment[cite: 1].
+                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50+VAT non-refundable inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE). I hereby authorize ITEIREANN to perform the technical assessment.
             </p>
         </div>
 
-        <!-- DYNAMIC SECTION: NEW LAPTOP / MOBILE PICKUP ONLY -->
         <div id="section-pickup-only" class="dynamic-section hidden">
             <h2>2. Institutional Security Identification & Assignment</h2>
-            <div class="form-group">
-                <label for="sch-use">School Name / Assignment</label>
-                <input type="text" id="sch-use" placeholder="Name of school">
-            </div>
-            
             <div class="grid-2">
+                <div class="form-group">
+                    <label for="sch-use">School Name / Assignment</label>
+                    <input type="text" id="sch-use" placeholder="Name of school">
+                </div>
+                <div class="form-group">
+                    <label for="sch-serial">Assigned Device Serial Number</label>
+                    <input type="text" id="sch-serial" placeholder="Optional Hardware Asset Serial (e.g. System tags)">
+                </div>
                 <div class="form-group">
                     <label for="sch-password">Account Password</label>
                     <input type="text" id="sch-password" placeholder="Account Password">
@@ -419,43 +416,43 @@
                 </div>
             </div>
 
-            <h2>3. Device Setup Options & Protection Plans[cite: 1]</h2>
+            <h2>3. Device Setup Options & Protection Plans</h2>
             <div style="border: 1px solid var(--border-color); padding: 15px; border-radius:8px; background:#fff;">
-                <label>Device Setup Distribution Strategy[cite: 1]</label>
+                <label>Device Setup Distribution Strategy</label>
                 <div class="check-group">
                     <input type="checkbox" id="setup-inperson" value="In person setup">
-                    <label for="setup-inperson">In person setup[cite: 1]</label>
+                    <label for="setup-inperson">In person setup</label>
                 </div>
                 <div class="check-group">
                     <input type="checkbox" id="setup-pickup" value="Client pickup without setup">
-                    <label for="setup-pickup">Client pickup without setup[cite: 1]</label>
+                    <label for="setup-pickup">Client pickup without setup</label>
                 </div>
 
-                <label style="margin-top:10px;">Hardware Item Allocation Selection[cite: 1]</label>
+                <label style="margin-top:10px;">Hardware Item Allocation Selection</label>
                 <div class="check-group">
                     <input type="checkbox" id="hw-lap" value="Laptop / PC (€650)">
-                    <label for="hw-lap">Laptop / PC Assignment (€650)[cite: 1]</label>
+                    <label for="hw-lap">Laptop / PC Assignment (€650)</label>
                 </div>
                 <div class="check-group">
                     <input type="checkbox" id="hw-mob" value="Android Mobile Phone (€99)">
-                    <label for="hw-mob">Android Mobile Phone Assignment (€99)[cite: 1]</label>
+                    <label for="hw-mob">Android Mobile Phone Assignment (€99)</label>
                 </div>
 
                 <div class="form-group" style="margin-top:15px;">
-                    <label for="opt-content-filtering">ESET Content Filtering Install (1 PC 1 Mobile)[cite: 1]</label>
+                    <label for="opt-content-filtering">ESET Content Filtering Install (1 PC 1 Mobile)</label>
                     <select id="opt-content-filtering">
-                        <option value="Not required" selected>Not required[cite: 1]</option>
-                        <option value="€69 - 1 year">€69 - 1 year[cite: 1]</option>
-                        <option value="€149 - 3 years">€149 - 3 years[cite: 1]</option>
+                        <option value="Not required" selected>Not required</option>
+                        <option value="€69 - 1 year">€69 - 1 year</option>
+                        <option value="€149 - 3 years">€149 - 3 years</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="opt-protection-plan">Protection Plan Selection[cite: 1]</label>
+                    <label for="opt-protection-plan">Protection Plan Selection</label>
                     <select id="opt-protection-plan">
-                        <option value="Not required" selected>Not required[cite: 1]</option>
-                        <option value="€69 - 1 year">€69 - 1 year[cite: 1]</option>
-                        <option value="€149 - 3 years">€149 - 3 years[cite: 1]</option>
+                        <option value="Not required" selected>Not required</option>
+                        <option value="€69 - 1 year">€69 - 1 year</option>
+                        <option value="€149 - 3 years">€149 - 3 years</option>
                     </select>
                 </div>
             </div>
@@ -466,17 +463,16 @@
             </p>
         </div>
 
-        <!-- CONDITIONAL SIGNATURE WRAPPER (HIDDEN ON NEW PICKUP) -->
         <div id="wrapper-signatures-zone">
             <div class="signature-section">
-                <label>Customer / Authorised Signature[cite: 1]</label>
+                <label>Customer / Authorised Signature</label>
                 <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions.[cite: 1]</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions.</p>
             </div>
 
             <div class="signature-section" style="margin-top:20px;">
-                <label>Technician Intake Sign-off & Inspection Verification[cite: 1]</label>
+                <label>Technician Intake Sign-off & Inspection Verification</label>
                 
                 <div id="tech-checklist-container" class="tech-checklist-box">
                     <label style="font-size:13px; color:var(--primary-color); margin-bottom:8px; text-transform:uppercase;">Mandatory Pre-Repair Audit Checklist</label>
@@ -504,7 +500,7 @@
 
                 <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client.[cite: 1]</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client.</p>
             </div>
         </div>
 
@@ -512,10 +508,8 @@
     </form>
 </div>
 
-<!-- HARDWARE SPOOL PRINT ENGINE TARGET (A4 ALIGNED FORMAT) -->
 <div id="print-rendering-zone">
     
-    <!-- PRINT LAYOUT BRAND HEADER: LOGO ABSOLUTELY PINNED TO TOP-LEFT -->
     <div class="print-brand-wrap">
         <div class="logo-src-data print-logo-box"></div>
         <div class="print-header-meta">
@@ -525,10 +519,10 @@
         </div>
     </div>
     
-    <div class="print-sec-title">Intake Process Category</div>
+    <div id="p-category-title" class="print-sec-title">Intake Process Category</div>
     <p style="font-size:14px; font-weight:bold; margin: 5px 0;" id="p-selected-purpose"></p>
 
-    <div class="print-sec-title">1. Customer Admission Details[cite: 1]</div>
+    <div id="p-sec1-title" class="print-sec-title">1. Customer Admission Details</div>
     <table>
         <tr>
             <th id="p-uid-label">Service ID</th>
@@ -538,9 +532,8 @@
         <tr><th>Phone Number</th><td id="p-phone"></td><th>Email Address</th><td id="p-email"></td></tr>
     </table>
 
-    <!-- PRINT VIEW: REPAIR ENGINE VALUES -->
     <div id="print-meta-service-device-block">
-        <div class="print-sec-title">2. Service Device Details[cite: 1]</div>
+        <div class="print-sec-title">2. Service Device Details</div>
         <table>
             <tr><th>Make / Model</th><td id="p-model"></td><th>Serial Number</th><td id="p-serial"></td></tr>
             <tr><th>Mobile Phone</th><td id="p-mobile"></td><th>IMEI Number</th><td id="p-imei"></td></tr>
@@ -551,18 +544,18 @@
             <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
             <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
-            <tr><th>Diagnostic Fee</th><td>€50.00 (Non-Refundable)[cite: 1]</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
+            <tr><th>Diagnostic Fee</th><td>€50.00 (Non-Refundable)</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
         </table>
 
         <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
         <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable[cite: 1]. Financial parts processing totals must be processed upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. ITEIREANN disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
+            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable. Financial parts processing totals must be processed upfront. Quote metrics are valid for 1 working day (E&OE). ITEIREANN disclaims all data liability during hardware bench interaction stress tests. Items left past 60 days will trigger asset liquidation channels.
         </div>
         
         <div class="print-sig-block">
             <div class="print-sig-col">
                 <img id="img-sig-customer" class="sig-img" src="" alt="">
-                <strong>Client / Authorised Signatory[cite: 1]</strong>
+                <strong>Client / Authorised Signatory</strong>
             </div>
             <div class="print-sig-col">
                 <div id="print-tech-checklist-section">
@@ -570,12 +563,11 @@
                     <ul id="p-audit-results" class="print-check-list"></ul>
                 </div>
                 <img id="img-sig-tech" class="sig-img" src="" alt="" style="margin-top:5px;">
-                <strong>Intake Technician Sign-off[cite: 1]</strong>
+                <strong>Intake Technician Sign-off</strong>
             </div>
         </div>
     </div>
 
-    <!-- PRINT VIEW: PICKUP ENGINE VALUES (SIGNATURE BLOCKS AUTOMATICALLY SUPPRESSED) -->
     <div id="print-meta-student-credential-block" class="print-hidden">
         <div class="print-sec-title">2. Institutional Security Identification</div>
         <table>
@@ -584,12 +576,15 @@
                 <th>Password</th><td id="p-password"></td>
                 <th>MFA Contact</th><td id="p-mfa"></td>
             </tr>
+            <tr>
+                <th>Device Serial Number</th><td id="p-pickup-serial" colspan="3" style="font-weight: 500;"></td>
+            </tr>
         </table>
 
-        <div class="print-sec-title">3. Setup Allocations & Protection Metrics[cite: 1]</div>
+        <div class="print-sec-title">3. Setup Allocations & Protection Metrics</div>
         <table>
-            <tr><th>Setup Delivery Strategy[cite: 1]</th><td id="p-setup-strat"></td><th>Hardware Allocations[cite: 1]</th><td id="p-hw-cost"></td></tr>
-            <tr><th>ESET Content Filtering[cite: 1]</th><td id="p-cf-cost"></td><th>Protection Plan[cite: 1]</th><td id="p-pp-cost"></td></tr>
+            <tr><th>Setup Delivery Strategy</th><td id="p-setup-strat"></td><th>Hardware Allocations</th><td id="p-hw-cost"></td></tr>
+            <tr><th>ESET Content Filtering</th><td id="p-cf-cost"></td><th>Protection Plan</th><td id="p-pp-cost"></td></tr>
         </table>
     </div>
 </div>
@@ -678,7 +673,6 @@
         event.preventDefault();
 
         document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
-        document.getElementById('p-selected-purpose').innerText = intakePurpose === 'service' ? "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION" : "NEW HARDWARE ASSIGNMENT PICKUP DELIVERY";
         document.getElementById('p-name').innerText = document.getElementById('c-name').value.trim();
         
         const dateVal = document.getElementById('c-date').value;
@@ -690,7 +684,13 @@
         const printDeviceBlock = document.getElementById('print-meta-service-device-block');
         const printStudentBlock = document.getElementById('print-meta-student-credential-block');
 
+        // Dynamic structural text swaps to safely wipe out "Admission" and layout "New device assignment process"
         if (intakePurpose === 'service') {
+            document.getElementById('p-category-title').innerText = "Intake Process Category";
+            document.getElementById('p-category-title').style.display = "block";
+            document.getElementById('p-selected-purpose').innerText = "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION";
+            document.getElementById('p-sec1-title').innerText = "1. Customer Admission Details";
+            
             document.getElementById('p-uid-label').innerText = "Service ID";
             document.getElementById('p-uid-value').innerText = document.getElementById('c-service-id').value.trim();
 
@@ -725,10 +725,14 @@
                 auditListUl.appendChild(li);
             });
 
-            // Pass canvas frames to output images
             document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();
             document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
         } else {
+            // New Device Assignment execution layout changes
+            document.getElementById('p-category-title').style.display = "none"; 
+            document.getElementById('p-selected-purpose').innerText = "New device assignment process";
+            document.getElementById('p-sec1-title').innerText = "1. Customer & Device Assignment Details";
+            
             document.getElementById('p-uid-label').innerText = "Student ID (Unique Assignment ID)";
             document.getElementById('p-uid-value').innerText = document.getElementById('c-student-id-top').value.trim();
 
@@ -738,6 +742,7 @@
             document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value.trim() || 'N/A';
             document.getElementById('p-password').innerText = document.getElementById('sch-password').value.trim() || 'N/A';
             document.getElementById('p-mfa').innerText = document.getElementById('sch-mfa').value.trim() || 'N/A';
+            document.getElementById('p-pickup-serial').innerText = document.getElementById('sch-serial').value.trim() || 'N/A';
             
             let setupStrat = [];
             if(document.getElementById('setup-inperson').checked) setupStrat.push("In Person Setup");
