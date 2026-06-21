@@ -800,15 +800,6 @@
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // TECHNICIAN ANDROID DEVICE PIN VERIFICATION GUARD
-        const technicianPin = prompt("Authentication Required:\nPlease enter your Android device PIN to approve printing:");
-        
-        // Define the expected device code. Modify '1234' to match your shop device standard PIN profile.
-        if (technicianPin !== "1234") {
-            alert("Access Denied: Invalid device PIN profile. Admission aborted.");
-            return;
-        }
-
         if (currentSpeechRecognition) {
             currentSpeechRecognition.stop();
         }
