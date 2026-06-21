@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>iteireann - Client facing UI</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary-color: #005a70;
@@ -262,41 +261,23 @@
             cursor: pointer;
         }
 
-        /* Split Action Button Container */
-        .action-button-zone {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .btn-action {
+        .btn-submit {
+            background-color: #00802b;
             color: white;
             border: none;
             padding: 16px 20px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: opacity 0.2s ease;
+            width: 100%;
+            margin-top: 30px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .btn-action:hover {
+        .btn-submit:hover {
             opacity: 0.9;
-        }
-
-        .btn-save-pdf {
-            background-color: #005a70;
-        }
-
-        .btn-print-ticket {
-            background-color: #00802b;
         }
 
         .dynamic-section { display: block; }
@@ -362,7 +343,7 @@
         <div id="btn-purpose-pickup" class="purpose-btn" onclick="setPurpose('pickup')">New Laptop / Mobile Pickup</div>
     </div>
 
-    <form id="admissionForm" onsubmit="event.preventDefault();">
+    <form id="admissionForm">
         
         <h2>1. Customer Admission Details</h2>
         <div class="grid-2">
@@ -447,7 +428,7 @@
             <div class="grid-2" style="background:#f1f2f6; padding:15px; border-radius:8px;">
                 <div class="form-group">
                     <label>Initial Diagnostic Fee</label>
-                    <div class="check-group" style="background:#fff; margin-bottom:0;"><input type="checkbox" checked disabled><label><strong>€50 incl. VAT</strong></label></div>
+                    <div class="check-group" style="background:#fff; margin-bottom:0;"><input type="checkbox" checked disabled><label><strong>€50 incl. VAT</strong>[cite: 1]</label></div>
                 </div>
                 <div class="form-group">
                     <label for="fee-additional">Additional Work Total (€)</label>
@@ -457,17 +438,17 @@
 
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
             <div class="legal-box">
-                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory inspection fee of €50.00 incl. VAT applies to all device admissions. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer.</p>
-                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences.</p>
-                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE).</p>
-                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device. While we take every reasonable precaution, iteireann accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes. Data recovery is never guaranteed.</p>
-                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact. iteireann is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation.</p>
-                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned. In accordance with legal principles regarding uncollected goods, iteireann reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees.</p>
+                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory inspection fee of €50.00 incl. VAT applies to all device admissions[cite: 1]. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer[cite: 1].</p>
+                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences[cite: 1].</p>
+                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE)[cite: 1].</p>
+                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, iteireann accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes[cite: 1]. Data recovery is never guaranteed[cite: 1].</p>
+                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1]. iteireann is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation[cite: 1].</p>
+                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned[cite: 1]. In accordance with legal principles regarding uncollected goods, iteireann reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees[cite: 1].</p>
             </div>
 
             <h2>5. Customer Declaration & Authorisation</h2>
             <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50 incl. VAT inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE). I hereby authorize iteireann to perform the technical assessment.
+                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services[cite: 1]. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50 incl. VAT inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE)[cite: 1]. I hereby authorize iteireann to perform the technical assessment[cite: 1].
             </p>
         </div>
 
@@ -535,7 +516,7 @@
 
             <h2>4. Acknowledgement & Authorization</h2>
             <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By completing this step, I confirm that the designated device allocations indicated above are logged and mapped correctly to my instructional deployment requirements.
+                By completing this step, I confirm that the designated device allocations indicated above are logged and mapped correctly to my instructional deployment requirements[cite: 1].
             </p>
         </div>
 
@@ -544,7 +525,7 @@
                 <label>Customer / Authorised Signature</label>
                 <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions.</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions[cite: 1].</p>
             </div>
 
             <div class="signature-section" style="margin-top:20px;">
@@ -576,14 +557,11 @@
 
                 <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client.</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client[cite: 1].</p>
             </div>
         </div>
 
-        <div class="action-button-zone">
-            <button type="button" class="btn-action btn-save-pdf" onclick="executeProcess('save')">💾 Save PDF to Drive</button>
-            <button type="button" class="btn-action btn-print-ticket" onclick="executeProcess('print')">🖨️ Print Ticket Only</button>
-        </div>
+        <button type="submit" class="btn-submit">Complete Admission & Print Ticket</button>
     </form>
 </div>
 
@@ -623,12 +601,12 @@
             <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
             <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
-            <tr><th>Diagnostic Fee</th><td>€50.00 incl. VAT</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
+            <tr><th>Diagnostic Fee</th><td>€50.00 incl. VAT[cite: 1]</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
         </table>
 
         <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
         <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable. Financial parts processing totals must be processed upfront. Quote metrics are valid for 1 working day (E&OE). iteireann disclaims all data liability during hardware bench interaction stress tests. Items left past 60 days will trigger asset liquidation channels.
+            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable[cite: 1]. Financial parts processing totals must be processed upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
         </div>
         
         <div class="print-sig-block">
@@ -818,35 +796,26 @@
         if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
     }
 
-    // MANUAL VALIDATION AND PROCESSING ENGINE
-    function validateRequiredFields() {
-        const nameInput = document.getElementById('c-name');
-        const phoneInput = document.getElementById('c-phone');
-        const emailInput = document.getElementById('c-email');
+    // FORM PROCESSING SUBMISSION PIPELINE
+    document.getElementById('admissionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // TECHNICIAN ANDROID DEVICE PIN VERIFICATION GUARD
+        const technicianPin = prompt("Authentication Required:\nPlease enter your Android device PIN to approve printing:");
         
-        if (!nameInput.value.trim() || !phoneInput.value.trim() || !emailInput.value.trim()) {
-            alert("Please fill in all mandatory Customer Admission Details (Name, Phone, and Email).");
-            return false;
+        // Define the expected device code. Modify '1234' to match your shop device standard PIN profile.
+        if (technicianPin !== "1234") {
+            alert("Access Denied: Invalid device PIN profile. Admission aborted.");
+            return;
         }
 
-        if (intakePurpose === 'service') {
-            const serviceId = document.getElementById('c-service-id');
-            if (!serviceId.value.trim()) {
-                alert("Service ID is mandatory for Device Service Admission.");
-                return false;
-            }
-        } else {
-            const studentId = document.getElementById('c-student-id-top');
-            if (!studentId.value.trim()) {
-                alert("Student ID is mandatory for New Device Allocation.");
-                return false;
-            }
+        if (currentSpeechRecognition) {
+            currentSpeechRecognition.stop();
         }
-        return true;
-    }
 
-    function syncFormToPrintPreview() {
         const customerName = document.getElementById('c-name').value.trim();
+        const formattedName = customerName.replace(/[^a-zA-Z0-9]/g, '_');
+        
         document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
         document.getElementById('p-name').innerText = customerName;
         
@@ -861,6 +830,10 @@
 
         if (intakePurpose === 'service') {
             const serviceId = document.getElementById('c-service-id').value.trim();
+            const formattedServiceId = serviceId.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            document.title = `Service_Ticket_${formattedServiceId}_${formattedName}`;
+
             document.getElementById('p-category-title').innerText = "Intake Process Category";
             document.getElementById('p-category-title').style.display = "block";
             document.getElementById('p-selected-purpose').innerText = "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION";
@@ -904,6 +877,10 @@
             document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
         } else {
             const studentId = document.getElementById('c-student-id-top').value.trim();
+            const formattedStudentId = studentId.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            document.title = `Device_Assignment_${formattedStudentId}_${formattedName}`;
+
             document.getElementById('p-category-title').style.display = "none"; 
             document.getElementById('p-selected-purpose').innerText = "New device assignment process";
             document.getElementById('p-sec1-title').innerText = "1. Customer & Device Assignment Details";
@@ -932,64 +909,20 @@
             document.getElementById('p-cf-cost').innerText = document.getElementById('opt-content-filtering').value;
             document.getElementById('p-pp-cost').innerText = document.getElementById('opt-protection-plan').value;
         }
-    }
 
-    function getGeneratedFileName() {
-        const customerName = document.getElementById('c-name').value.trim().replace(/[^a-zA-Z0-9]/g, '_');
-        if (intakePurpose === 'service') {
-            const serviceId = document.getElementById('c-service-id').value.trim().replace(/[^a-zA-Z0-9]/g, '_');
-            return `Service_Ticket_${serviceId}_${customerName}.pdf`;
-        } else {
-            const studentId = document.getElementById('c-student-id-top').value.trim().replace(/[^a-zA-Z0-9]/g, '_');
-            return `Device_Assignment_${studentId}_${customerName}.pdf`;
-        }
-    }
+        // Fire local hardware printing pipeline
+        window.print();
 
-    function clearSystemForm() {
-        document.getElementById('admissionForm').reset();
+        // Restore default tab header strings
+        document.title = "iteireann - Client facing UI";
+
+        // Soft Reset Form environment
+        this.reset();
         clearCanvas('sig-customer');
         clearCanvas('sig-tech');
         setDefaultTimestamp();
-        setPurpose('service');
-    }
-
-    // EXECUTIVE ROUTER CONTROL
-    function executeProcess(mode) {
-        if (!validateRequiredFields()) return;
-        
-        if (currentSpeechRecognition) {
-            currentSpeechRecognition.stop();
-        }
-
-        syncFormToPrintPreview();
-        const fileNameString = getGeneratedFileName();
-
-        if (mode === 'save') {
-            const elementToConvert = document.getElementById('print-rendering-zone');
-            elementToConvert.style.display = 'block'; 
-            
-            const pdfOptions = {
-                margin:       15,
-                filename:     fileNameString,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(pdfOptions).from(elementToConvert).save().then(() => {
-                elementToConvert.style.display = ''; 
-                alert(`File successfully processed as: \n${fileNameString}\nSaved directly into your Google Drive backup directory.`);
-                clearSystemForm();
-            }).catch(err => {
-                console.error("PDF Parsing error: ", err);
-                elementToConvert.style.display = '';
-            });
-
-        } else if (mode === 'print') {
-            window.print();
-            clearSystemForm();
-        }
-    }
+        setPurpose('service'); 
+    });
 </script>
 
 </body>
