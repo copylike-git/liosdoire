@@ -647,17 +647,17 @@
             </div>
         </div>
 
-        <!-- INTERACTIVE TOUCH SIGNATURE ZONE (SHARED AND MANDATORY FOR ALL THREE MODES) -->
+        <!-- INTERACTIVE TOUCH SIGNATURE ZONE (CONDITIONALLY MANDATORY) -->
         <div id="wrapper-signatures-zone">
             <div class="signature-section">
-                <label>Customer / Authorised Signature <span class="required-star">*</span></label>
+                <label>Customer / Authorised Signature <span class="required-star" id="cust-sig-star">*</span></label>
                 <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understand the terms and conditions corresponding to the active workflow selection and authorize iteireann to proceed[cite: 1].</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;" id="cust-sig-subtext">I confirm that I fully understand the terms and conditions corresponding to the active workflow selection and authorize iteireann to proceed[cite: 1].</p>
             </div>
 
             <div class="signature-section" style="margin-top:20px;">
-                <label>Technician Intake Sign-off & Inspection Verification <span class="required-star">*</span></label>
+                <label>Technician Intake Sign-off & Inspection Verification <span class="required-star" id="tech-sig-star">*</span></label>
                 
                 <div id="tech-audit-wrapper-block" class="tech-checklist-box">
                     <label style="font-size:13px; color:var(--primary-color); margin-bottom:8px; text-transform:uppercase;">Mandatory Pre-Repair Bench Audit Checklist</label>
@@ -668,7 +668,7 @@
 
                 <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have verified the required bench fields and explained the operational guidelines clearly to the customer[cite: 1].</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;" id="tech-sig-subtext">I confirm that I have verified the required bench fields and explained the operational guidelines clearly to the customer[cite: 1].</p>
             </div>
         </div>
 
@@ -741,24 +741,26 @@
         </table>
     </div>
 
-    <!-- SYSTEM FOOTER WITH LEGAL TERMS SUMMARY AND HANDOFF CANVAS IMAGES -->
-    <div class="print-sec-title">Authorization Declarations & Executive Signatures</div>
-    <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height: 1.2; margin-bottom: 15px;">
-        By providing an executive signature imprint below, the signatory confirms adherence to iteireann operational terms[cite: 1]. Repair intakes involve a €50 technical benchmark fee[cite: 1]. Custom hardware profiles require full payment clearance processing upfront[cite: 1]. System component quote estimates are subject to an absolute 24-hour expiration threshold limit (E&OE)[cite: 1].
-    </div>
-    
-    <div class="print-sig-block">
-        <div class="print-sig-col">
-            <img id="img-sig-customer" class="sig-img" src="" alt="">
-            <strong>Client / Authorised Signatory</strong>
+    <!-- SYSTEM FOOTER FOR PRINTER RENDERING -->
+    <div id="print-legal-and-signatures-footer">
+        <div class="print-sec-title">Authorization Declarations & Executive Signatures</div>
+        <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height: 1.2; margin-bottom: 15px;">
+            By providing an executive signature imprint below, the signatory confirms adherence to iteireann operational terms[cite: 1]. Repair intakes involve a €50 technical benchmark fee[cite: 1]. Custom hardware profiles require full payment clearance processing upfront[cite: 1]. System component quote estimates are subject to an absolute 24-hour expiration threshold limit (E&OE)[cite: 1].
         </div>
-        <div class="print-sig-col">
-            <div id="print-tech-checklist-section">
-                <strong style="font-size: 8px; text-transform: uppercase; color: #444;">Verified Pre-Admission Bench Auditing:</strong>
-                <ul id="p-audit-results" class="print-check-list"></ul>
+        
+        <div class="print-sig-block">
+            <div class="print-sig-col">
+                <img id="img-sig-customer" class="sig-img" src="" alt="">
+                <strong>Client / Authorised Signatory</strong>
             </div>
-            <img id="img-sig-tech" class="sig-img" src="" alt="" style="margin-top: 5px;">
-            <strong>Intake Technician Sign-off</strong>
+            <div class="print-sig-col">
+                <div id="print-tech-checklist-section">
+                    <strong style="font-size: 8px; text-transform: uppercase; color: #444;">Verified Pre-Admission Bench Auditing:</strong>
+                    <ul id="p-audit-results" class="print-check-list"></ul>
+                </div>
+                <img id="img-sig-tech" class="sig-img" src="" alt="" style="margin-top: 5px;">
+                <strong>Intake Technician Sign-off</strong>
+            </div>
         </div>
     </div>
 </div>
@@ -814,13 +816,11 @@
         case: 'PC Chassis (Case)', service: 'Assembly & Warranty Plan'
     };
 
-    // Application state matrices
     let currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
     let intakePurpose = 'service';
     let currentSpeechRecognition = null;
     let currentActiveTextAreaId = null;
 
-    // Track signature capture strokes to prevent processing completely blank pads
     let customerSigned = false;
     let technicianSigned = false;
 
@@ -853,10 +853,10 @@
             const groupServiceId = document.getElementById('group-service-id');
             const groupStudentIdTop = document.getElementById('group-student-id-top');
             const techAuditBox = document.getElementById('tech-audit-wrapper-block');
-
-            // Force global signature block visibility across all tabs
             const signaturesZone = document.getElementById('wrapper-signatures-zone');
-            if (signaturesZone) signaturesZone.classList.remove('hidden');
+
+            const custStar = document.getElementById('cust-sig-star');
+            const techStar = document.getElementById('tech-sig-star');
 
             if (type === 'pcbuild') {
                 if (groupStudentIdTop) groupStudentIdTop.classList.remove('hidden');
@@ -864,18 +864,28 @@
                 if (inputStudentIdTop) { inputStudentIdTop.placeholder = "e.g. PC-BUILD-2026"; inputStudentIdTop.required = true; }
                 if (inputServiceId) inputServiceId.required = false;
                 if (techAuditBox) techAuditBox.classList.add('hidden'); 
+                if (signaturesZone) signaturesZone.classList.remove('hidden'); // Enforce for Builder
+                if (custStar) custStar.style.display = "inline";
+                if (techStar) techStar.style.display = "inline";
             } else if (type === 'service') {
                 if (groupServiceId) groupServiceId.classList.remove('hidden');
                 if (groupStudentIdTop) groupStudentIdTop.classList.add('hidden');
                 if (inputServiceId) inputServiceId.required = true;
                 if (inputStudentIdTop) inputStudentIdTop.required = false;
                 if (techAuditBox) techAuditBox.classList.remove('hidden');
+                if (signaturesZone) signaturesZone.classList.remove('hidden'); // Enforce for Service Repairs
+                if (custStar) custStar.style.display = "inline";
+                if (techStar) techStar.style.display = "inline";
             } else {
+                // LAPTOP PICKUP TAB: Dynamic Validation Bypass Removal Layout Logic Hook
                 if (groupStudentIdTop) groupStudentIdTop.classList.remove('hidden');
                 if (groupServiceId) groupServiceId.classList.add('hidden');
                 if (inputStudentIdTop) { inputStudentIdTop.placeholder = "e.g. STU-123456"; inputStudentIdTop.required = true; }
                 if (inputServiceId) inputServiceId.required = false;
                 if (techAuditBox) techAuditBox.classList.add('hidden');
+                if (signaturesZone) signaturesZone.classList.add('hidden'); // Completely mask signature panels out of view
+                if (custStar) custStar.style.display = "none";
+                if (techStar) techStar.style.display = "none";
             }
         } catch (error) {
             console.error("Tab selection routing error caught safely:", error);
@@ -923,7 +933,7 @@
             updatePcCompatibility();
             renderPcSummary();
         } catch (err) {
-            console.error("Configurator compilation initialization failure:", err);
+            console.error("Configurator compilation failure:", err);
         }
     }
 
@@ -1141,16 +1151,16 @@
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
 
-                // Validation Clause: Enforce Client Signature Across All System Submissions
-                if (!customerSigned) {
-                    alert("Submission blocked: Please ensure the customer has provided a signature verification authorization stroke on the pad.");
-                    return;
-                }
-
-                // Validation Clause: Enforce Technician Signature Across All System Submissions
-                if (!technicianSigned) {
-                    alert("Submission blocked: Intake technician authorization verification sign-off signature is mandatory.");
-                    return;
+                // Conditional Validation Block: Only enforce signature captures outside of the Pickup tab
+                if (intakePurpose !== 'pickup') {
+                    if (!customerSigned) {
+                        alert("Submission blocked: Please ensure the customer has provided a signature verification authorization stroke on the pad.");
+                        return;
+                    }
+                    if (!technicianSigned) {
+                        alert("Submission blocked: Intake technician authorization verification sign-off signature is mandatory.");
+                        return;
+                    }
                 }
 
                 // Validation Clause: Tab 1 Service Request Terms Checkbox Check
@@ -1190,16 +1200,20 @@
                 const printDeviceBlock = document.getElementById('print-meta-service-device-block');
                 const printStudentBlock = document.getElementById('print-meta-student-credential-block');
                 const printPcBlock = document.getElementById('print-meta-pcbuild-block');
+                const printLegalFooter = document.getElementById('print-legal-and-signatures-footer');
 
                 printDeviceBlock.classList.add('print-hidden');
                 printStudentBlock.classList.add('print-hidden');
                 printPcBlock.classList.add('print-hidden');
+                if (printLegalAndSignaturesFooter) printLegalAndSignaturesFooter.classList.remove('print-hidden');
 
-                // Transfer Signatures across pipelines to printable image blocks
-                const sigCus = document.getElementById('sig-customer');
-                if(sigCus) document.getElementById('img-sig-customer').src = sigCus.toDataURL();
-                const sigTech = document.getElementById('sig-tech');
-                if(sigTech) document.getElementById('img-sig-tech').src = sigTech.toDataURL();
+                // Transfer Signatures across pipelines to printable image blocks if active
+                if (intakePurpose !== 'pickup') {
+                    const sigCus = document.getElementById('sig-customer');
+                    if(sigCus) document.getElementById('img-sig-customer').src = sigCus.toDataURL();
+                    const sigTech = document.getElementById('sig-tech');
+                    if(sigTech) document.getElementById('img-sig-tech').src = sigTech.toDataURL();
+                }
 
                 if (intakePurpose === 'service') {
                     const serviceId = document.getElementById('c-service-id') ? document.getElementById('c-service-id').value.trim() : 'SR';
@@ -1243,6 +1257,8 @@
                     document.getElementById('p-uid-label').innerText = "Student ID";
                     document.getElementById('p-uid-value').innerText = studentId;
                     printStudentBlock.classList.remove('print-hidden');
+                    if (printPcBlock) printPcBlock.classList.add('print-hidden');
+                    if (printLegalAndSignaturesFooter) printLegalAndSigsFooter = document.getElementById('print-legal-and-signatures-footer').classList.add('print-hidden'); // Strip terms off final printed paper
 
                     document.getElementById('p-sch-use').innerText = document.getElementById('sch-use')?.value.trim() || 'N/A';
                     document.getElementById('p-password').innerText = document.getElementById('sch-password')?.value.trim() || 'N/A';
@@ -1288,7 +1304,7 @@
                 window.print();
                 
                 // Clear state structures and reset baseline interfaces safely
-                document.title = "iteireann - Client facing UI";
+                document.title = "iteireann - Client facing UI[cite: 1]";
                 this.reset();
                 clearCanvas('sig-customer');
                 clearCanvas('sig-tech');
