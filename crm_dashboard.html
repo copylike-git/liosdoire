@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iteireann CRM | Unified Customer Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #005a70;
+            --accent-blue: #3baed4;
+            --background-color: #f5f5f7;
+            --sidebar-bg: #1d1d1f;
+            --text-color: #1d1d1f;
+            --border-color: #d2d2d7;
+            --section-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+
+        .brand-logo-area {
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 20px;
+        }
+
+        .brand-logo-area h1 {
+            margin: 0;
+            font-size: 22px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .brand-logo-area span {
+            font-size: 12px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-links li {
+            margin-bottom: 5px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #a1a1a6;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header-ui {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-ui h2 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        /* Search Module */
+        .search-module {
+            background: var(--section-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 90, 112, 0.2);
+        }
+
+        .btn-search {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            height: 44px;
+        }
+
+        .btn-search:hover {
+            background-color: #004252;
+        }
+
+        /* Results Area */
+        .results-container {
+            background: var(--section-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .results-header {
+            background-color: #e8e8ed;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        th {
+            color: #555;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: #f9f9fb;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-service { background: #e3f2fd; color: #1565c0; }
+        .badge-pickup { background: #e8f5e9; color: #2e7d32; }
+        .badge-pc { background: #fff3e0; color: #e65100; }
+
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: #86868b;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="brand-logo-area">
+            <h1>iteireann</h1>
+            <span>Unified CRM</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="crm_dashboard.html" class="active">🔍 Client Lookup (CRM)</a></li>
+            <li><a href="service_request.html">🛠️ Service Admissions</a></li>
+            <li><a href="service_request.html">📦 Institutional Deployments</a></li>
+            <li><a href="PC-build_2.html">🖥️ Custom PC Builder</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header-ui">
+            <h2>Customer Transaction History</h2>
+        </div>
+
+        <div class="search-module">
+            <div class="search-grid">
+                <div class="form-group">
+                    <label for="search-input">Search by Surname or Phone Number</label>
+                    <input type="text" id="search-input" placeholder="e.g., O'Connor or 0871234567">
+                </div>
+                <button class="btn-search" onclick="executeSearch()">Search Records</button>
+            </div>
+        </div>
+
+        <div class="results-container">
+            <div class="results-header">
+                Client History & Associated Transactions
+            </div>
+            
+            <table id="results-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Transaction Date</th>
+                        <th>Type</th>
+                        <th>ID / Reference</th>
+                        <th>Client Details</th>
+                        <th>Status / Financials</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <!-- Javascript populates this area -->
+                </tbody>
+            </table>
+
+            <div id="empty-state" class="empty-state">
+                Enter a surname or phone number above to pull up associated CRM records across all iteireann departments.
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // MOCK DATA: To be replaced by Azure Dataverse API fetching via Power Automate
+        const mockDatabase = [
+            { date: "2026-06-25", type: "Service", ref: "SR-2026-8492", name: "John Gallagher", phone: "0871234567", status: "Diagnostic Complete (€50 Paid)", tag: "badge-service" },
+            { date: "2026-06-26", type: "Deployment", ref: "STU-99214", name: "Sarah Gallagher", phone: "0871234567", status: "ESET 3-Yr Active", tag: "badge-pickup" },
+            { date: "2026-06-28", type: "PC Build", ref: "PCB-0041", name: "John Gallagher", phone: "0871234567", status: "25% Deposit Paid", tag: "badge-pc" }
+        ];
+
+        function executeSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const table = document.getElementById('results-table');
+            const tbody = document.getElementById('results-body');
+            const emptyState = document.getElementById('empty-state');
+
+            if (!query) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerText = "Please enter a valid search query.";
+                return;
+            }
+
+            tbody.innerHTML = '';
+            
+            const filteredResults = mockDatabase.filter(record => 
+                record.phone.includes(query) || record.name.toLowerCase().includes(query)
+            );
+
+            if (filteredResults.length > 0) {
+                emptyState.style.display = 'none';
+                table.style.display = 'table';
+
+                filteredResults.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.date}</td>
+                        <td><span class="badge ${row.tag}">${row.type}</span></td>
+                        <td><strong>${row.ref}</strong></td>
+                        <td>${row.name}<br><span style="color:#666; font-size:12px;">${row.phone}</span></td>
+                        <td>${row.status}</td>
+                        <td><a href="#" style="color:var(--primary-color); text-decoration:none; font-weight:600;">View File</a></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerText = "No records found matching that Surname or Phone Number in the Azure database.";
+            }
+        }
+    </script>
+</body>
+</html>
