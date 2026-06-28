@@ -2,337 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iteireann - Client facing UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom PC Builder | iteireann</title>
     <style>
         :root {
-            --primary-color: #005a70;
-            --accent-blue: #3baed4;
-            --accent-gold: #d2a679;
-            --background-color: #f5f5f7;
-            --text-color: #1d1d1f;
-            --border-color: #d2d2d7;
-            --section-bg: #ffffff;
+            --primary: #111111;
+            --accent: #d2a679; /* Premium subtle gold/bronze tint */
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --text-dark: #222222;
+            --text-muted: #666666;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
-            -webkit-tap-highlight-color: transparent;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: var(--section-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        /* SCREEN PLACEMENT HEADER WITH LOGO */
-        .brand-header-ui {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-
-        .brand-logo-img {
-            height: 75px;
-            width: auto;
-            display: block;
-        }
-
-        .brand-title-area {
-            text-align: right;
-        }
-
-        .brand-title-area h1 {
-            margin: 0;
-            font-size: 20px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .subtitle {
-            margin: 3px 0 0 0;
-            font-size: 13px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        h2 {
-            font-size: 16px;
-            font-weight: 700;
-            background-color: #e8e8ed;
-            padding: 10px 12px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Responsive Layout Subgrids */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 15px; position: relative; }
-        .full-width { grid-column: span 2; }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .required-star { color: #df2020; margin-left: 3px; }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="datetime-local"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px; 
-            background-color: #fff;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 90, 112, 0.2);
-        }
-
-        /* Dictation Layout Tweaks */
-        .dictation-wrapper {
-            position: relative;
-            display: block;
-        }
-
-        .dictation-wrapper textarea {
-            padding-right: 50px;
-        }
-
-        .mic-btn {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border-color);
-            background: #f5f5f7;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: all 0.2s ease;
-            z-index: 5;
-        }
-
-        .mic-btn:hover { background: #e8e8ed; }
-        .mic-btn.listening {
-            background: #df2020;
-            color: white;
-            border-color: #df2020;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        /* Three-Tab Button Navigation Matrix */
-        .purpose-selector {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 25px;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
         }
 
-        @media (max-width: 768px) {
-            .purpose-selector { grid-template-columns: 1fr; gap: 8px; }
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .summary-panel {
+                position: relative !important;
+                top: 0 !important;
+            }
         }
 
-        .purpose-btn {
-            background: #fff;
-            border: 2px solid var(--border-color);
-            padding: 16px 12px;
-            text-align: center;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        .purpose-btn.active {
-            border-color: var(--primary-color);
-            background-color: rgba(0, 90, 112, 0.06);
-            color: var(--primary-color);
-        }
-
-        /* Touch Checkboxes */
-        .check-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            padding: 14px;
-            border: 1px solid #e8e8ed;
-            border-radius: 6px;
-            background: #fafafa;
-        }
-
-        .check-group input {
-            width: 26px;
-            height: 26px;
-            margin-right: 12px;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .check-group label {
-            margin-bottom: 0;
-            font-weight: 500;
-            font-size: 15px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .tech-checklist-box {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-
-        .tech-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 14px; }
-        .tech-item:last-child { margin-bottom: 0; }
-        .tech-item input { width: 22px; height: 22px; margin-right: 12px; }
-
-        .legal-box {
-            background-color: #f9f9fb;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-            max-height: 200px;
-            overflow-y: scroll;
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .signature-section {
-            border: 1px dashed #a1a1a6;
-            padding: 15px;
-            border-radius: 8px;
-            background: #fff;
-            margin-top: 15px;
-        }
-
-        .canvas-container {
-            border: 1px solid var(--border-color);
-            background: #f5f5f7;
-            border-radius: 4px;
-            margin: 8px 0;
-        }
-
-        canvas { display: block; width: 100%; height: 120px; }
-
-        .clear-btn {
-            background: #86868b;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 13px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-submit {
-            background-color: #00802b;
-            color: white;
-            border: none;
-            padding: 18px 20px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 30px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-submit:hover { opacity: 0.9; }
-
-        /* TAB 3: CUSTOM PC CONFIGURATOR LAYOUT */
-        .pc-builder-layout {
-            display: grid;
-            grid-template-columns: 1fr 360px;
-            gap: 20px;
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .pc-builder-layout { grid-template-columns: 1fr; }
-            .summary-panel { position: relative !important; top: 0 !important; }
-        }
-
+        /* Build Steps Layout */
         .builder-steps {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 1.5rem;
         }
 
         .category-card {
-            background: #fff;
+            background: white;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             overflow: hidden;
         }
 
         .category-header {
-            background-color: #f8f9fa;
-            padding: 12px 16px;
+            background-color: white;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .category-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--primary-color); }
-        .selected-badge { font-size: 13px; color: var(--accent-gold); font-weight: 600; }
+        .category-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .selected-badge {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
 
         .options-list {
-            padding: 10px;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            max-height: 240px;
+            gap: 0.75rem;
+            max-height: 280px;
             overflow-y: auto;
         }
 
@@ -340,579 +113,228 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
+            padding: 0.85rem 1rem;
             border: 1px solid var(--border-color);
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.15s ease;
-            background: #fff;
+            transition: all 0.2s ease;
         }
 
-        .option-item:hover { border-color: #a1a1a6; background-color: #fafafa; }
-        .option-item.active { border-color: var(--primary-color); background-color: rgba(0, 90, 112, 0.04); font-weight: 600; }
-        .option-item.disabled { opacity: 0.35; pointer-events: none; background-color: #f5f5f7; }
-        .item-details { display: flex; flex-direction: column; gap: 2px; }
-        .item-name { font-size: 14px; color: #1d1d1f; }
-        .item-socket { font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; }
-        .item-price { font-weight: 700; font-size: 14px; color: var(--text-color); }
+        .option-item:hover {
+            border-color: #b5b5b5;
+            background-color: #fafafa;
+        }
 
+        .option-item.active {
+            border-color: var(--primary);
+            background-color: #f0f0f0;
+            font-weight: 500;
+        }
+
+        .option-item.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            background-color: #f5f5f5;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .item-name {
+            font-size: 0.95rem;
+        }
+
+        .item-socket {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .item-price {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Summary Sidebar */
         .summary-panel {
-            background: #f8f9fa;
+            background: white;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 6px;
+            padding: 1.5rem;
             position: sticky;
-            top: 20px;
+            top: 100px;
             height: fit-content;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
-        .summary-panel h3 { margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 16px; text-transform: uppercase; }
-        .summary-list { list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; flex-direction: column; gap: 10px; font-size: 13px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .summary-list li { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-        .summary-list .part-type { color: #555; font-weight: 600; min-width: 80px; text-transform: uppercase; font-size: 11px; }
-        .summary-list .part-name { text-align: right; font-weight: 500; color: #1d1d1f; }
-        
-        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .total-title { font-size: 15px; font-weight: 600; }
-        .total-amount { font-size: 22px; font-weight: 700; color: var(--primary-color); }
-        
+        .summary-panel h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .summary-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .summary-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .summary-list .part-type {
+            color: var(--text-muted);
+            min-width: 90px;
+        }
+
+        .summary-list .part-name {
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .total-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
         .action-btn {
             width: 100%;
-            padding: 14px;
-            background-color: var(--primary-color);
+            padding: 1rem;
+            background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 15px;
+            border-radius: 4px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
+            transition: background 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 10px;
         }
-        .whatsapp-btn { background-color: #25D366; margin-bottom: 0; }
-        .whatsapp-btn:hover { background-color: #20ba56; }
 
-        .dynamic-section { display: block; }
-        .hidden { display: none !important; }
-
-        /* PRINT SUB-SYSTEM FOR A4 STANDARDS */
-        #print-rendering-zone { display: none; }
-
-        @media print {
-            @page { size: A4 portrait; margin: 15mm; }
-            body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
-            #interactive-form-zone { display: none !important; }
-            #print-rendering-zone { display: block !important; width: 100%; font-size: 12px; }
-            
-            .print-brand-wrap {
-                display: flex; align-items: flex-start; justify-content: space-between;
-                border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;
-            }
-            .print-logo-box { width: 200px; height: auto; display: block; }
-            .print-header-meta { text-align: right; font-size: 11px; line-height: 1.4; }
-            
-            .print-sec-title { 
-                background: #f0f0f0 !important; padding: 4px 8px; font-weight: bold; 
-                text-transform: uppercase; margin-top: 15px; margin-bottom: 8px; 
-                border: 1px solid #000; font-size: 11px;
-            }
-            table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
-            th, td { 
-                border: 1px solid #000; padding: 6px; text-align: left; 
-                vertical-align: top; font-size: 11px; word-break: break-all;
-            }
-            th { background: #fafafa !important; width: 25%; font-weight: bold; }
-            
-            .print-sig-block { display: flex; justify-content: space-between; margin-top: 20px; }
-            .print-sig-col { width: 48%; border-top: 1px solid #000; padding-top: 5px; font-size: 10px; }
-            .sig-img { max-height: 50px; display: block; margin-bottom: 2px; }
-            .print-hidden { display: none !important; }
-            .print-check-list { list-style: none; padding-left: 0; margin: 5px 0; font-size: 10px; }
-            .print-check-list li { margin-bottom: 2px; }
+        .action-btn:hover {
+            background-color: #333333;
         }
-        
-        .logo-src-data {
-            content: url("https://www.ite.ie/wp-content/uploads/2025/01/Untitled-2-1.png");
+
+        .whatsapp-btn {
+            margin-top: 0.75rem;
+            background-color: #25D366;
+        }
+        .whatsapp-btn:hover {
+            background-color: #20ba56;
         }
     </style>
 </head>
 <body>
 
-<div id="interactive-form-zone" class="container">
-    
-    <div class="brand-header-ui">
-        <div class="logo-src-data brand-logo-img"></div>
-        <div class="brand-title-area">
-            <h1>iteireann</h1>
-            <div class="subtitle">Service Request & Device Admission Kiosk</div>
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <h1>iteireann Configurator</h1>
         </div>
     </div>
+</header>
 
-    <label style="text-align: center; display: block; margin-bottom: 10px; font-size: 16px;">Select Intake Process Matrix:</label>
-    <div class="purpose-selector">
-        <div id="btn-purpose-service" class="purpose-btn active" onclick="setPurpose('service')">Device Inspection / Service</div>
-        <div id="btn-purpose-pickup" class="purpose-btn" onclick="setPurpose('pickup')">School Laptop / Mobile Pickup</div>
-        <div id="btn-purpose-pcbuild" class="purpose-btn" onclick="setPurpose('pcbuild')">Custom PC Component Builder</div>
+<div class="container">
+    <!-- Component Selector Matrix -->
+    <div class="builder-steps" id="builder-steps">
+        <!-- Javascript renders categories here -->
     </div>
 
-    <form id="admissionForm">
+    <!-- Live Checkout Panel -->
+    <div class="summary-panel">
+        <h2>Configuration Summary</h2>
+        <ul class="summary-list" id="summary-list">
+            <!-- Javascript updates selected components here -->
+        </ul>
         
-        <!-- GLOBAL CLIENT BASE FIELDS -->
-        <div id="section-customer-core-details">
-            <h2>1. Customer Admission Details</h2>
-            <div class="grid-2">
-                <div id="group-service-id" class="form-group full-width">
-                    <label for="c-service-id">Service ID <span class="required-star">*</span></label>
-                    <input type="text" id="c-service-id" required placeholder="e.g. SR-2026-8492">
-                </div>
-                
-                <div id="group-student-id-top" class="form-group full-width hidden">
-                    <label for="c-student-id-top">Student ID <span class="required-star">*</span></label>
-                    <input type="text" id="c-student-id-top" placeholder="e.g. STU-123456">
-                </div>
-
-                <div class="form-group">
-                    <label for="c-name">Customer Name <span class="required-star">*</span></label>
-                    <input type="text" id="c-name" required placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label for="c-date">Admission Date & Time</label>
-                    <input type="datetime-local" id="c-date" required>
-                </div>
-                <div class="form-group">
-                    <label for="c-phone">Phone Number <span class="required-star">*</span></label>
-                    <input type="text" id="c-phone" required placeholder="08X XXX XXXX">
-                </div>
-                <div class="form-group">
-                    <label for="c-email">Email Address <span class="required-star">*</span></label>
-                    <input type="email" id="c-email" required placeholder="name@example.com">
-                </div>
-            </div>
+        <div class="total-row">
+            <span class="total-title">Estimated Total</span>
+            <span class="total-amount" id="total-amount">€0.00</span>
         </div>
 
-        <!-- TAB 1: DEVICE INSPECTION & TECHNICAL SERVICE -->
-        <div id="section-service-only" class="dynamic-section">
-            <h2>2. Service Device Details</h2>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label for="d-model">Make / Model</label>
-                    <input type="text" id="d-model" placeholder="e.g. MacBook Pro, Galaxy S23">
-                </div>
-                <div class="form-group">
-                    <label for="d-serial">Serial Number</label>
-                    <input type="text" id="d-serial" placeholder="Device Serial Number">
-                </div>
-                <div class="form-group">
-                    <label for="d-mobile">Mobile Phone (Alt Number)</label>
-                    <input type="text" id="d-mobile" placeholder="Alternative contact number">
-                </div>
-                <div class="form-group">
-                    <label for="d-imei">IMEI Number</label>
-                    <input type="text" id="d-imei" placeholder="IMEI (if applicable)">
-                </div>
-            </div>
-
-            <h2>3. Service Request & Assessment</h2>
-            <div class="form-group">
-                <label for="sr-faults">Reported Fault(s)</label>
-                <div class="dictation-wrapper">
-                    <textarea id="sr-faults" placeholder="Describe all faults reported by the client..."></textarea>
-                    <button type="button" class="mic-btn" id="mic-sr-faults" title="Toggle Voice Dictation" onclick="toggleDictation('sr-faults')">🎤</button>
-                </div>
-            </div>
-
-            <label>Requested Services</label>
-            <div class="check-group"><input type="checkbox" id="srv-diag" value="Inspection & Diagnostics" checked><label for="srv-diag">Inspection & Diagnostics</label></div>
-            <div class="check-group"><input type="checkbox" id="srv-soft" value="Software Repair / OS Reinstall"><label for="srv-soft">Software Repair / OS Reinstall</label></div>
-            <div class="check-group"><input type="checkbox" id="srv-hard" value="Hardware Replacement"><label for="srv-hard">Hardware Replacement</label></div>
-            <div class="check-group"><input type="checkbox" id="srv-data" value="Data Recovery / Backup"><label for="srv-data">Data Recovery / Backup</label></div>
-            
-            <div class="form-group">
-                <label for="srv-other">Other requested items (Specify):</label>
-                <input type="text" id="srv-other" placeholder="Specify other service metrics...">
-            </div>
-
-            <div class="form-group">
-                <label for="sr-physical">Physical Inspection Notes</label>
-                <div class="dictation-wrapper">
-                    <textarea id="sr-physical" placeholder="Describe pre-existing cosmetic condition..."></textarea>
-                    <button type="button" class="mic-btn" id="mic-sr-physical" title="Toggle Voice Dictation" onclick="toggleDictation('sr-physical')">🎤</button>
-                </div>
-            </div>
-
-            <div class="grid-2" style="background:#f1f2f6; padding:15px; border-radius:8px;">
-                <div class="form-group">
-                    <label>Initial Diagnostic Fee</label>
-                    <div class="check-group" style="background:#fff; margin-bottom:0;"><input type="checkbox" checked disabled><label><strong>€50 incl. VAT</strong></label></div>
-                </div>
-                <div class="form-group">
-                    <label for="fee-additional">Additional Work Total (€)</label>
-                    <input type="text" id="fee-additional" placeholder="0.00">
-                </div>
-            </div>
-
-            <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
-            <div class="legal-box">
-                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory inspection fee of €50.00 incl. VAT applies to all device admissions[cite: 1]. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer[cite: 1].</p>
-                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences[cite: 1].</p>
-                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE)[cite: 1].</p>
-                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, iteireann accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes[cite: 1]. Data recovery is never guaranteed[cite: 1].</p>
-                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1]. iteireann is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation[cite: 1].</p>
-                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned[cite: 1]. In accordance with legal principles regarding uncollected goods, iteireann reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees[cite: 1].</p>
-            </div>
-
-            <h2>5. Customer Declaration & Authorisation</h2>
-            <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services[cite: 1]. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50 incl. VAT inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE)[cite: 1]. I hereby authorize iteireann to perform the technical assessment[cite: 1].
-            </p>
-        </div>
-
-        <!-- TAB 2: SCHOOL LAPTOP DISTRIBUTION / ASSIGNMENT -->
-        <div id="section-pickup-only" class="dynamic-section hidden">
-            <h2>2. Institutional Security Identification & Assignment</h2>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label for="sch-use">School Name / Assignment</label>
-                    <input type="text" id="sch-use" placeholder="Name of school">
-                </div>
-                <div class="form-group">
-                    <label for="sch-serial">Assigned Device Serial Number</label>
-                    <input type="text" id="sch-serial" placeholder="Optional Hardware Asset Serial (e.g. System tags)">
-                </div>
-                <div class="form-group">
-                    <label for="sch-password">Account Password</label>
-                    <input type="text" id="sch-password" placeholder="Account Password">
-                </div>
-                <div class="form-group">
-                    <label for="sch-mfa">MFA Contact Field</label>
-                    <input type="text" id="sch-mfa" placeholder="Phone or Email for MFA verification">
-                </div>
-            </div>
-
-            <h2>3. Device Setup Options & Protection Plans</h2>
-            <div style="border: 1px solid var(--border-color); padding: 15px; border-radius:8px; background:#fff;">
-                <label>Device Setup Distribution Strategy</label>
-                <div class="check-group">
-                    <input type="checkbox" id="setup-inperson" value="In person setup">
-                    <label for="setup-inperson">In person setup</label>
-                </div>
-                <div class="check-group">
-                    <input type="checkbox" id="setup-pickup" value="Client pickup without setup">
-                    <label for="setup-pickup">Client pickup without setup</label>
-                </div>
-
-                <label style="margin-top:10px;">Hardware Item Allocation Selection</label>
-                <div class="check-group">
-                    <input type="checkbox" id="hw-lap" value="Laptop / PC (€650)">
-                    <label for="hw-lap">Laptop / PC Assignment (€650)</label>
-                </div>
-                <div class="check-group">
-                    <input type="checkbox" id="hw-mob" value="Android Mobile Phone (€99)">
-                    <label for="hw-mob">Android Mobile Phone Assignment (€99)</label>
-                </div>
-
-                <div class="form-group" style="margin-top:15px;">
-                    <label for="opt-content-filtering">ESET Content Filtering Install (1 PC 1 Mobile)</label>
-                    <select id="opt-content-filtering">
-                        <option value="Not required" selected>Not required</option>
-                        <option value="€69 - 1 year">€69 - 1 year</option>
-                        <option value="€149 - 3 years">€149 - 3 years</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="opt-protection-plan">Protection Plan Selection</label>
-                    <select id="opt-protection-plan">
-                        <option value="Not required" selected>Not required</option>
-                        <option value="€69 - 1 year">€69 - 1 year</option>
-                        <option value="€149 - 3 years">€149 - 3 years</option>
-                    </select>
-                </div>
-            </div>
-
-            <h2>4. Acknowledgement & Authorization</h2>
-            <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By completing this step, I confirm that the designated device allocations indicated above are logged and mapped correctly to my instructional deployment requirements[cite: 1].
-            </p>
-        </div>
-
-        <!-- TAB 3: CUSTOM PC COMPONENT BUILDER MODULE -->
-        <div id="section-pcbuild-only" class="dynamic-section hidden">
-            <h2>Custom PC Builder Matrix</h2>
-            <div class="pc-builder-layout">
-                <!-- Build Steps Matrix -->
-                <div class="builder-steps" id="pc-builder-steps">
-                    <!-- Target for dynamic JS card generation loops -->
-                </div>
-
-                <!-- Live Sticky Total Board Sidebar -->
-                <div class="summary-panel">
-                    <h3>Active Spec Sheet</h3>
-                    <ul class="summary-list" id="pc-summary-list">
-                        <!-- Instantly tracked hardware selection metrics -->
-                    </ul>
-                    <div class="total-row">
-                        <span class="total-title">Est. Total</span>
-                        <span class="total-amount" id="pc-total-amount">€0.00</span>
-                    </div>
-                    <button type="button" class="action-btn" onclick="addPcToAdmissionCheck()">Lock Configuration Ticket</button>
-                    <button type="button" class="action-btn whatsapp-btn" onclick="sharePcToWhatsApp()">Order via WhatsApp</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- DIGITAL INTERACTIVE SIGNATURE BOXES (SHARED BY TAB 1 & TAB 2) -->
-        <div id="wrapper-signatures-zone">
-            <div class="signature-section">
-                <label>Customer / Authorised Signature</label>
-                <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
-                <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions[cite: 1].</p>
-            </div>
-
-            <div class="signature-section" style="margin-top:20px;">
-                <label>Technician Intake Sign-off & Inspection Verification</label>
-                
-                <div id="tech-checklist-container" class="tech-checklist-box">
-                    <label style="font-size:13px; color:var(--primary-color); margin-bottom:8px; text-transform:uppercase;">Mandatory Pre-Repair Audit Checklist</label>
-                    <div class="tech-item">
-                        <input type="checkbox" id="chk-chassis" name="tech_audit" value="Chassis condition verified">
-                        <label for="chk-chassis" style="font-weight:500; font-size:14px;">Chassis condition</label>
-                    </div>
-                    <div class="tech-item">
-                        <input type="checkbox" id="chk-screen" name="tech_audit" value="Screen condition verified">
-                        <label for="chk-screen" style="font-weight:500; font-size:14px;">Screen condition</label>
-                    </div>
-                    <div class="tech-item">
-                        <input type="checkbox" id="chk-ports" name="tech_audit" value="Ports condition verified">
-                        <label for="chk-ports" style="font-weight:500; font-size:14px;">Ports condition</label>
-                    </div>
-                    <div class="tech-item">
-                        <input type="checkbox" id="chk-keyboard" name="tech_audit" value="Keyboard keys missing/non-functional checked">
-                        <label for="chk-keyboard" style="font-weight:500; font-size:14px;">Keyboard keys missing and non-function</label>
-                    </div>
-                    <div class="tech-item">
-                        <input type="checkbox" id="chk-screws" name="tech_audit" value="Base screws / Structural damages checked">
-                        <label for="chk-screws" style="font-weight:500; font-size:14px;">Base screws, or structural damages e.g. hinges etc</label>
-                    </div>
-                </div>
-
-                <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
-                <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client[cite: 1].</p>
-            </div>
-        </div>
-
-        <button type="submit" id="main-submit-btn" class="btn-submit">Complete Admission & Print Ticket</button>
-    </form>
-</div>
-
-<!-- INVISIBLE HARDWARE PRINT OUTPUT RENDERING DESK -->
-<div id="print-rendering-zone">
-    <div class="print-brand-wrap">
-        <div class="logo-src-data print-logo-box"></div>
-        <div class="print-header-meta">
-            <strong>iteireann Computer Solutions</strong><br>
-            Technical Service Intake Desk<br>
-            <strong>Printed:</strong> <span id="p-timestamp"></span>
-        </div>
-    </div>
-    
-    <div id="p-category-title" class="print-sec-title">Intake Process Category</div>
-    <p style="font-size:14px; font-weight:bold; margin: 5px 0;" id="p-selected-purpose"></p>
-
-    <div id="p-sec1-title" class="print-sec-title">1. Customer Details</div>
-    <table>
-        <tr>
-            <th id="p-uid-label">Service ID</th>
-            <td id="p-uid-value" colspan="3" style="font-weight: bold; font-size: 13px; color: #005a70;"></td>
-        </tr>
-        <tr><th>Customer Name</th><td id="p-name"></td><th>Admission Date & Time</th><td id="p-date"></td></tr>
-        <tr><th>Phone Number</th><td id="p-phone"></td><th>Email Address</th><td id="p-email"></td></tr>
-    </table>
-
-    <!-- PROCESS SLOT A: HARDWARE REPAIR FORM TICKET -->
-    <div id="print-meta-service-device-block">
-        <div class="print-sec-title">2. Service Device Details</div>
-        <table>
-            <tr><th>Make / Model</th><td id="p-model"></td><th>Serial Number</th><td id="p-serial"></td></tr>
-            <tr><th>Mobile Phone</th><td id="p-mobile"></td><th>IMEI Number</th><td id="p-imei"></td></tr>
-        </table>
-
-        <div class="print-sec-title">3. Service Request Assessment Summary</div>
-        <table>
-            <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
-            <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
-            <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
-            <tr><th>Diagnostic Fee</th><td>€50.00 incl. VAT[cite: 1]</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
-        </table>
-
-        <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
-        <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable[cite: 1]. Financial parts processing totals must be processed upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
-        </div>
-        
-        <div class="print-sig-block">
-            <div class="print-sig-col">
-                <img id="img-sig-customer" class="sig-img" src="" alt="">
-                <strong>Client / Authorised Signatory</strong>
-            </div>
-            <div class="print-sig-col">
-                <div id="print-tech-checklist-section">
-                    <strong style="font-size:9px; text-transform:uppercase; color:#444;">Verified Pre-Admission Bench Auditing:</strong>
-                    <ul id="p-audit-results" class="print-check-list"></ul>
-                </div>
-                <img id="img-sig-tech" class="sig-img" src="" alt="" style="margin-top:5px;">
-                <strong>Intake Technician Sign-off</strong>
-            </div>
-        </div>
-    </div>
-
-    <!-- PROCESS SLOT B: SCHOOL SYSTEM ENROLLMENT RECEIPT -->
-    <div id="print-meta-student-credential-block" class="print-hidden">
-        <div class="print-sec-title">2. Institutional Security Identification</div>
-        <table>
-            <tr><th>School Use</th><td id="p-sch-use" colspan="3"></td></tr>
-            <tr>
-                <th>Password</th><td id="p-password"></td>
-                <th>MFA Contact</th><td id="p-mfa"></td>
-            </tr>
-            <tr>
-                <th>Device Serial Number</th><td id="p-pickup-serial" colspan="3" style="font-weight: 500;"></td>
-            </tr>
-        </table>
-
-        <div class="print-sec-title">3. Setup Allocations & Protection Metrics</div>
-        <table>
-            <tr><th>Setup Delivery Strategy</th><td id="p-setup-strat"></td><th>Hardware Allocations</th><td id="p-hw-cost"></td></tr>
-            <tr><th>ESET Content Filtering</th><td id="p-cf-cost"></td><th>Protection Plan</th><td id="p-pp-cost"></td></tr>
-        </table>
-    </div>
-
-    <!-- PROCESS SLOT C: CUSTOM PC COMPONENT TICKET SPEC SHEET -->
-    <div id="print-meta-pcbuild-block" class="print-hidden">
-        <div class="print-sec-title">2. Custom PC Hardware Specification Build Manifest</div>
-        <table id="print-pc-hardware-table">
-            <!-- Populated on click loop matching active selections -->
-        </table>
-        <div class="print-sec-title">3. Terms & Custom Assembly Conditions</div>
-        <div style="font-size: 9.5px; text-align: justify; border: 1px solid #ccc; padding: 8px; line-height:1.3;">
-            All hardware setups require full component resource clearance processing upfront before physical bench mounting operations launch[cite: 1]. Component quotes are bound strictly to a 24-hour baseline margin limit to guard against system cost inventory flux (E&OE)[cite: 1].
-        </div>
+        <button class="action-btn" onclick="addToCart()">Add Configuration to Cart</button>
+        <button class="action-btn whatsapp-btn" onclick="shareToWhatsApp()">Order via WhatsApp</button>
     </div>
 </div>
 
 <script>
-    // --- 1. CORE COMPONENT PRICING & INVENTORY DATABASE ---
-    // Expanded array featuring structural socket parameters and wattage tracking
+    // --- PRODUCT DATABASE FUNCTION ---
+    // Isolated at the top to easily manage parts, details, and pricing.
     function getProductDatabase() {
         return {
             cpu: [
-                // AMD AM4 Platform
-                { id: 'cpu_am4_1', name: 'AMD Ryzen 5 4600G (APU / Integrated Core)', price: 85.00, socket: 'am4', wattage: 65 },
-                { id: 'cpu_am4_2', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4', wattage: 65 },
-                { id: 'cpu_am4_3', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4', wattage: 65 },
-                { id: 'cpu_am4_4', name: 'AMD Ryzen 7 5700X3D (Gaming Spec Cache)', price: 245.00, socket: 'am4', wattage: 105 },
-                
-                // AMD AM5 Platform
-                { id: 'cpu_am5_1', name: 'AMD Ryzen 5 7600', price: 210.00, socket: 'am5', wattage: 65 },
-                { id: 'cpu_am5_2', name: 'AMD Ryzen 5 7600X', price: 230.00, socket: 'am5', wattage: 105 },
-                { id: 'cpu_am5_3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5', wattage: 120 },
-                { id: 'cpu_am5_4', name: 'AMD Ryzen 9 7950X3D', price: 620.00, socket: 'am5', wattage: 120 },
-
-                // Intel LGA1700 Platform
-                { id: 'cpu_int_1', name: 'Intel Core i3-12100F', price: 95.00, socket: 'lga1700', wattage: 58 },
-                { id: 'cpu_int_2', name: 'Intel Core i5-12400F', price: 135.00, socket: 'lga1700', wattage: 65 },
-                { id: 'cpu_int_3', name: 'Intel Core i5-13600K', price: 310.00, socket: 'lga1700', wattage: 125 },
-                { id: 'cpu_int_4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700', wattage: 125 },
-                { id: 'cpu_int_5', name: 'Intel Core i7-14700K', price: 420.00, socket: 'lga1700', wattage: 253 },
-                { id: 'cpu_int_6', name: 'Intel Core i9-14900K', price: 600.00, socket: 'lga1700', wattage: 253 }
+                { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
+                { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
+                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
+                { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' }
             ],
             motherboard: [
-                // AM4 Mainboards
-                { id: 'mb_am4_1', name: 'Gigabyte A520M K V2 Micro-ATX', price: 65.00, socket: 'am4' },
-                { id: 'mb_am4_2', name: 'MSI B550M PRO-VDH WIFI', price: 110.00, socket: 'am4' },
-                { id: 'mb_am4_3', name: 'ASUS ROG Strix B550-F Gaming WiFi II', price: 180.00, socket: 'am4' },
-
-                // AM5 Mainboards
-                { id: 'mb_am5_1', name: 'ASRock A620M Pro RS WiFi', price: 135.00, socket: 'am5' },
-                { id: 'mb_am5_2', name: 'MSI B650 Gaming Plus WIFI', price: 180.00, socket: 'am5' },
-                { id: 'mb_am5_3', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
-                { id: 'mb_am5_4', name: 'Gigabyte X670E AORUS Master Enthusiast', price: 450.00, socket: 'am5' },
-
-                // Intel LGA1700 Mainboards
-                { id: 'mb_int_1', name: 'Gigabyte H610M H V2 DDR4 Elite', price: 80.00, socket: 'lga1700' },
-                { id: 'mb_int_2', name: 'MSI B760 Gaming Plus WIFI (DDR5 Execution)', price: 165.00, socket: 'lga1700' },
-                { id: 'mb_int_3', name: 'Gigabyte Z790 AORUS Elite AX (DDR5)', price: 260.00, socket: 'lga1700' },
-                { id: 'mb_int_4', name: 'ASUS ROG Maximus Z790 Hero Content Creator', price: 650.00, socket: 'lga1700' }
+                { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
+                { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
+                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' }
             ],
             ram: [
-                // DDR4 System RAM Modules (AM4 and core Intel profiles)
-                { id: 'ram_d4_1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
-                { id: 'ram_d4_2', name: 'Kingston FURY Beast 32GB (2x16GB) DDR4 3200MHz', price: 75.00, socket: 'am4' },
-                { id: 'ram_d4_3', name: 'G.Skill Trident Z RGB 32GB (2x16GB) DDR4 3600MHz', price: 95.00, socket: 'am4' },
-
-                // DDR5 System RAM Modules (AM5 Specialized Blocks)
-                { id: 'ram_d5a_1', name: 'Crucial Pro 32GB (2x16GB) DDR5 5600MHz', price: 95.00, socket: 'am5' },
-                { id: 'ram_d5a_2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz CL30', price: 120.00, socket: 'am5' },
-                { id: 'ram_d5a_3', name: 'Corsair Vengeance RGB 64GB (2x32GB) DDR5 6000MHz CL30', price: 230.00, socket: 'am5' },
-
-                // DDR5 System RAM Modules (Intel XMP Profiles)
-                { id: 'ram_d5i_1', name: 'Crucial Pro 32GB (2x16GB) DDR5 5600MHz Block', price: 95.00, socket: 'lga1700' },
-                { id: 'ram_d5i_2', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz CL36', price: 125.00, socket: 'lga1700' },
-                { id: 'ram_d5i_3', name: 'G.Skill Trident Z5 RGB 64GB (2x32GB) DDR5 6400MHz CL32', price: 245.00, socket: 'lga1700' }
+                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
+                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
+                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' }
             ],
             gpu: [
-                { id: 'gpu_none', name: 'No Discrete GPU (Rely on Processor Architecture)', price: 0.00, socket: 'universal', wattage: 0 },
-                
-                // Nvidia Graphics Accelerators
-                { id: 'gpu_nv_1', name: 'Nvidia RTX 4060 8GB GDDR6', price: 315.00, socket: 'universal', wattage: 115 },
-                { id: 'gpu_nv_2', name: 'Nvidia RTX 4060 Ti 8GB Core', price: 410.00, socket: 'universal', wattage: 160 },
-                { id: 'gpu_nv_3', name: 'Nvidia RTX 4070 Super 12GB GDDR6X', price: 630.00, socket: 'universal', wattage: 220 },
-                { id: 'gpu_nv_4', name: 'Nvidia RTX 4070 Ti Super 16GB GDDR6X', price: 850.00, socket: 'universal', wattage: 285 },
-                { id: 'gpu_nv_5', name: 'Nvidia RTX 4080 Super 16GB Ray-Tracing Block', price: 1050.00, socket: 'universal', wattage: 320 },
-                { id: 'gpu_nv_6', name: 'Nvidia RTX 4090 24GB Flagship Beast', price: 1950.00, socket: 'universal', wattage: 450 },
-
-                // AMD Radeon Graphics Accelerators
-                { id: 'gpu_amd_1', name: 'AMD Radeon RX 7600 8GB Engine', price: 285.00, socket: 'universal', wattage: 165 },
-                { id: 'gpu_amd_2', name: 'AMD Radeon RX 7800 XT 16GB Studio Module', price: 540.00, socket: 'universal', wattage: 263 },
-                { id: 'gpu_amd_3', name: 'AMD Radeon RX 7900 XTX 24GB Ultra Core', price: 990.00, socket: 'universal', wattage: 355 }
+                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
+                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
+                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' }
             ],
             storage: [
-                { id: 'st_1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0 SSD', price: 75.00, socket: 'universal' },
-                { id: 'st_2', name: 'WD Blue SN580 1TB M.2 NVMe Performance Plus', price: 80.00, socket: 'universal' },
-                { id: 'st_3', name: 'Samsung 990 Pro 1TB High-End NVMe Cache Unit', price: 115.00, socket: 'universal' },
-                { id: 'st_4', name: 'Crucial P3 Plus 2TB M.2 NVMe Secondary Drive', price: 135.00, socket: 'universal' },
-                { id: 'st_5', name: 'Samsung 990 Pro 2TB Extreme Speed Drive', price: 170.00, socket: 'universal' },
-                { id: 'st_6', name: 'WD Black SN850X 4TB Workstation Array', price: 340.00, socket: 'universal' }
+                { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
+                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' }
             ],
             psu: [
-                { id: 'psu_1', name: 'MSI MAG A650BN 650W 80+ Bronze Level Block', price: 65.00, socket: 'universal', maxOutput: 650 },
-                { id: 'psu_2', name: 'Corsair RM750e 750W 80+ Gold Modular ATX 3.0 Platform', price: 115.00, socket: 'universal', maxOutput: 750 },
-                { id: 'psu_3', name: 'MSI MAG A850GL 850W 80+ Gold Modular ATX 3.0 Standard', price: 130.00, socket: 'universal', maxOutput: 850 },
-                { id: 'psu_4', name: 'Corsair RM850x 850W 80+ Premium Gold Modular', price: 145.00, socket: 'universal', maxOutput: 850 },
-                { id: 'psu_5', name: 'Corsair RM1000e 1000W 80+ Gold Heavy Modular Unit', price: 175.00, socket: 'universal', maxOutput: 1000 },
-                { id: 'psu_6', name: 'ASUS ROG Thor 1200W Platinum II Digital Display', price: 350.00, socket: 'universal', maxOutput: 1200 }
+                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
+                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' }
             ],
             case: [
-                { id: 'cs_1', name: 'Tecware Forge M ARGB (M-ATX Compact Skeleton) Black', price: 55.00, socket: 'universal' },
-                { id: 'cs_2', name: 'Montech AIR 903 MAX Performance Tower Black', price: 85.00, socket: 'universal' },
-                { id: 'cs_3', name: 'NZXT H5 Flow Midi-Chassis High-Airflow Frame', price: 95.00, socket: 'universal' },
-                { id: 'cs_4', name: 'Corsair 4000D Airflow Tempered Glass Structural Black', price: 105.00, socket: 'universal' },
-                { id: 'cs_5', name: 'Lian Li O11 Vision Dual-Chamber Premium Chrome glass', price: 150.00, socket: 'universal' },
-                { id: 'cs_6', name: 'Fractal Design North Charcoal Black (Premium Walnut Front Accent)', price: 165.00, socket: 'universal' }
+                { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
+                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' }
             ],
             service: [
-                { id: 'sv_1', name: 'Standard Assembly, Testing & Burn-In Profile (30-Day Evaluation)', price: 80.00, socket: 'universal' },
-                { id: 'sv_2', name: 'Premium Assembly Tier (1-Year Collection Cover Logistics)', price: 150.00, socket: 'universal' },
-                { id: 'sv_3', name: 'Enterprise Assembly Suite (3-Year Next-Business-Day Repair Assured)', price: 250.00, socket: 'universal' }
+                { id: 'sv1', name: 'Standard Build, Stress-Testing & Delivery (30-Day On-Site Check)', price: 80.00, socket: 'universal' },
+                { id: 'sv2', name: 'Premium Build Tier (1-Year Collection Cover, Priority Support)', price: 150.00, socket: 'universal' }
             ]
         };
     }
 
-    const pcDataset = getProductDatabase();
-    const pcCategoryNames = {
+    // Global application reference to database array
+    const dataset = getProductDatabase();
+
+    // Human-readable names for UI steps
+    const categoryNames = {
         cpu: 'Processor (CPU)',
         motherboard: 'Motherboard',
         ram: 'Memory (RAM)',
@@ -920,530 +342,169 @@
         storage: 'Storage (M.2/SSD)',
         psu: 'Power Supply (PSU)',
         case: 'PC Chassis (Case)',
-        service: 'Assembly & Warranty Plan'
+        service: 'iteireann Assembly & Warranty Service'
     };
 
-    // Tracking objects & state engines
-    let currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
-    let intakePurpose = 'service';
-    let currentSpeechRecognition = null;
-    let currentActiveTextAreaId = null;
-    
-    function setDefaultTimestamp() {
-        const now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        const dateInput = document.getElementById('c-date');
-        if (dateInput) dateInput.value = now.toISOString().slice(0, 16);
-    }
+    // Selected items pointer state tracking
+    let currentSelection = {
+        cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null
+    };
 
-    // --- 2. MULTI-TAB DISPLAY INTERFACE CONTROL ROUTINES ---
-    // Hardened null-safe runtime execution layout switch
-    function setPurpose(type) {
-        try {
-            intakePurpose = type;
-            
-            const tabs = ['service', 'pickup', 'pcbuild'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`btn-purpose-${t}`);
-                const sec = document.getElementById(`section-${t}-only`);
-                if (btn) btn.classList.remove('active');
-                if (sec) sec.classList.add('hidden');
+    // Main Engine Initialization
+    function initBuilder() {
+        const builderContainer = document.getElementById('builder-steps');
+        builderContainer.innerHTML = '';
+
+        Object.keys(categoryNames).forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.id = `card-${cat}`;
+
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            header.innerHTML = `<h3>${categoryNames[cat]}</h3><span class="selected-badge" id="badge-${cat}">None Selected</span>`;
+            card.appendChild(header);
+
+            const optionsList = document.createElement('div');
+            optionsList.className = 'options-list';
+            optionsList.id = `options-${cat}`;
+
+            dataset[cat].forEach(item => {
+                const opt = document.createElement('div');
+                opt.className = 'option-item';
+                opt.id = `item-${item.id}`;
+                opt.innerHTML = `
+                    <div class="item-details">
+                        <span class="item-name">${item.name}</span>
+                        ${item.socket !== 'universal' ? `<span class="item-socket">Platform: ${item.socket}</span>` : ''}
+                    </div>
+                    <span class="item-price">€${item.price.toFixed(2)}</span>
+                `;
+                opt.onclick = () => selectComponent(cat, item);
+                optionsList.appendChild(opt);
             });
-            
-            const activeBtn = document.getElementById(`btn-purpose-${type}`);
-            const activeSec = document.getElementById(`section-${type}-only`);
-            if (activeBtn) activeBtn.classList.add('active');
-            if (activeSec) activeSec.classList.remove('hidden');
 
-            const customerCore = document.getElementById('section-customer-core-details');
-            const signaturesZone = document.getElementById('wrapper-signatures-zone');
-            const mainSubmitBtn = document.getElementById('main-submit-btn');
+            card.appendChild(optionsList);
+            builderContainer.appendChild(card);
+        });
 
-            const inputServiceId = document.getElementById('c-service-id');
-            const inputStudentIdTop = document.getElementById('c-student-id-top');
-            const groupServiceId = document.getElementById('group-service-id');
-            const groupStudentIdTop = document.getElementById('group-student-id-top');
-
-            if (type === 'pcbuild') {
-                if (customerCore) customerCore.classList.add('hidden');
-                if (signaturesZone) signaturesZone.classList.add('hidden');
-                if (mainSubmitBtn) mainSubmitBtn.classList.add('hidden');
-                if (inputServiceId) inputServiceId.required = false;
-                if (inputStudentIdTop) inputStudentIdTop.required = false;
-            } else {
-                if (customerCore) customerCore.classList.remove('hidden');
-                if (mainSubmitBtn) mainSubmitBtn.classList.remove('hidden');
-                
-                if (type === 'service') {
-                    if (signaturesZone) signaturesZone.classList.remove('hidden');
-                    if (groupServiceId) groupServiceId.classList.remove('hidden');
-                    if (groupStudentIdTop) groupStudentIdTop.classList.add('hidden');
-                    if (inputServiceId) inputServiceId.required = true;
-                    if (inputStudentIdTop) inputStudentIdTop.required = false;
-                } else {
-                    if (signaturesZone) signaturesZone.classList.add('hidden');
-                    if (groupStudentIdTop) groupStudentIdTop.classList.remove('hidden');
-                    if (groupServiceId) groupServiceId.classList.add('hidden');
-                    if (inputStudentIdTop) inputStudentIdTop.required = true;
-                    if (inputServiceId) inputServiceId.required = false;
-                }
-            }
-        } catch (error) {
-            console.error("Tab interface routing error safely caught:", error);
-        }
+        updateCompatibilityRules();
+        renderSummary();
     }
 
-    // --- 3. CUSTOM PC BUILDER CORE CONTROLLER MATRIX ---
-    function initPcBuilder() {
-        try {
-            const container = document.getElementById('pc-builder-steps');
-            if (!container) return;
-            
-            container.innerHTML = '';
-
-            Object.keys(pcCategoryNames).forEach(cat => {
-                const card = document.createElement('div');
-                card.className = 'category-card';
-                
-                const header = document.createElement('div');
-                header.className = 'category-header';
-                header.innerHTML = `<h3>${pcCategoryNames[cat]}</h3><span class="selected-badge" id="pc-badge-${cat}">None Selected</span>`;
-                card.appendChild(header);
-
-                const optionsList = document.createElement('div');
-                optionsList.className = 'options-list';
-
-                if (pcDataset[cat]) {
-                    pcDataset[cat].forEach(item => {
-                        const opt = document.createElement('div');
-                        opt.className = 'option-item';
-                        opt.id = `pc-item-${item.id}`;
-                        opt.innerHTML = `
-                            <div class="item-details">
-                                <span class="item-name">${item.name}</span>
-                                ${item.socket !== 'universal' ? `<span class="item-socket">Platform Match: ${item.socket}</span>` : ''}
-                            </div>
-                            <span class="item-price">€${item.price.toFixed(2)}</span>
-                        `;
-                        opt.onclick = () => selectPcComponent(cat, item);
-                        optionsList.appendChild(opt);
-                    });
-                }
-
-                card.appendChild(optionsList);
-                container.appendChild(card);
-            });
-            updatePcCompatibility();
-            renderPcSummary();
-        } catch (error) {
-            console.error("PC Configurator failed to initialize correctly.", error);
-        }
-    }
-
-    function selectPcComponent(category, item) {
-        if (currentPcSelection[category]?.id === item.id) {
-            currentPcSelection[category] = null;
+    // Handles picking a component and cascading compatibility logic rules
+    function selectComponent(category, item) {
+        if (currentSelection[category]?.id === item.id) {
+            currentSelection[category] = null; // Toggle off if clicked again
         } else {
-            currentPcSelection[category] = item;
+            currentSelection[category] = item;
             
-            // Auto-cascading structural logical checks
+            // Auto-cascading structural logic resets if platform rules break
             if (category === 'cpu') {
-                if (currentPcSelection.motherboard && currentPcSelection.motherboard.socket !== item.socket) currentPcSelection.motherboard = null;
-                if (currentPcSelection.ram && currentPcSelection.ram.socket !== item.socket) currentPcSelection.ram = null;
+                if (currentSelection.motherboard && currentSelection.motherboard.socket !== item.socket) {
+                    currentSelection.motherboard = null;
+                }
+                if (currentSelection.ram && currentSelection.ram.socket !== item.socket) {
+                    currentSelection.ram = null;
+                }
             }
         }
-        updatePcCompatibility();
-        renderPcSummary();
+
+        updateCompatibilityRules();
+        renderSummary();
     }
 
-    function updatePcCompatibility() {
-        const selectedCpu = currentPcSelection.cpu;
-        
-        // Compute active power load metrics for safety limits
-        let rawLoad = 0;
-        if (currentPcSelection.cpu) rawLoad += currentPcSelection.cpu.wattage;
-        if (currentPcSelection.gpu) rawLoad += currentPcSelection.gpu.wattage;
-        const requiredBufferLimit = rawLoad > 0 ? rawLoad + 120 : 0; 
+    // Filters visual arrays by matching sockets (AM4/AM5/LGA1700) 
+    function updateCompatibilityRules() {
+        const selectedCpu = currentSelection.cpu;
 
-        Object.keys(pcDataset).forEach(cat => {
-            pcDataset[cat].forEach(item => {
-                const el = document.getElementById(`pc-item-${item.id}`);
-                if (!el) return;
-                el.classList.remove('active', 'disabled');
-                
-                if (currentPcSelection[cat]?.id === item.id) el.classList.add('active');
-                
-                // Rule set A: Socket tracking
-                if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
-                    if (item.socket !== 'universal' && item.socket !== selectedCpu.socket) el.classList.add('disabled');
+        Object.keys(dataset).forEach(cat => {
+            dataset[cat].forEach(item => {
+                const element = document.getElementById(`item-${item.id}`);
+                if (!element) return;
+
+                // Reset standard UI classes
+                element.classList.remove('active', 'disabled');
+
+                // Apply active select border
+                if (currentSelection[cat]?.id === item.id) {
+                    element.classList.add('active');
                 }
-                
-                // Rule set B: Power overhead calculation checks
-                if (requiredBufferLimit > 0 && cat === 'psu') {
-                    if (item.maxOutput < requiredBufferLimit) el.classList.add('disabled');
+
+                // Motherboard and RAM matching rules based on Selected CPU Socket
+                if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
+                    if (item.socket !== 'universal' && item.socket !== selectedCpu.socket) {
+                        element.classList.add('disabled');
+                    }
                 }
             });
-            
-            const badge = document.getElementById(`pc-badge-${cat}`);
-            if (badge) {
-                if (currentPcSelection[cat]) {
-                    badge.innerText = 'Selected';
-                    badge.style.color = 'green';
-                } else {
-                    badge.innerText = 'None Selected';
-                    badge.style.color = 'var(--accent-gold)';
-                }
+
+            // Handle Category Badges updating live
+            const badge = document.getElementById(`badge-${cat}`);
+            if (currentSelection[cat]) {
+                badge.innerText = 'Selected';
+                badge.style.color = 'green';
+            } else {
+                badge.innerText = 'None Selected';
+                badge.style.color = 'var(--accent)';
             }
         });
     }
 
-    function renderPcSummary() {
-        const list = document.getElementById('pc-summary-list');
-        const totalText = document.getElementById('pc-total-amount');
-        if (!list || !totalText) return;
-        
-        list.innerHTML = '';
+    // Updates calculation tables on sidebar Panel
+    function renderSummary() {
+        const summaryList = document.getElementById('summary-list');
+        const totalAmountText = document.getElementById('total-amount');
+        summaryList.innerHTML = '';
         let total = 0;
 
-        Object.keys(pcCategoryNames).forEach(cat => {
-            const item = currentPcSelection[cat];
+        Object.keys(categoryNames).forEach(cat => {
+            const selectedItem = currentSelection[cat];
             const li = document.createElement('li');
-            if (item) {
-                total += item.price;
-                li.innerHTML = `<span class="part-type">${cat}</span><span class="part-name">${item.name} (€${item.price.toFixed(2)})</span>`;
+            
+            if (selectedItem) {
+                total += selectedItem.price;
+                li.innerHTML = `
+                    <span class="part-type">${categoryNames[cat]}</span>
+                    <span class="part-name">${selectedItem.name} (€${selectedItem.price.toFixed(2)})</span>
+                `;
             } else {
-                li.innerHTML = `<span class="part-type">${cat}</span><span class="part-name" style="color:#b5b5b5; font-style:italic;">Empty</span>`;
-            }
-            list.appendChild(li);
-        });
-        totalText.innerText = `€${total.toFixed(2)}`;
-    }
-
-    function addPcToAdmissionCheck() {
-        let selectedCount = Object.values(currentPcSelection).filter(v => v !== null).length;
-        if(selectedCount === 0) {
-            alert("Please configure custom hardware metrics before generating an active print layout ticket.");
-            return;
-        }
-
-        // Dynamically build clean hardware print output data rows
-        const targetTable = document.getElementById('print-pc-hardware-table');
-        if(!targetTable) return;
-
-        targetTable.innerHTML = `
-            <tr>
-                <th style="width: 30%; background: #eee; font-weight: bold;">Hardware Component Category</th>
-                <th style="width: 50%; background: #eee; font-weight: bold;">Selected Item Specifications</th>
-                <th style="width: 20%; background: #eee; font-weight: bold;">Cost Total</th>
-            </tr>
-        `;
-        
-        let calculationSum = 0;
-        Object.keys(pcCategoryNames).forEach(cat => {
-            const selectedItem = currentPcSelection[cat];
-            if(selectedItem) {
-                calculationSum += selectedItem.price;
-                targetTable.innerHTML += `
-                    <tr>
-                        <td><strong>${pcCategoryNames[cat]}</strong></td>
-                        <td>${selectedItem.name}</td>
-                        <td>€${selectedItem.price.toFixed(2)}</td>
-                    </tr>
+                li.innerHTML = `
+                    <span class="part-type">${categoryNames[cat]}</span>
+                    <span class="part-name" style="color:#b5b5b5; font-style:italic;">Not Configured</span>
                 `;
             }
+            summaryList.appendChild(li);
         });
 
-        targetTable.innerHTML += `
-            <tr>
-                <td colspan="2" style="text-align: right; font-weight: bold; background: #fafafa;">Total Configuration Estimated System Value:</td>
-                <td style="font-weight: bold; color: var(--primary-color); background: #fafafa;">€${calculationSum.toFixed(2)}</td>
-            </tr>
-        `;
-
-        // Direct layout swap parameters safely
-        document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
-        document.title = `Custom_PC_Quote_${new Date().toISOString().slice(0,10)}`;
-        document.getElementById('p-selected-purpose').innerText = "CUSTOM COMPUTER CONFIGURATOR PROPOSAL WORKFLOW";
-        
-        // Hide standard core user profiles inside generated invoice layouts
-        document.getElementById('p-sec1-title').style.display = "none";
-        
-        const uidLabel = document.getElementById('p-uid-label');
-        if (uidLabel && uidLabel.parentElement && uidLabel.parentElement.parentElement) {
-            uidLabel.parentElement.parentElement.style.display = "none";
-        }
-        
-        document.getElementById('print-meta-service-device-block').classList.add('print-hidden');
-        document.getElementById('print-meta-student-credential-block').classList.add('print-hidden');
-        document.getElementById('print-meta-pcbuild-block').classList.remove('print-hidden');
-
-        window.print();
-        
-        // Restore environment settings defaults
-        document.title = "iteireann - Client facing UI";
-        document.getElementById('p-sec1-title').style.display = "block";
-        if (uidLabel && uidLabel.parentElement && uidLabel.parentElement.parentElement) {
-            uidLabel.parentElement.parentElement.style.display = "table-row";
-        }
+        totalAmountText.innerText = `€${total.toFixed(2)}`;
     }
 
-    function sharePcToWhatsApp() {
-        let messageText = "Hello iteireann, I would like to request a quote matching this custom build sheet:\n\n";
-        let runningTotal = 0;
-        Object.keys(pcCategoryNames).forEach(cat => {
-            const chosenPart = currentPcSelection[cat];
-            if (chosenPart) {
-                messageText += `• ${pcCategoryNames[cat]}: ${chosenPart.name} (€${chosenPart.price.toFixed(2)})\n`;
-                runningTotal += chosenPart.price;
+    function addToCart() {
+        alert('Configuration saved! Ready to route parameters into your store checkout pipeline.');
+    }
+
+    // Compiles parts array into a cleanly read payload string for direct WhatsApp execution
+    function shareToWhatsApp() {
+        let text = "Hello iteireann, I would like to request a quote for a custom PC configuration:\n\n";
+        let total = 0;
+        
+        Object.keys(categoryNames).forEach(cat => {
+            const item = currentSelection[cat];
+            if (item) {
+                text += `• ${categoryNames[cat]}: ${item.name} (€${item.price.toFixed(2)})\n`;
+                total += item.price;
             }
         });
-        messageText += `\n*Estimated Configuration Total: €${runningTotal.toFixed(2)}*`;
-        window.open('https://wa.me/353870000000?text=' + encodeURIComponent(messageText), '_blank');
-    }
-
-    // --- 4. ASSISTIVE SPEECH TO TEXT ACCESSIBILITY LOOPS ---
-    function toggleDictation(textAreaId) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            alert("Voice metrics are not supported inside this browser build. Please run under Safari or Chrome engines.");
-            return;
-        }
-
-        const micButton = document.getElementById(`mic-${textAreaId}`);
-        const targetTextArea = document.getElementById(textAreaId);
-
-        if (currentSpeechRecognition && currentActiveTextAreaId === textAreaId) {
-            currentSpeechRecognition.stop();
-            return;
-        }
-
-        if (currentSpeechRecognition) {
-            currentSpeechRecognition.stop();
-        }
-
-        currentActiveTextAreaId = textAreaId;
-        currentSpeechRecognition = new SpeechRecognition();
-        currentSpeechRecognition.continuous = true;
-        currentSpeechRecognition.interimResults = false;
-        currentSpeechRecognition.lang = 'en-IE';
-
-        currentSpeechRecognition.onstart = function() {
-            if(micButton) {
-                micButton.classList.add('listening');
-                micButton.innerText = "🛑";
-            }
-        };
-
-        currentSpeechRecognition.onerror = function(event) {
-            console.error("Speech input error tracking parameters", event.error);
-            cleanupSpeechUI();
-        };
-
-        currentSpeechRecognition.onend = function() { cleanupSpeechUI(); };
-
-        currentSpeechRecognition.onresult = function(event) {
-            let bufferString = "";
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) bufferString += event.results[i][0].transcript;
-            }
-            if (bufferString && targetTextArea) {
-                const legacyVal = targetTextArea.value.trim();
-                targetTextArea.value = legacyVal ? legacyVal + " " + bufferString : bufferString;
-                targetTextArea.dispatchEvent(new Event('input'));
-            }
-        };
-        currentSpeechRecognition.start();
-    }
-
-    function cleanupSpeechUI() {
-        if (currentActiveTextAreaId) {
-            const targetMic = document.getElementById(`mic-${currentActiveTextAreaId}`);
-            if (targetMic) {
-                targetMic.classList.remove('listening');
-                targetMic.innerText = "🎤";
-            }
-        }
-        currentSpeechRecognition = null;
-        currentActiveTextAreaId = null;
-    }
-
-    // --- 5. RESPONSIVE SIGNATURE INTERACTIVE PAD STAGE ---
-    const canvases = ['sig-customer', 'sig-tech'];
-    function initCanvases() {
-        canvases.forEach(id => {
-            const cvs = document.getElementById(id);
-            if (!cvs) return;
-            const ctx = cvs.getContext('2d');
-            
-            cvs.width = cvs.parentElement.clientWidth || 300;
-            cvs.height = 120;
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 2.5;
-            ctx.lineCap = 'round';
-
-            let drawing = false;
-            function getPos(e) {
-                const rect = cvs.getBoundingClientRect();
-                const cX = e.touches ? e.touches[0].clientX : e.clientX;
-                const cY = e.touches ? e.touches[0].clientY : e.clientY;
-                return { x: cX - rect.left, y: cY - rect.top };
-            }
-            cvs.addEventListener('touchstart', function(e) { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }, {passive: false});
-            cvs.addEventListener('touchmove', function(e) { if(!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, {passive: false});
-            window.addEventListener('touchend', () => drawing = false);
-        });
-    }
-
-    function clearCanvas(id) {
-        const cvs = document.getElementById(id);
-        if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
-    }
-
-    // --- 6. CORE REPAIR / PICKUP ADMISSION PIPELINE PROCESSING ---
-    window.onload = function() {
-        setDefaultTimestamp();
-        initPcBuilder();
-        initCanvases();
         
-        // Handle dynamic width recalculation for signature fields on window adjust or flip
-        window.addEventListener('resize', () => {
-            canvases.forEach(id => {
-                const cvs = document.getElementById(id);
-                if(cvs && cvs.parentElement) cvs.width = cvs.parentElement.clientWidth || 300;
-            });
-        });
+        text += `\n*Estimated Total: €${total.toFixed(2)}*`;
+        
+        const encodedText = encodeURIComponent(text);
+        // Replace with your designated business mobile line parameter string
+        window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
+    }
 
-        const form = document.getElementById('admissionForm');
-        if (form) {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                if (intakePurpose === 'pcbuild') return;
-
-                if (currentSpeechRecognition) currentSpeechRecognition.stop();
-
-                const cNameNode = document.getElementById('c-name');
-                const customerName = cNameNode ? cNameNode.value.trim() : 'Unknown';
-                const formattedName = customerName.replace(/[^a-zA-Z0-9]/g, '_');
-                
-                document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
-                document.getElementById('p-name').innerText = customerName;
-                
-                const cDateNode = document.getElementById('c-date');
-                const dateVal = cDateNode ? cDateNode.value : '';
-                document.getElementById('p-date').innerText = dateVal ? dateVal.replace('T', ' ') : 'Unspecified';
-                
-                document.getElementById('p-phone').innerText = document.getElementById('c-phone') ? document.getElementById('c-phone').value.trim() : '';
-                document.getElementById('p-email').innerText = document.getElementById('c-email') ? document.getElementById('c-email').value.trim() : '';
-
-                const printDeviceBlock = document.getElementById('print-meta-service-device-block');
-                const printStudentBlock = document.getElementById('print-meta-student-credential-block');
-                const printPcBlock = document.getElementById('print-meta-pcbuild-block');
-
-                if(printDeviceBlock) printDeviceBlock.classList.add('print-hidden');
-                if(printStudentBlock) printStudentBlock.classList.add('print-hidden');
-                if(printPcBlock) printPcBlock.classList.add('print-hidden');
-
-                if (intakePurpose === 'service') {
-                    const svcNode = document.getElementById('c-service-id');
-                    const serviceId = svcNode ? svcNode.value.trim() : 'Unknown_ID';
-                    document.title = `Service_Ticket_${serviceId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;
-
-                    document.getElementById('p-category-title').innerText = "Intake Process Category";
-                    document.getElementById('p-category-title').style.display = "block";
-                    document.getElementById('p-selected-purpose').innerText = "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION";
-                    document.getElementById('p-sec1-title').innerText = "1. Customer Admission Details";
-                    
-                    document.getElementById('p-uid-label').innerText = "Service ID";
-                    document.getElementById('p-uid-value').innerText = serviceId;
-
-                    if(printDeviceBlock) printDeviceBlock.classList.remove('print-hidden');
-
-                    document.getElementById('p-model').innerText = document.getElementById('d-model').value.trim() || 'N/A';
-                    document.getElementById('p-serial').innerText = document.getElementById('d-serial').value.trim() || 'N/A';
-                    document.getElementById('p-mobile').innerText = document.getElementById('d-mobile').value.trim() || 'N/A';
-                    document.getElementById('p-imei').innerText = document.getElementById('d-imei').value.trim() || 'N/A';
-                    document.getElementById('p-faults').innerText = document.getElementById('sr-faults').value.trim() || 'N/A';
-                    document.getElementById('p-physical').innerText = document.getElementById('sr-physical').value.trim() || 'No visual damage recorded.';
-                    
-                    const feeNode = document.getElementById('fee-additional');
-                    const addFeeVal = feeNode ? parseFloat(feeNode.value) : 0;
-                    document.getElementById('p-add-fee').innerText = !isNaN(addFeeVal) ? '€' + addFeeVal.toFixed(2) : '€0.00';
-
-                    let srvList = [];
-                    if(document.getElementById('srv-diag') && document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics (€50)");
-                    if(document.getElementById('srv-soft') && document.getElementById('srv-soft').checked) srvList.push("Software Repair / OS Reinstall");
-                    if(document.getElementById('srv-hard') && document.getElementById('srv-hard').checked) srvList.push("Hardware Replacement");
-                    if(document.getElementById('srv-data') && document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");
-                    
-                    const otherNode = document.getElementById('srv-other');
-                    if(otherNode && otherNode.value.trim()) srvList.push("Other: " + otherNode.value.trim());
-                    
-                    document.getElementById('p-services').innerText = srvList.length ? srvList.join(', ') : 'None Selected';
-
-                    const auditListUl = document.getElementById('p-audit-results');
-                    if (auditListUl) {
-                        auditListUl.innerHTML = '';
-                        document.querySelectorAll('input[name="tech_audit"]').forEach(item => {
-                            const status = item.checked ? "☑" : "☒";
-                            const li = document.createElement('li');
-                            li.innerText = `${status} ${item.parentElement.innerText}`;
-                            auditListUl.appendChild(li);
-                        });
-                    }
-
-                    const sigCus = document.getElementById('sig-customer');
-                    if(sigCus) document.getElementById('img-sig-customer').src = sigCus.toDataURL();
-                    
-                    const sigTech = document.getElementById('sig-tech');
-                    if(sigTech) document.getElementById('img-sig-tech').src = sigTech.toDataURL();
-                    
-                } else if (intakePurpose === 'pickup') {
-                    const stuNode = document.getElementById('c-student-id-top');
-                    const studentId = stuNode ? stuNode.value.trim() : 'Unknown_ID';
-                    document.title = `Device_Assignment_${studentId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;
-
-                    document.getElementById('p-category-title').style.display = "none";
-                    document.getElementById('p-selected-purpose').innerText = "New device assignment process";
-                    document.getElementById('p-sec1-title').innerText = "1. Customer & Device Assignment Details";
-                    
-                    document.getElementById('p-uid-label').innerText = "Student ID";
-                    document.getElementById('p-uid-value').innerText = studentId;
-
-                    if(printStudentBlock) printStudentBlock.classList.remove('print-hidden');
-
-                    document.getElementById('p-sch-use').innerText = document.getElementById('sch-use') ? document.getElementById('sch-use').value.trim() : 'N/A';
-                    document.getElementById('p-password').innerText = document.getElementById('sch-password') ? document.getElementById('sch-password').value.trim() : 'N/A';
-                    document.getElementById('p-mfa').innerText = document.getElementById('sch-mfa') ? document.getElementById('sch-mfa').value.trim() : 'N/A';
-                    document.getElementById('p-pickup-serial').innerText = document.getElementById('sch-serial') ? document.getElementById('sch-serial').value.trim() : 'N/A';
-                    
-                    let setupStrat = [];
-                    if(document.getElementById('setup-inperson') && document.getElementById('setup-inperson').checked) setupStrat.push("In Person Setup");
-                    if(document.getElementById('setup-pickup') && document.getElementById('setup-pickup').checked) setupStrat.push("Client Pickup Without Setup");
-                    document.getElementById('p-setup-strat').innerText = setupStrat.join(' & ') || 'None';
-
-                    let hwAlloc = [];
-                    if(document.getElementById('hw-lap') && document.getElementById('hw-lap').checked) hwAlloc.push("Laptop / PC (€650)");
-                    if(document.getElementById('hw-mob') && document.getElementById('hw-mob').checked) hwAlloc.push("Android Mobile Phone (€99)");
-                    document.getElementById('p-hw-cost').innerText = hwAlloc.join(', ') || 'None Assigned';
-
-                    document.getElementById('p-cf-cost').innerText = document.getElementById('opt-content-filtering') ? document.getElementById('opt-content-filtering').value : '';
-                    document.getElementById('p-pp-cost').innerText = document.getElementById('opt-protection-plan') ? document.getElementById('opt-protection-plan').value : '';
-                }
-
-                window.print();
-                document.title = "iteireann - Client facing UI";
-
-                this.reset();
-                clearCanvas('sig-customer');
-                clearCanvas('sig-tech');
-                currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
-                updatePcCompatibility();
-                renderPcSummary();
-                setDefaultTimestamp();
-                setPurpose('service');
-            });
-        }
-    };
+    window.onload = initBuilder;
 </script>
 
 </body>
