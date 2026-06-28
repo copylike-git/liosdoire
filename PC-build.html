@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom PC Builder | iteireann</title>
+    <style>
+        :root {
+            --primary: #111111;
+            --accent: #d2a679; /* Premium subtle gold/bronze tint */
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --text-dark: #222222;
+            --text-muted: #666666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .summary-panel {
+                position: relative !important;
+                top: 0 !important;
+            }
+        }
+
+        /* Build Steps Layout */
+        .builder-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background-color: white;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .selected-badge {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .options-list {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-item:hover {
+            border-color: #b5b5b5;
+            background-color: #fafafa;
+        }
+
+        .option-item.active {
+            border-color: var(--primary);
+            background-color: #f0f0f0;
+            font-weight: 500;
+        }
+
+        .option-item.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            background-color: #f5f5f5;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .item-name {
+            font-size: 0.95rem;
+        }
+
+        .item-socket {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .item-price {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Summary Sidebar */
+        .summary-panel {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.5rem;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .summary-panel h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .summary-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .summary-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .summary-list .part-type {
+            color: var(--text-muted);
+            min-width: 90px;
+        }
+
+        .summary-list .part-name {
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .total-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn:hover {
+            background-color: #333333;
+        }
+
+        .whatsapp-btn {
+            margin-top: 0.75rem;
+            background-color: #25D366;
+        }
+        .whatsapp-btn:hover {
+            background-color: #20ba56;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <h1>iteireann Configurator</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Component Selector Matrix -->
+    <div class="builder-steps" id="builder-steps">
+        <!-- Javascript renders categories here -->
+    </div>
+
+    <!-- Live Checkout Panel -->
+    <div class="summary-panel">
+        <h2>Configuration Summary</h2>
+        <ul class="summary-list" id="summary-list">
+            <!-- Javascript updates selected components here -->
+        </ul>
+        
+        <div class="total-row">
+            <span class="total-title">Estimated Total</span>
+            <span class="total-amount" id="total-amount">€0.00</span>
+        </div>
+
+        <button class="action-btn" onclick="addToCart()">Add Configuration to Cart</button>
+        <button class="action-btn whatsapp-btn" onclick="shareToWhatsApp()">Order via WhatsApp</button>
+    </div>
+</div>
+
+<script>
+    // --- PRODUCT DATABASE FUNCTION ---
+    // Isolated at the top to easily manage parts, details, and pricing.
+    function getProductDatabase() {
+        return {
+            cpu: [
+                { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
+                { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
+                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
+                { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' }
+            ],
+            motherboard: [
+                { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
+                { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
+                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' }
+            ],
+            ram: [
+                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
+                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
+                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' }
+            ],
+            gpu: [
+                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
+                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
+                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' }
+            ],
+            storage: [
+                { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
+                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' }
+            ],
+            psu: [
+                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
+                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' }
+            ],
+            case: [
+                { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
+                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' }
+            ],
+            service: [
+                { id: 'sv1', name: 'Standard Build, Stress-Testing & Delivery (30-Day On-Site Check)', price: 80.00, socket: 'universal' },
+                { id: 'sv2', name: 'Premium Build Tier (1-Year Collection Cover, Priority Support)', price: 150.00, socket: 'universal' }
+            ]
+        };
+    }
+
+    // Global application reference to database array
+    const dataset = getProductDatabase();
+
+    // Human-readable names for UI steps
+    const categoryNames = {
+        cpu: 'Processor (CPU)',
+        motherboard: 'Motherboard',
+        ram: 'Memory (RAM)',
+        gpu: 'Graphics Card (GPU)',
+        storage: 'Storage (M.2/SSD)',
+        psu: 'Power Supply (PSU)',
+        case: 'PC Chassis (Case)',
+        service: 'iteireann Assembly & Warranty Service'
+    };
+
+    // Selected items pointer state tracking
+    let currentSelection = {
+        cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null
+    };
+
+    // Main Engine Initialization
+    function initBuilder() {
+        const builderContainer = document.getElementById('builder-steps');
+        builderContainer.innerHTML = '';
+
+        Object.keys(categoryNames).forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.id = `card-${cat}`;
+
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            header.innerHTML = `<h3>${categoryNames[cat]}</h3><span class="selected-badge" id="badge-${cat}">None Selected</span>`;
+            card.appendChild(header);
+
+            const optionsList = document.createElement('div');
+            optionsList.className = 'options-list';
+            optionsList.id = `options-${cat}`;
+
+            dataset[cat].forEach(item => {
+                const opt = document.createElement('div');
+                opt.className = 'option-item';
+                opt.id = `item-${item.id}`;
+                opt.innerHTML = `
+                    <div class="item-details">
+                        <span class="item-name">${item.name}</span>
+                        ${item.socket !== 'universal' ? `<span class="item-socket">Platform: ${item.socket}</span>` : ''}
+                    </div>
+                    <span class="item-price">€${item.price.toFixed(2)}</span>
+                `;
+                opt.onclick = () => selectComponent(cat, item);
+                optionsList.appendChild(opt);
+            });
+
+            card.appendChild(optionsList);
+            builderContainer.appendChild(card);
+        });
+
+        updateCompatibilityRules();
+        renderSummary();
+    }
+
+    // Handles picking a component and cascading compatibility logic rules
+    function selectComponent(category, item) {
+        if (currentSelection[category]?.id === item.id) {
+            currentSelection[category] = null; // Toggle off if clicked again
+        } else {
+            currentSelection[category] = item;
+            
+            // Auto-cascading structural logic resets if platform rules break
+            if (category === 'cpu') {
+                if (currentSelection.motherboard && currentSelection.motherboard.socket !== item.socket) {
+                    currentSelection.motherboard = null;
+                }
+                if (currentSelection.ram && currentSelection.ram.socket !== item.socket) {
+                    currentSelection.ram = null;
+                }
+            }
+        }
+
+        updateCompatibilityRules();
+        renderSummary();
+    }
+
+    // Filters visual arrays by matching sockets (AM4/AM5/LGA1700) 
+    function updateCompatibilityRules() {
+        const selectedCpu = currentSelection.cpu;
+
+        Object.keys(dataset).forEach(cat => {
+            dataset[cat].forEach(item => {
+                const element = document.getElementById(`item-${item.id}`);
+                if (!element) return;
+
+                // Reset standard UI classes
+                element.classList.remove('active', 'disabled');
+
+                // Apply active select border
+                if (currentSelection[cat]?.id === item.id) {
+                    element.classList.add('active');
+                }
+
+                // Motherboard and RAM matching rules based on Selected CPU Socket
+                if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
+                    if (item.socket !== 'universal' && item.socket !== selectedCpu.socket) {
+                        element.classList.add('disabled');
+                    }
+                }
+            });
+
+            // Handle Category Badges updating live
+            const badge = document.getElementById(`badge-${cat}`);
+            if (currentSelection[cat]) {
+                badge.innerText = 'Selected';
+                badge.style.color = 'green';
+            } else {
+                badge.innerText = 'None Selected';
+                badge.style.color = 'var(--accent)';
+            }
+        });
+    }
+
+    // Updates calculation tables on sidebar Panel
+    function renderSummary() {
+        const summaryList = document.getElementById('summary-list');
+        const totalAmountText = document.getElementById('total-amount');
+        summaryList.innerHTML = '';
+        let total = 0;
+
+        Object.keys(categoryNames).forEach(cat => {
+            const selectedItem = currentSelection[cat];
+            const li = document.createElement('li');
+            
+            if (selectedItem) {
+                total += selectedItem.price;
+                li.innerHTML = `
+                    <span class="part-type">${categoryNames[cat]}</span>
+                    <span class="part-name">${selectedItem.name} (€${selectedItem.price.toFixed(2)})</span>
+                `;
+            } else {
+                li.innerHTML = `
+                    <span class="part-type">${categoryNames[cat]}</span>
+                    <span class="part-name" style="color:#b5b5b5; font-style:italic;">Not Configured</span>
+                `;
+            }
+            summaryList.appendChild(li);
+        });
+
+        totalAmountText.innerText = `€${total.toFixed(2)}`;
+    }
+
+    function addToCart() {
+        alert('Configuration saved! Ready to route parameters into your store checkout pipeline.');
+    }
+
+    // Compiles parts array into a cleanly read payload string for direct WhatsApp execution
+    function shareToWhatsApp() {
+        let text = "Hello iteireann, I would like to request a quote for a custom PC configuration:\n\n";
+        let total = 0;
+        
+        Object.keys(categoryNames).forEach(cat => {
+            const item = currentSelection[cat];
+            if (item) {
+                text += `• ${categoryNames[cat]}: ${item.name} (€${item.price.toFixed(2)})\n`;
+                total += item.price;
+            }
+        });
+        
+        text += `\n*Estimated Total: €${total.toFixed(2)}*`;
+        
+        const encodedText = encodeURIComponent(text);
+        // Replace with your designated business mobile line parameter string
+        window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
+    }
+
+    window.onload = initBuilder;
+</script>
+
+</body>
+</html>
