@@ -8,7 +8,6 @@
         :root {
             --primary-color: #005a70;
             --accent-blue: #3baed4;
-            --accent-gold: #d2a679;
             --background-color: #f5f5f7;
             --text-color: #1d1d1f;
             --border-color: #d2d2d7;
@@ -22,11 +21,10 @@
             line-height: 1.5;
             margin: 0;
             padding: 20px;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 800px;
             margin: 0 auto;
             background: var(--section-bg);
             padding: 30px;
@@ -81,16 +79,10 @@
             letter-spacing: 0.5px;
         }
 
-        /* Responsive Layout Subgrids */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
         .form-group { margin-bottom: 15px; position: relative; }
         .full-width { grid-column: span 2; }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-        }
 
         label {
             display: block;
@@ -107,7 +99,7 @@
         select,
         textarea {
             width: 100%;
-            padding: 14px; /* Increased for better tablet touch targeting */
+            padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-sizing: border-box;
@@ -135,8 +127,8 @@
             position: absolute;
             right: 10px;
             top: 10px;
-            width: 40px; /* Tablet optimized size */
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: 1px solid var(--border-color);
             background: #f5f5f7;
@@ -149,7 +141,10 @@
             z-index: 5;
         }
 
-        .mic-btn:hover { background: #e8e8ed; }
+        .mic-btn:hover {
+            background: #e8e8ed;
+        }
+
         .mic-btn.listening {
             background: #df2020;
             color: white;
@@ -163,29 +158,24 @@
             100% { opacity: 1; }
         }
 
-        /* Three-Tab Button Navigation Matrix */
+        /* Toggle Button Group */
         .purpose-selector {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             margin-bottom: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .purpose-selector { grid-template-columns: 1fr; gap: 8px; }
         }
 
         .purpose-btn {
             background: #fff;
             border: 2px solid var(--border-color);
-            padding: 16px 12px;
+            padding: 15px;
             text-align: center;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            user-select: none;
         }
 
         .purpose-btn.active {
@@ -197,17 +187,17 @@
         /* Touch Checkboxes */
         .check-group {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 12px;
-            padding: 14px;
+            padding: 12px;
             border: 1px solid #e8e8ed;
             border-radius: 6px;
             background: #fafafa;
         }
 
         .check-group input {
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             margin-right: 12px;
             flex-shrink: 0;
             cursor: pointer;
@@ -218,7 +208,6 @@
             font-weight: 500;
             font-size: 15px;
             cursor: pointer;
-            width: 100%;
         }
 
         .tech-checklist-box {
@@ -229,9 +218,9 @@
             margin-bottom: 15px;
         }
 
-        .tech-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 14px; }
+        .tech-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 14px; }
         .tech-item:last-child { margin-bottom: 0; }
-        .tech-item input { width: 22px; height: 22px; margin-right: 12px; }
+        .tech-item input { width: 20px; height: 20px; margin-right: 10px; }
 
         .legal-box {
             background-color: #f9f9fb;
@@ -266,8 +255,8 @@
             background: #86868b;
             color: white;
             border: none;
-            padding: 8px 16px;
-            font-size: 13px;
+            padding: 6px 12px;
+            font-size: 12px;
             border-radius: 4px;
             cursor: pointer;
         }
@@ -276,7 +265,7 @@
             background-color: #00802b;
             color: white;
             border: none;
-            padding: 18px 20px;
+            padding: 16px 20px;
             font-size: 18px;
             font-weight: 600;
             border-radius: 8px;
@@ -287,111 +276,9 @@
             letter-spacing: 0.5px;
         }
 
-        .btn-submit:hover { opacity: 0.9; }
-
-        /* TAB 3: CUSTOM PC CONFIGURATOR UNIQUE STYLES */
-        .pc-builder-layout {
-            display: grid;
-            grid-template-columns: 1fr 360px;
-            gap: 20px;
-            align-items: start;
+        .btn-submit:hover {
+            opacity: 0.9;
         }
-
-        @media (max-width: 900px) {
-            .pc-builder-layout { grid-template-columns: 1fr; }
-            .summary-panel { position: relative !important; top: 0 !important; }
-        }
-
-        .builder-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .category-card {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .category-header {
-            background-color: #f8f9fa;
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .category-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--primary-color); }
-        .selected-badge { font-size: 13px; color: var(--accent-gold); font-weight: 600; }
-
-        .options-list {
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 240px;
-            overflow-y: auto;
-        }
-
-        .option-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            background: #fff;
-        }
-
-        .option-item:hover { border-color: #a1a1a6; background-color: #fafafa; }
-        .option-item.active { border-color: var(--primary-color); background-color: rgba(0, 90, 112, 0.04); font-weight: 600; }
-        .option-item.disabled { opacity: 0.35; pointer-events: none; background-color: #f5f5f7; }
-        .item-details { display: flex; flex-direction: column; gap: 2px; }
-        .item-name { font-size: 14px; color: #1d1d1f; }
-        .item-socket { font-size: 11px; color: #666; text-transform: uppercase; font-weight: 600; }
-        .item-price { font-weight: 700; font-size: 14px; color: var(--text-color); }
-
-        .summary-panel {
-            background: #f8f9fa;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-        }
-
-        .summary-panel h3 { margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 16px; text-transform: uppercase; }
-        .summary-list { list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; flex-direction: column; gap: 10px; font-size: 13px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .summary-list li { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-        .summary-list .part-type { color: #555; font-weight: 600; min-width: 80px; text-transform: uppercase; font-size: 11px; }
-        .summary-list .part-name { text-align: right; font-weight: 500; color: #1d1d1f; }
-        
-        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .total-title { font-size: 15px; font-weight: 600; }
-        .total-amount { font-size: 22px; font-weight: 700; color: var(--primary-color); }
-        
-        .action-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-        .whatsapp-btn { background-color: #25D366; margin-bottom: 0; }
-        .whatsapp-btn:hover { background-color: #20ba56; }
 
         .dynamic-section { display: block; }
         .hidden { display: none !important; }
@@ -400,7 +287,7 @@
         #print-rendering-zone { display: none; }
 
         @media print {
-            @page { size: A4 portrait; margin: 15mm; }
+            @page { size: A4 portrait; margin: 15mm 15mm 15mm 15mm; }
             body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
             #interactive-form-zone { display: none !important; }
             #print-rendering-zone { display: block !important; width: 100%; font-size: 12px; }
@@ -432,6 +319,7 @@
             .print-check-list li { margin-bottom: 2px; }
         }
         
+        /* CORPORATE LOGO REPOSITORY (Live Web URL) */
         .logo-src-data {
             content: url("https://www.ite.ie/wp-content/uploads/2025/01/Untitled-2-1.png");
         }
@@ -449,49 +337,45 @@
         </div>
     </div>
 
-    <label style="text-align: center; display: block; margin-bottom: 10px; font-size: 16px;">Select Intake Process Matrix:</label>
+    <label style="text-align: center; display: block; margin-bottom: 10px; font-size: 16px;">Select Admission Process Type:</label>
     <div class="purpose-selector">
         <div id="btn-purpose-service" class="purpose-btn active" onclick="setPurpose('service')">Device Inspection / Service</div>
-        <div id="btn-purpose-pickup" class="purpose-btn" onclick="setPurpose('pickup')">School Laptop / Mobile Pickup</div>
-        <div id="btn-purpose-pcbuild" class="purpose-btn" onclick="setPurpose('pcbuild')">Custom PC Component Builder</div>
+        <div id="btn-purpose-pickup" class="purpose-btn" onclick="setPurpose('pickup')">New Laptop / Mobile Pickup</div>
     </div>
 
     <form id="admissionForm">
         
-        <!-- GLOBAL CLIENT BASE FIELDS (SHARED BY TAB 1 & TAB 2) -->
-        <div id="section-customer-core-details">
-            <h2>1. Customer Admission Details</h2>
-            <div class="grid-2">
-                <div id="group-service-id" class="form-group full-width">
-                    <label for="c-service-id">Service ID <span class="required-star">*</span></label>
-                    <input type="text" id="c-service-id" required placeholder="e.g. SR-2026-8492">
-                </div>
-                
-                <div id="group-student-id-top" class="form-group full-width hidden">
-                    <label for="c-student-id-top">Student ID <span class="required-star">*</span></label>
-                    <input type="text" id="c-student-id-top" placeholder="e.g. STU-123456">
-                </div>
+        <h2>1. Customer Admission Details</h2>
+        <div class="grid-2">
+            
+            <div id="group-service-id" class="form-group full-width">
+                <label for="c-service-id">Service ID <span class="required-star">*</span></label>
+                <input type="text" id="c-service-id" required placeholder="e.g. SR-2026-8492">
+            </div>
+            
+            <div id="group-student-id-top" class="form-group full-width hidden">
+                <label for="c-student-id-top">Student ID <span class="required-star">*</span></label>
+                <input type="text" id="c-student-id-top" placeholder="e.g. STU-123456">
+            </div>
 
-                <div class="form-group">
-                    <label for="c-name">Customer Name <span class="required-star">*</span></label>
-                    <input type="text" id="c-name" required placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label for="c-date">Admission Date & Time</label>
-                    <input type="datetime-local" id="c-date" required>
-                </div>
-                <div class="form-group">
-                    <label for="c-phone">Phone Number <span class="required-star">*</span></label>
-                    <input type="text" id="c-phone" required placeholder="08X XXX XXXX">
-                </div>
-                <div class="form-group">
-                    <label for="c-email">Email Address <span class="required-star">*</span></label>
-                    <input type="email" id="c-email" required placeholder="name@example.com">
-                </div>
+            <div class="form-group">
+                <label for="c-name">Customer Name <span class="required-star">*</span></label>
+                <input type="text" id="c-name" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="c-date">Admission Date & Time</label>
+                <input type="datetime-local" id="c-date" required>
+            </div>
+            <div class="form-group">
+                <label for="c-phone">Phone Number <span class="required-star">*</span></label>
+                <input type="text" id="c-phone" required placeholder="08X XXX XXXX">
+            </div>
+            <div class="form-group">
+                <label for="c-email">Email Address <span class="required-star">*</span></label>
+                <input type="email" id="c-email" required placeholder="name@example.com">
             </div>
         </div>
 
-        <!-- TAB 1: DEVICE INSPECTION & TECHNICAL SERVICE -->
         <div id="section-service-only" class="dynamic-section">
             <h2>2. Service Device Details</h2>
             <div class="grid-2">
@@ -568,7 +452,6 @@
             </p>
         </div>
 
-        <!-- TAB 2: SCHOOL LAPTOP DISTRIBUTION / ASSIGNMENT -->
         <div id="section-pickup-only" class="dynamic-section hidden">
             <h2>2. Institutional Security Identification & Assignment</h2>
             <div class="grid-2">
@@ -637,32 +520,6 @@
             </p>
         </div>
 
-        <!-- TAB 3: CUSTOM PC COMPONENT BUILDER -->
-        <div id="section-pcbuild-only" class="dynamic-section hidden">
-            <h2>Custom PC Builder Matrix</h2>
-            <div class="pc-builder-layout">
-                <!-- Build Steps Column -->
-                <div class="builder-steps" id="pc-builder-steps">
-                    <!-- JavaScript mounts component options cards dynamically here -->
-                </div>
-
-                <!-- Sticky Summary Column Inside Viewport Container -->
-                <div class="summary-panel">
-                    <h3>Active Spec Sheet</h3>
-                    <ul class="summary-list" id="pc-summary-list">
-                        <!-- Dynamic choices generated live -->
-                    </ul>
-                    <div class="total-row">
-                        <span class="total-title">Est. Total</span>
-                        <span class="total-amount" id="pc-total-amount">€0.00</span>
-                    </div>
-                    <button type="button" class="action-btn" onclick="addPcToAdmissionCheck()">Lock Selection to Admission</button>
-                    <button type="button" class="action-btn whatsapp-btn" onclick="sharePcToWhatsApp()">Order via WhatsApp</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- DIGITAL INTERACTIVE SIGNATURE BOXES (SHARED BY TAB 1 & TAB 2) -->
         <div id="wrapper-signatures-zone">
             <div class="signature-section">
                 <label>Customer / Authorised Signature</label>
@@ -704,12 +561,12 @@
             </div>
         </div>
 
-        <button type="submit" id="main-submit-btn" class="btn-submit">Complete Admission & Print Ticket</button>
+        <button type="submit" class="btn-submit">Complete Admission & Print Ticket</button>
     </form>
 </div>
 
-<!-- INVISIBLE HARDWARE PRINT OUTPUT STAGE (MAPPED TO A4 SPECIFICATIONS) -->
 <div id="print-rendering-zone">
+    
     <div class="print-brand-wrap">
         <div class="logo-src-data print-logo-box"></div>
         <div class="print-header-meta">
@@ -722,7 +579,7 @@
     <div id="p-category-title" class="print-sec-title">Intake Process Category</div>
     <p style="font-size:14px; font-weight:bold; margin: 5px 0;" id="p-selected-purpose"></p>
 
-    <div id="p-sec1-title" class="print-sec-title">1. Customer Details</div>
+    <div id="p-sec1-title" class="print-sec-title">1. Customer Admission Details</div>
     <table>
         <tr>
             <th id="p-uid-label">Service ID</th>
@@ -787,73 +644,9 @@
             <tr><th>ESET Content Filtering</th><td id="p-cf-cost"></td><th>Protection Plan</th><td id="p-pp-cost"></td></tr>
         </table>
     </div>
-
-    <!-- TAILORED CUSTOM PC PRINT TRACKING SUBSECTION -->
-    <div id="print-meta-pcbuild-block" class="print-hidden">
-        <div class="print-sec-title">2. Custom PC Component Configuration Specifications</div>
-        <table id="print-pc-hardware-table">
-            <!-- Rendered by system script loop matching active configurations -->
-        </table>
-    </div>
 </div>
 
 <script>
-    // --- COMPONENT DATABASE FUNCTION ---
-    function getProductDatabase() {
-        return {
-            cpu: [
-                { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
-                { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
-                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
-                { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' }
-            ],
-            motherboard: [
-                { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
-                { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
-                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' }
-            ],
-            ram: [
-                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
-                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
-                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' }
-            ],
-            gpu: [
-                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
-                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
-                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' }
-            ],
-            storage: [
-                { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
-                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' }
-            ],
-            psu: [
-                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
-                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' }
-            ],
-            case: [
-                { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
-                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' }
-            ],
-            service: [
-                { id: 'sv1', name: 'Standard Build, Stress-Testing & Delivery (30-Day Check)', price: 80.00, socket: 'universal' },
-                { id: 'sv2', name: 'Premium Build Tier (1-Year Collection Cover, Priority Support)', price: 150.00, socket: 'universal' }
-            ]
-        };
-    }
-
-    const pcDataset = getProductDatabase();
-    const pcCategoryNames = {
-        cpu: 'Processor (CPU)',
-        motherboard: 'Motherboard',
-        ram: 'Memory (RAM)',
-        gpu: 'Graphics Card (GPU)',
-        storage: 'Storage (M.2/SSD)',
-        psu: 'Power Supply (PSU)',
-        case: 'PC Chassis (Case)',
-        service: 'Assembly & Warranty Plan'
-    };
-
-    let currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
     let intakePurpose = 'service';
     let currentSpeechRecognition = null;
     let currentActiveTextAreaId = null;
@@ -865,171 +658,44 @@
     }
     setDefaultTimestamp();
 
-    // DYNAMIC THREE-TAB PANEL NAVIGATION LOOP
+    // DYNAMIC SECTION TOGGLE LOGIC
     function setPurpose(type) {
         intakePurpose = type;
         
-        const tabs = ['service', 'pickup', 'pcbuild'];
-        tabs.forEach(t => {
-            document.getElementById(`btn-purpose-${t}`).classList.remove('active');
-            document.getElementById(`section-${t}-only`).classList.add('hidden');
-        });
-        
-        document.getElementById(`btn-purpose-${type}`).classList.add('active');
-        document.getElementById(`section-${type}-only`).classList.remove('hidden');
-
-        const customerCore = document.getElementById('section-customer-core-details');
+        const btnService = document.getElementById('btn-purpose-service');
+        const btnPickup = document.getElementById('btn-purpose-pickup');
+        const serviceOnlySection = document.getElementById('section-service-only');
+        const pickupOnlySection = document.getElementById('section-pickup-only');
         const signaturesZone = document.getElementById('wrapper-signatures-zone');
-        const mainSubmitBtn = document.getElementById('main-submit-btn');
-
+        
+        const groupServiceId = document.getElementById('group-service-id');
+        const groupStudentIdTop = document.getElementById('group-student-id-top');
         const inputServiceId = document.getElementById('c-service-id');
         const inputStudentIdTop = document.getElementById('c-student-id-top');
 
-        if (type === 'pcbuild') {
-            customerCore.classList.add('hidden');
-            signaturesZone.classList.add('hidden');
-            mainSubmitBtn.classList.add('hidden');
+        if (type === 'service') {
+            btnService.classList.add('active');
+            btnPickup.classList.remove('active');
+            serviceOnlySection.classList.remove('hidden');
+            pickupOnlySection.classList.add('hidden');
+            signaturesZone.classList.remove('hidden');
             
-            inputServiceId.required = false;
+            groupServiceId.classList.remove('hidden');
+            groupStudentIdTop.classList.add('hidden');
+            inputServiceId.required = true;
             inputStudentIdTop.required = false;
         } else {
-            customerCore.classList.remove('hidden');
-            mainSubmitBtn.classList.remove('hidden');
+            btnPickup.classList.add('active');
+            btnService.classList.remove('active');
+            pickupOnlySection.classList.remove('hidden');
+            serviceOnlySection.classList.add('hidden');
+            signaturesZone.classList.add('hidden');
             
-            if (type === 'service') {
-                signaturesZone.classList.remove('hidden');
-                document.getElementById('group-service-id').classList.remove('hidden');
-                document.getElementById('group-student-id-top').classList.add('hidden');
-                inputServiceId.required = true;
-                inputStudentIdTop.required = false;
-            } else {
-                signaturesZone.classList.add('hidden');
-                document.getElementById('group-student-id-top').classList.remove('hidden');
-                document.getElementById('group-service-id').classList.add('hidden');
-                inputStudentIdTop.required = true;
-                inputServiceId.required = false;
-            }
+            groupStudentIdTop.classList.remove('hidden');
+            groupServiceId.classList.add('hidden');
+            inputStudentIdTop.required = true;
+            inputServiceId.required = false;
         }
-    }
-
-    // MOUNT CUSTOM PC COMPONENT VIEW MATRIX
-    function initPcBuilder() {
-        const container = document.getElementById('pc-builder-steps');
-        container.innerHTML = '';
-
-        Object.keys(pcCategoryNames).forEach(cat => {
-            const card = document.createElement('div');
-            card.className = 'category-card';
-            
-            const header = document.createElement('div');
-            header.className = 'category-header';
-            header.innerHTML = `<h3>${pcCategoryNames[cat]}</h3><span class="selected-badge" id="pc-badge-${cat}">None Selected</span>`;
-            card.appendChild(header);
-
-            const optionsList = document.createElement('div');
-            optionsList.className = 'options-list';
-
-            pcDataset[cat].forEach(item => {
-                const opt = document.createElement('div');
-                opt.className = 'option-item';
-                opt.id = `pc-item-${item.id}`;
-                opt.innerHTML = `
-                    <div class="item-details">
-                        <span class="item-name">${item.name}</span>
-                        ${item.socket !== 'universal' ? `<span class="item-socket">Socket: ${item.socket}</span>` : ''}
-                    </div>
-                    <span class="item-price">€${item.price.toFixed(2)}</span>
-                `;
-                opt.onclick = () => selectPcComponent(cat, item);
-                optionsList.appendChild(opt);
-            });
-
-            card.appendChild(optionsList);
-            container.appendChild(card);
-        });
-        updatePcCompatibility();
-        renderPcSummary();
-    }
-
-    function selectPcComponent(category, item) {
-        if (currentPcSelection[category]?.id === item.id) {
-            currentPcSelection[category] = null;
-        } else {
-            currentPcSelection[category] = item;
-            if (category === 'cpu') {
-                if (currentPcSelection.motherboard && currentPcSelection.motherboard.socket !== item.socket) currentPcSelection.motherboard = null;
-                if (currentPcSelection.ram && currentPcSelection.ram.socket !== item.socket) currentPcSelection.ram = null;
-            }
-        }
-        updatePcCompatibility();
-        renderPcSummary();
-    }
-
-    function updatePcCompatibility() {
-        const selectedCpu = currentPcSelection.cpu;
-        Object.keys(pcDataset).forEach(cat => {
-            pcDataset[cat].forEach(item => {
-                const el = document.getElementById(`pc-item-${item.id}`);
-                if (!el) return;
-                el.classList.remove('active', 'disabled');
-                
-                if (currentPcSelection[cat]?.id === item.id) el.classList.add('active');
-                if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
-                    if (item.socket !== 'universal' && item.socket !== selectedCpu.socket) el.classList.add('disabled');
-                }
-            });
-            const badge = document.getElementById(`pc-badge-${cat}`);
-            if (currentPcSelection[cat]) {
-                badge.innerText = 'Selected';
-                badge.style.color = 'green';
-            } else {
-                badge.innerText = 'None Selected';
-                badge.style.color = 'var(--accent-gold)';
-            }
-        });
-    }
-
-    function renderPcSummary() {
-        const list = document.getElementById('pc-summary-list');
-        const totalText = document.getElementById('pc-total-amount');
-        list.innerHTML = '';
-        let total = 0;
-
-        Object.keys(pcCategoryNames).forEach(cat => {
-            const item = currentPcSelection[cat];
-            const li = document.createElement('li');
-            if (item) {
-                total += item.price;
-                li.innerHTML = `<span class="part-type">${cat}</span><span class="part-name">${item.name} (€${item.price.toFixed(2)})</span>`;
-            } else {
-                li.innerHTML = `<span class="part-type">${cat}</span><span class="part-name" style="color:#b5b5b5; font-style:italic;">Empty</span>`;
-            }
-            list.appendChild(li);
-        });
-        totalText.innerText = `€${total.toFixed(2)}`;
-    }
-
-    function addPcToAdmissionCheck() {
-        let count = Object.values(currentPcSelection).filter(v => v !== null).length;
-        if(count === 0) {
-            alert("Please configure components before adding to custom repair diagnostics.");
-            return;
-        }
-        alert("Configuration locked into checkout memory. Click alternative tabs to map user parameters.");
-    }
-
-    function sharePcToWhatsApp() {
-        let text = "Hello iteireann, I would like a build quote for this custom spec sheet:\n\n";
-        let total = 0;
-        Object.keys(pcCategoryNames).forEach(cat => {
-            const item = currentPcSelection[cat];
-            if (item) {
-                text += `• ${pcCategoryNames[cat]}: ${item.name} (€${item.price.toFixed(2)})\n`;
-                total += item.price;
-            }
-        });
-        text += `\n*Estimated Total: €${total.toFixed(2)}*`;
-        window.open('https://wa.me/353870000000?text=' + encodeURIComponent(text), '_blank');
     }
 
     // MICROPHONE VOICE DICTATION ENHANCEMENT
@@ -1068,12 +734,16 @@
             cleanupSpeechUI();
         };
 
-        currentSpeechRecognition.onend = function() { cleanupSpeechUI(); };
+        currentSpeechRecognition.onend = function() {
+            cleanupSpeechUI();
+        };
 
         currentSpeechRecognition.onresult = function(event) {
             let resultText = "";
             for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) resultText += event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    resultText += event.results[i][0].transcript;
+                }
             }
             if (resultText) {
                 const currentVal = targetTextArea.value.trim();
@@ -1081,6 +751,7 @@
                 targetTextArea.dispatchEvent(new Event('input'));
             }
         };
+
         currentSpeechRecognition.start();
     }
 
@@ -1102,9 +773,7 @@
         const cvs = document.getElementById(id);
         if (!cvs) return;
         const ctx = cvs.getContext('2d');
-        
-        // Match dynamically on client bounding sizes for responsive tablets
-        cvs.width = cvs.parentElement.clientWidth || 300;
+        cvs.width = cvs.parentElement.clientWidth;
         cvs.height = 120;
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2.5;
@@ -1130,9 +799,10 @@
     // FORM PROCESSING SUBMISSION PIPELINE
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        if (intakePurpose === 'pcbuild') return; // Handled internally inside sidebar engine
 
-        if (currentSpeechRecognition) currentSpeechRecognition.stop();
+        if (currentSpeechRecognition) {
+            currentSpeechRecognition.stop();
+        }
 
         const customerName = document.getElementById('c-name').value.trim();
         const formattedName = customerName.replace(/[^a-zA-Z0-9]/g, '_');
@@ -1148,16 +818,12 @@
 
         const printDeviceBlock = document.getElementById('print-meta-service-device-block');
         const printStudentBlock = document.getElementById('print-meta-student-credential-block');
-        const printPcBlock = document.getElementById('print-meta-pcbuild-block');
-
-        // Reset printing slots default hides
-        printDeviceBlock.classList.add('print-hidden');
-        printStudentBlock.classList.add('print-hidden');
-        printPcBlock.classList.add('print-hidden');
 
         if (intakePurpose === 'service') {
             const serviceId = document.getElementById('c-service-id').value.trim();
-            document.title = `Service_Ticket_${serviceId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;
+            const formattedServiceId = serviceId.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            document.title = `Service_Ticket_${formattedServiceId}_${formattedName}`;
 
             document.getElementById('p-category-title').innerText = "Intake Process Category";
             document.getElementById('p-category-title').style.display = "block";
@@ -1168,6 +834,7 @@
             document.getElementById('p-uid-value').innerText = serviceId;
 
             printDeviceBlock.classList.remove('print-hidden');
+            printStudentBlock.classList.add('print-hidden');
 
             document.getElementById('p-model').innerText = document.getElementById('d-model').value.trim() || 'N/A';
             document.getElementById('p-serial').innerText = document.getElementById('d-serial').value.trim() || 'N/A';
@@ -1180,7 +847,7 @@
             document.getElementById('p-add-fee').innerText = !isNaN(addFeeVal) ? '€' + addFeeVal.toFixed(2) : '€0.00';
 
             let srvList = [];
-            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics (€50)[cite: 1]");
+            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics (€50)");
             if(document.getElementById('srv-soft').checked) srvList.push("Software Repair / OS Reinstall");
             if(document.getElementById('srv-hard').checked) srvList.push("Hardware Replacement");
             if(document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");
@@ -1189,7 +856,8 @@
 
             const auditListUl = document.getElementById('p-audit-results');
             auditListUl.innerHTML = ''; 
-            document.querySelectorAll('input[name="tech_audit"]').forEach(item => {
+            const checkedAuditItems = document.querySelectorAll('input[name="tech_audit"]');
+            checkedAuditItems.forEach(item => {
                 const status = item.checked ? "☑" : "☒";
                 const li = document.createElement('li');
                 li.innerText = `${status} ${item.parentElement.innerText}`;
@@ -1198,18 +866,21 @@
 
             document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();
             document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
-        } else if (intakePurpose === 'pickup') {
+        } else {
             const studentId = document.getElementById('c-student-id-top').value.trim();
-            document.title = `Device_Assignment_${studentId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;
+            const formattedStudentId = studentId.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            document.title = `Device_Assignment_${formattedStudentId}_${formattedName}`;
 
             document.getElementById('p-category-title').style.display = "none"; 
             document.getElementById('p-selected-purpose').innerText = "New device assignment process";
             document.getElementById('p-sec1-title').innerText = "1. Customer & Device Assignment Details";
             
-            document.getElementById('p-uid-label').innerText = "Student ID";
+            document.getElementById('p-uid-label').innerText = "Student ID (Unique Assignment ID)";
             document.getElementById('p-uid-value').innerText = studentId;
 
             printStudentBlock.classList.remove('print-hidden');
+            printDeviceBlock.classList.add('print-hidden');
 
             document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value.trim() || 'N/A';
             document.getElementById('p-password').innerText = document.getElementById('sch-password').value.trim() || 'N/A';
@@ -1230,29 +901,19 @@
             document.getElementById('p-pp-cost').innerText = document.getElementById('opt-protection-plan').value;
         }
 
+        // Fire local hardware printing pipeline
         window.print();
+
+        // Restore default tab header strings
         document.title = "iteireann - Client facing UI";
 
+        // Soft Reset Form environment
         this.reset();
         clearCanvas('sig-customer');
         clearCanvas('sig-tech');
-        currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
-        updatePcCompatibility();
-        renderPcSummary();
         setDefaultTimestamp();
         setPurpose('service'); 
     });
-
-    window.onload = function() {
-        initPcBuilder();
-        // Recalculate signature line sizing limits dynamically on tablet orientation change
-        window.addEventListener('resize', () => {
-            canvases.forEach(id => {
-                const cvs = document.getElementById(id);
-                if(cvs) cvs.width = cvs.parentElement.clientWidth || 300;
-            });
-        });
-    };
 </script>
 
 </body>
