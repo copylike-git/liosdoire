@@ -410,7 +410,7 @@
                 <td class="val" id="total-net">€0.00</td>
             </tr>
             <tr>
-                <td>Irish VAT (21.00%)</td>
+                <td>Irish VAT (23.00%)</td>
                 <td class="val" id="vat-amount">€0.00</td>
             </tr>
             <tr class="total-highlight">
@@ -449,7 +449,7 @@
 
 <script>
     // --- PRODUCT DATABASE FUNCTION ---
-    // Expanded data layers featuring values compiled from supplier invoices[cite: 2, 3] with 30% calculation markups applied
+    // Expanded data layers featuring values compiled from supplier invoices with 30% calculation markups applied[cite: 2, 3]
     function getProductDatabase() {
         return {
             cpu: [
@@ -499,7 +499,7 @@
                 { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' } // Cost €75.55[cite: 3]
             ],
             service: [
-                { id: 'sv_basic', name: 'Baseline System Config (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
+                { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
                 { id: 'sv_1yr', name: 'Premium Support Plan Upgrade (30 Days to 1 Year Tier)', price: 0.00, percentage: 0.10, type: 'tier' },
                 { id: 'sv_3yr', name: 'Enterprise Support Plan Upgrade (1 Year to 3 Years Tier)', price: 0.00, percentage: 0.33, type: 'tier' }
             ]
@@ -637,7 +637,6 @@
             optionsList.className = 'options-list';
             optionsList.id = `options-${cat}`;
 
-            // Fallback default selection for service category to match compulsory rules safely
             if (cat === 'service' && !currentSelection.service) {
                 currentSelection.service = dataset.service[0];
             }
@@ -647,7 +646,6 @@
                 opt.className = 'option-item';
                 opt.id = `item-${item.id}`;
                 
-                // If it is a dynamically scaled warranty, show label instead of hardcoded numbers upfront
                 let priceLabel = `€${item.price.toFixed(2)}`;
                 if(item.type === 'tier' && item.percentage > 0) {
                     priceLabel = `+${item.percentage * 100}% of Build`;
@@ -677,7 +675,7 @@
 
     function selectComponent(category, item) {
         if (currentSelection[category]?.id === item.id) {
-            if (category === 'service') return; // Enforce continuous warranty choice selection
+            if (category === 'service') return; 
             currentSelection[category] = null; 
         } else {
             currentSelection[category] = item;
@@ -735,7 +733,6 @@
         let componentsCost = 0;
         let dynamicWarrantyCost = 0;
 
-        // Step 1: Compute cumulative raw physical parts hardware costs
         Object.keys(categoryNames).forEach(cat => {
             const selectedItem = currentSelection[cat];
             if (selectedItem && cat !== 'service') {
@@ -743,12 +740,10 @@
             }
         });
 
-        // Step 2: Extract proportional warranty parameters using hardware baseline costs
         if (currentSelection.service && currentSelection.service.type === 'tier') {
             dynamicWarrantyCost = componentsCost * currentSelection.service.percentage;
         }
 
-        // Display line items inside the list view
         Object.keys(categoryNames).forEach(cat => {
             const selectedItem = currentSelection[cat];
             const li = document.createElement('li');
@@ -770,14 +765,12 @@
             summaryList.appendChild(li);
         });
 
-        // Step 3: Run comprehensive logic operations for Irish taxation and mandatory fees
         let standardLabourCost = componentsCost * 0.15;
         let cumulativeNetTotal = componentsCost + dynamicWarrantyCost + standardLabourCost;
-        let calculatedIrishVat = cumulativeNetTotal * 0.21; // Standard Irish VAT rate
+        let calculatedIrishVat = cumulativeNetTotal * 0.23; // Fixed Standard Irish VAT Rate to 23%
         let finalGrossTotal = cumulativeNetTotal + calculatedIrishVat;
         let compulsoryDepositRequired = finalGrossTotal * 0.25;
 
-        // Step 4: Map values to UI DOM elements
         document.getElementById('net-components').innerText = `€${componentsCost.toFixed(2)}`;
         document.getElementById('net-labour').innerText = `€${standardLabourCost.toFixed(2)}`;
         document.getElementById('total-net').innerText = `€${cumulativeNetTotal.toFixed(2)}`;
@@ -786,7 +779,6 @@
         document.getElementById('compulsory-deposit').innerText = `€${compulsoryDepositRequired.toFixed(2)}`;
     }
 
-    // Android/Mobile Friendly Window Printing Routine Function
     function triggerAndroidPrint() {
         if (!signatureProvided) {
             alert('Please sign the legal protection disclaimer before printing.');
@@ -801,7 +793,7 @@
             return;
         }
         
-        let text = "Hello iteireann, I would like to place an order for this custom PC build. I have signed the legal declaration acknowledging terms, 15% standardised labour, 21% Irish VAT, and the mandatory 25% allocation deposit:\n\n";
+        let text = "Hello iteireann, I would like to place an order for this custom PC build. I have signed the legal declaration acknowledging terms, 15% standardised labour, 23% Irish VAT, and the mandatory 25% allocation deposit:\n\n";
         
         Object.keys(categoryNames).forEach(cat => {
             const item = currentSelection[cat];
@@ -810,7 +802,7 @@
             }
         });
         
-        text += `\n*Gross Total (Inc. VAT): ${document.getElementById('gross-total').innerText}*`;
+        text += `\n*Gross Total (Inc. 23% VAT): ${document.getElementById('gross-total').innerText}*`;
         text += `\n*Compulsory Deposit Due (25%): ${document.getElementById('compulsory-deposit').innerText}*`;
         text += `\n\n*Terms Agreement: Electronically Signed & Validated*`;
         
