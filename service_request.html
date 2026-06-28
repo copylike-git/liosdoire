@@ -107,7 +107,7 @@
         select,
         textarea {
             width: 100%;
-            padding: 14px; /* Increased for better tablet touch targeting */
+            padding: 14px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-sizing: border-box;
@@ -135,7 +135,7 @@
             position: absolute;
             right: 10px;
             top: 10px;
-            width: 40px; /* Tablet optimized size */
+            width: 40px;
             height: 40px;
             border-radius: 50%;
             border: 1px solid var(--border-color);
@@ -289,7 +289,7 @@
 
         .btn-submit:hover { opacity: 0.9; }
 
-        /* TAB 3: CUSTOM PC CONFIGURATOR UNIQUE STYLES */
+        /* TAB 3: CUSTOM PC CONFIGURATOR LAYOUT */
         .pc-builder-layout {
             display: grid;
             grid-template-columns: 1fr 360px;
@@ -458,7 +458,7 @@
 
     <form id="admissionForm">
         
-        <!-- GLOBAL CLIENT BASE FIELDS (SHARED BY TAB 1 & TAB 2) -->
+        <!-- CLIENT BASE FIELDS (SHARED ACROSS CORRESPONDING CHECKOUT MODES) -->
         <div id="section-customer-core-details">
             <h2>1. Customer Admission Details</h2>
             <div class="grid-2">
@@ -500,7 +500,7 @@
                     <input type="text" id="d-model" placeholder="e.g. MacBook Pro, Galaxy S23">
                 </div>
                 <div class="form-group">
-                    <label for="d-serial">Serial Number</label>
+                    <label pour="d-serial">Serial Number</label>
                     <input type="text" id="d-serial" placeholder="Device Serial Number">
                 </div>
                 <div class="form-group">
@@ -637,26 +637,26 @@
             </p>
         </div>
 
-        <!-- TAB 3: CUSTOM PC COMPONENT BUILDER -->
+        <!-- TAB 3: CUSTOM PC COMPONENT BUILDER MODULE -->
         <div id="section-pcbuild-only" class="dynamic-section hidden">
             <h2>Custom PC Builder Matrix</h2>
             <div class="pc-builder-layout">
-                <!-- Build Steps Column -->
+                <!-- Build Steps Matrix -->
                 <div class="builder-steps" id="pc-builder-steps">
-                    <!-- JavaScript mounts component options cards dynamically here -->
+                    <!-- Target for dynamic JS card generation loops -->
                 </div>
 
-                <!-- Sticky Summary Column Inside Viewport Container -->
+                <!-- Live Sticky Total Board Sidebar -->
                 <div class="summary-panel">
                     <h3>Active Spec Sheet</h3>
                     <ul class="summary-list" id="pc-summary-list">
-                        <!-- Dynamic choices generated live -->
+                        <!-- Instantly tracked hardware selection metrics -->
                     </ul>
                     <div class="total-row">
                         <span class="total-title">Est. Total</span>
                         <span class="total-amount" id="pc-total-amount">€0.00</span>
                     </div>
-                    <button type="button" class="action-btn" onclick="addPcToAdmissionCheck()">Lock Selection to Admission</button>
+                    <button type="button" class="action-btn" onclick="addPcToAdmissionCheck()">Lock Configuration Ticket</button>
                     <button type="button" class="action-btn whatsapp-btn" onclick="sharePcToWhatsApp()">Order via WhatsApp</button>
                 </div>
             </div>
@@ -708,7 +708,7 @@
     </form>
 </div>
 
-<!-- INVISIBLE HARDWARE PRINT OUTPUT STAGE (MAPPED TO A4 SPECIFICATIONS) -->
+<!-- INVISIBLE HARDWARE PRINT OUTPUT RENDERING DESK -->
 <div id="print-rendering-zone">
     <div class="print-brand-wrap">
         <div class="logo-src-data print-logo-box"></div>
@@ -732,6 +732,7 @@
         <tr><th>Phone Number</th><td id="p-phone"></td><th>Email Address</th><td id="p-email"></td></tr>
     </table>
 
+    <!-- PROCESS SLOT A: HARDWARE REPAIR FORM TICKET -->
     <div id="print-meta-service-device-block">
         <div class="print-sec-title">2. Service Device Details</div>
         <table>
@@ -768,6 +769,7 @@
         </div>
     </div>
 
+    <!-- PROCESS SLOT B: SCHOOL SYSTEM ENROLLMENT RECEIPT -->
     <div id="print-meta-student-credential-block" class="print-hidden">
         <div class="print-sec-title">2. Institutional Security Identification</div>
         <table>
@@ -788,55 +790,59 @@
         </table>
     </div>
 
-    <!-- TAILORED CUSTOM PC PRINT TRACKING SUBSECTION -->
+    <!-- PROCESS SLOT C: CUSTOM PC COMPONENT TICKET SPEC SHEET -->
     <div id="print-meta-pcbuild-block" class="print-hidden">
-        <div class="print-sec-title">2. Custom PC Component Configuration Specifications</div>
+        <div class="print-sec-title">2. Custom PC Hardware Specification Build Manifest</div>
         <table id="print-pc-hardware-table">
-            <!-- Rendered by system script loop matching active configurations -->
+            <!-- Populated on click loop matching active selections -->
         </table>
+        <div class="print-sec-title">3. Terms & Custom Assembly Conditions</div>
+        <div style="font-size: 9.5px; text-align: justify; border: 1px solid #ccc; padding: 8px; line-height:1.3;">
+            All hardware setups require full component resource clearance processing upfront before physical bench mounting operations launch[cite: 1]. component quotes are bound strictly to a 24-hour baseline margin limit to guard against system cost inventory flux (E&OE)[cite: 1].
+        </div>
     </div>
 </div>
 
 <script>
-    // --- COMPONENT DATABASE FUNCTION ---
+    // --- 1. CORE COMPONENT PRICING & INVENTORY DATABASE ---
     function getProductDatabase() {
         return {
             cpu: [
-                { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
-                { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
-                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
-                { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' }
+                { id: 'cpu1', name: 'AMD Ryzen 5 5600 (AM4)', price: 125.00, socket: 'am4', wattage: 65 },
+                { id: 'cpu2', name: 'AMD Ryzen 7 5700X (AM4)', price: 190.00, socket: 'am4', wattage: 65 },
+                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D (AM5)', price: 395.00, socket: 'am5', wattage: 120 },
+                { id: 'cpu4', name: 'Intel Core i5-14600K (LGA1700)', price: 320.00, socket: 'lga1700', wattage: 181 }
             ],
             motherboard: [
-                { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
+                { id: 'mb1', name: 'MSI B550-A Pro DDR4', price: 110.00, socket: 'am4' },
                 { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
                 { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' }
             ],
             ram: [
-                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
-                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
-                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' }
+                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200', price: 45.00, socket: 'am4' },
+                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000', price: 120.00, socket: 'am5' },
+                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000', price: 125.00, socket: 'lga1700' }
             ],
             gpu: [
-                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
-                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
-                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' }
+                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB GDDR6', price: 315.00, socket: 'universal', wattage: 115 },
+                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal', wattage: 220 },
+                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal', wattage: 320 }
             ],
             storage: [
                 { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
                 { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' }
             ],
             psu: [
-                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
-                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' }
+                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal', maxOutput: 750 },
+                { id: 'psu2', name: 'MSI MAG A850GL 850W ATX 3.0 Gold', price: 130.00, socket: 'universal', maxOutput: 850 }
             ],
             case: [
-                { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
-                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' }
+                { id: 'cs1', name: 'NZXT H5 Flow Midi-Chassis Black', price: 95.00, socket: 'universal' },
+                { id: 'cs2', name: 'Lian Li O11 Vision Dual-Chamber Chrome', price: 150.00, socket: 'universal' }
             ],
             service: [
-                { id: 'sv1', name: 'Standard Build, Stress-Testing & Delivery (30-Day Check)', price: 80.00, socket: 'universal' },
-                { id: 'sv2', name: 'Premium Build Tier (1-Year Collection Cover, Priority Support)', price: 150.00, socket: 'universal' }
+                { id: 'sv1', name: 'Standard Assembly, Testing & Burn-In (30-Day Check)', price: 80.00, socket: 'universal' },
+                { id: 'sv2', name: 'Premium Assembly Tier (1-Year Collection Support)', price: 150.00, socket: 'universal' }
             ]
         };
     }
@@ -853,66 +859,66 @@
         service: 'Assembly & Warranty Plan'
     };
 
+    // Tracking objects & state engines
     let currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
-    let intakePurpose = 'service';
-    let currentSpeechRecognition = null;
-    let currentActiveTextAreaId = null;
+    let intakePurpose = 'service';[cite: 1]
+    let currentSpeechRecognition = null;[cite: 1]
+    let currentActiveTextAreaId = null;[cite: 1]
     
     function setDefaultTimestamp() {
         const now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        document.getElementById('c-date').value = now.toISOString().slice(0, 16);
+        document.getElementById('c-date').value = now.toISOString().slice(0, 16);[cite: 1]
     }
-    setDefaultTimestamp();
+    setDefaultTimestamp();[cite: 1]
 
-    // DYNAMIC THREE-TAB PANEL NAVIGATION LOOP
+    // --- 2. MULTI-TAB DISPLAY INTERFACE CONTROL ROUTINES ---
     function setPurpose(type) {
-        intakePurpose = type;
+        intakePurpose = type;[cite: 1]
         
         const tabs = ['service', 'pickup', 'pcbuild'];
         tabs.forEach(t => {
-            document.getElementById(`btn-purpose-${t}`).classList.remove('active');
-            document.getElementById(`section-${t}-only`).classList.add('hidden');
+            document.getElementById(`btn-purpose-${t}`).classList.remove('active');[cite: 1]
+            document.getElementById(`section-${t}-only`).classList.add('hidden');[cite: 1]
         });
         
-        document.getElementById(`btn-purpose-${type}`).classList.add('active');
-        document.getElementById(`section-${type}-only`).classList.remove('hidden');
+        document.getElementById(`btn-purpose-${type}`).classList.add('active');[cite: 1]
+        document.getElementById(`section-${type}-only`).classList.remove('hidden');[cite: 1]
 
         const customerCore = document.getElementById('section-customer-core-details');
-        const signaturesZone = document.getElementById('wrapper-signatures-zone');
+        const signaturesZone = document.getElementById('wrapper-signatures-zone');[cite: 1]
         const mainSubmitBtn = document.getElementById('main-submit-btn');
 
-        const inputServiceId = document.getElementById('c-service-id');
-        const inputStudentIdTop = document.getElementById('c-student-id-top');
+        const inputServiceId = document.getElementById('c-service-id');[cite: 1]
+        const inputStudentIdTop = document.getElementById('c-student-id-top');[cite: 1]
 
         if (type === 'pcbuild') {
             customerCore.classList.add('hidden');
-            signaturesZone.classList.add('hidden');
+            signaturesZone.classList.add('hidden');[cite: 1]
             mainSubmitBtn.classList.add('hidden');
-            
-            inputServiceId.required = false;
-            inputStudentIdTop.required = false;
+            inputServiceId.required = false;[cite: 1]
+            inputStudentIdTop.required = false;[cite: 1]
         } else {
             customerCore.classList.remove('hidden');
             mainSubmitBtn.classList.remove('hidden');
             
             if (type === 'service') {
-                signaturesZone.classList.remove('hidden');
-                document.getElementById('group-service-id').classList.remove('hidden');
-                document.getElementById('group-student-id-top').classList.add('hidden');
-                inputServiceId.required = true;
-                inputStudentIdTop.required = false;
+                signaturesZone.classList.remove('hidden');[cite: 1]
+                document.getElementById('group-service-id').classList.remove('hidden');[cite: 1]
+                document.getElementById('group-student-id-top').classList.add('hidden');[cite: 1]
+                inputServiceId.required = true;[cite: 1]
+                inputStudentIdTop.required = false;[cite: 1]
             } else {
-                signaturesZone.classList.add('hidden');
-                document.getElementById('group-student-id-top').classList.remove('hidden');
-                document.getElementById('group-service-id').classList.add('hidden');
-                inputStudentIdTop.required = true;
-                inputServiceId.required = false;
+                signaturesZone.classList.add('hidden');[cite: 1]
+                document.getElementById('group-student-id-top').classList.remove('hidden');[cite: 1]
+                document.getElementById('group-service-id').classList.add('hidden');[cite: 1]
+                inputStudentIdTop.required = true;[cite: 1]
+                inputServiceId.required = false;[cite: 1]
             }
         }
     }
 
-    // MOUNT CUSTOM PC COMPONENT VIEW MATRIX
+    // --- 3. CUSTOM PC BUILDER CORE CONTROLLER MATRIX ---
     function initPcBuilder() {
         const container = document.getElementById('pc-builder-steps');
         container.innerHTML = '';
@@ -936,7 +942,7 @@
                 opt.innerHTML = `
                     <div class="item-details">
                         <span class="item-name">${item.name}</span>
-                        ${item.socket !== 'universal' ? `<span class="item-socket">Socket: ${item.socket}</span>` : ''}
+                        ${item.socket !== 'universal' ? `<span class="item-socket">Platform Match: ${item.socket}</span>` : ''}
                     </div>
                     <span class="item-price">€${item.price.toFixed(2)}</span>
                 `;
@@ -956,6 +962,8 @@
             currentPcSelection[category] = null;
         } else {
             currentPcSelection[category] = item;
+            
+            // Auto-cascading logic resets for hardware incompatibilities
             if (category === 'cpu') {
                 if (currentPcSelection.motherboard && currentPcSelection.motherboard.socket !== item.socket) currentPcSelection.motherboard = null;
                 if (currentPcSelection.ram && currentPcSelection.ram.socket !== item.socket) currentPcSelection.ram = null;
@@ -967,6 +975,13 @@
 
     function updatePcCompatibility() {
         const selectedCpu = currentPcSelection.cpu;
+        
+        // Compute active power load metrics for safety limits
+        let rawLoad = 0;
+        if (currentPcSelection.cpu) rawLoad += currentPcSelection.cpu.wattage;
+        if (currentPcSelection.gpu) rawLoad += currentPcSelection.gpu.wattage;
+        const requiredBufferLimit = rawLoad > 0 ? rawLoad + 120 : 0; 
+
         Object.keys(pcDataset).forEach(cat => {
             pcDataset[cat].forEach(item => {
                 const el = document.getElementById(`pc-item-${item.id}`);
@@ -974,10 +989,18 @@
                 el.classList.remove('active', 'disabled');
                 
                 if (currentPcSelection[cat]?.id === item.id) el.classList.add('active');
+                
+                // Rule set A: Socket tracking
                 if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
                     if (item.socket !== 'universal' && item.socket !== selectedCpu.socket) el.classList.add('disabled');
                 }
+                
+                // Rule set B: Power overhead calculation checks
+                if (requiredBufferLimit > 0 && cat === 'psu') {
+                    if (item.maxOutput < requiredBufferLimit) el.classList.add('disabled');
+                }
             });
+            
             const badge = document.getElementById(`pc-badge-${cat}`);
             if (currentPcSelection[cat]) {
                 badge.innerText = 'Selected';
@@ -1010,246 +1033,296 @@
     }
 
     function addPcToAdmissionCheck() {
-        let count = Object.values(currentPcSelection).filter(v => v !== null).length;
-        if(count === 0) {
-            alert("Please configure components before adding to custom repair diagnostics.");
+        let selectedCount = Object.values(currentPcSelection).filter(v => v !== null).length;
+        if(selectedCount === 0) {
+            alert("Please configure custom hardware metrics before generating an active print layout ticket.");
             return;
         }
-        alert("Configuration locked into checkout memory. Click alternative tabs to map user parameters.");
+
+        // Dynamically build clean hardware print output data rows
+        const targetTable = document.getElementById('print-pc-hardware-table');
+        targetTable.innerHTML = `
+            <tr>
+                <th style="width: 30%; background: #eee; font-weight: bold;">Hardware Component Category</th>
+                <th style="width: 50%; background: #eee; font-weight: bold;">Selected Item Specifications</th>
+                <th style="width: 20%; background: #eee; font-weight: bold;">Cost Total</th>
+            </tr>
+        `;
+        
+        let calculationSum = 0;
+        Object.keys(pcCategoryNames).forEach(cat => {
+            const selectedItem = currentPcSelection[cat];
+            if(selectedItem) {
+                calculationSum += selectedItem.price;
+                targetTable.innerHTML += `
+                    <tr>
+                        <td><strong>${pcCategoryNames[cat]}</strong></td>
+                        <td>${selectedItem.name}</td>
+                        <td>€${selectedItem.price.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        targetTable.innerHTML += `
+            <tr>
+                <td colspan="2" style="text-align: right; font-weight: bold; background: #fafafa;">Total Configuration Estimated System Value:</td>
+                <td style="font-weight: bold; color: var(--primary-color); background: #fafafa;">€${calculationSum.toFixed(2)}</td>
+            </tr>
+        `;
+
+        // Direct layout swap parameters safely
+        document.getElementById('p-timestamp').innerText = new Date().toLocaleString();[cite: 1]
+        document.title = `Custom_PC_Quote_${new Date().toISOString().slice(0,10)}`;
+        document.getElementById('p-selected-purpose').innerText = "CUSTOM COMPUTER CONFIGURATOR PROPOSAL WORKFLOW";
+        
+        // Hide standard core user profiles inside generated invoice layouts
+        document.getElementById('p-sec1-title').style.display = "none";
+        document.getElementById('p-uid-label').parentElement.parentElement.style.display = "none";
+        
+        document.getElementById('print-meta-service-device-block').classList.add('print-hidden');[cite: 1]
+        document.getElementById('print-meta-student-credential-block').classList.add('print-hidden');[cite: 1]
+        document.getElementById('print-meta-pcbuild-block').classList.remove('print-hidden');
+
+        window.print();
+        
+        // Restore environment settings defaults
+        document.title = "iteireann - Client facing UI";[cite: 1]
+        document.getElementById('p-sec1-title').style.display = "block";
+        document.getElementById('p-uid-label').parentElement.parentElement.style.display = "table-row";
     }
 
     function sharePcToWhatsApp() {
-        let text = "Hello iteireann, I would like a build quote for this custom spec sheet:\n\n";
-        let total = 0;
+        let messageText = "Hello iteireann, I would like to request a quote matching this custom build sheet:\n\n";
+        let runningTotal = 0;
         Object.keys(pcCategoryNames).forEach(cat => {
-            const item = currentPcSelection[cat];
-            if (item) {
-                text += `• ${pcCategoryNames[cat]}: ${item.name} (€${item.price.toFixed(2)})\n`;
-                total += item.price;
+            const chosenPart = currentPcSelection[cat];
+            if (chosenPart) {
+                messageText += `• ${pcCategoryNames[cat]}: ${chosenPart.name} (€${chosenPart.price.toFixed(2)})\n`;
+                runningTotal += chosenPart.price;
             }
         });
-        text += `\n*Estimated Total: €${total.toFixed(2)}*`;
-        window.open('https://wa.me/353870000000?text=' + encodeURIComponent(text), '_blank');
+        messageText += `\n*Estimated Configuration Total: €${runningTotal.toFixed(2)}*`;
+        window.open('https://wa.me/353870000000?text=' + encodeURIComponent(messageText), '_blank');
     }
 
-    // MICROPHONE VOICE DICTATION ENHANCEMENT
+    // --- 4. ASSISTIVE SPEECH TO TEXT ACCESSIBILITY LOOPS ---
     function toggleDictation(textAreaId) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;[cite: 1]
         if (!SpeechRecognition) {
-            alert("Voice recognition is not supported in this browser. Please use Google Chrome or Safari.");
+            alert("Voice metrics are not supported inside this browser build. Please run under Safari or Chrome engines.");[cite: 1]
             return;
         }
 
-        const micButton = document.getElementById(`mic-${textAreaId}`);
-        const targetTextArea = document.getElementById(textAreaId);
+        const micButton = document.getElementById(`mic-${textAreaId}`);[cite: 1]
+        const targetTextArea = document.getElementById(textAreaId);[cite: 1]
 
         if (currentSpeechRecognition && currentActiveTextAreaId === textAreaId) {
-            currentSpeechRecognition.stop();
+            currentSpeechRecognition.stop();[cite: 1]
             return;
         }
 
         if (currentSpeechRecognition) {
-            currentSpeechRecognition.stop();
+            currentSpeechRecognition.stop();[cite: 1]
         }
 
-        currentActiveTextAreaId = textAreaId;
-        currentSpeechRecognition = new SpeechRecognition();
-        currentSpeechRecognition.continuous = true;
-        currentSpeechRecognition.interimResults = false;
-        currentSpeechRecognition.lang = 'en-IE';
+        currentActiveTextAreaId = textAreaId;[cite: 1]
+        currentSpeechRecognition = new SpeechRecognition();[cite: 1]
+        currentSpeechRecognition.continuous = true;[cite: 1]
+        currentSpeechRecognition.interimResults = false;[cite: 1]
+        currentSpeechRecognition.lang = 'en-IE';[cite: 1]
 
         currentSpeechRecognition.onstart = function() {
-            micButton.classList.add('listening');
-            micButton.innerText = "🛑";
+            micButton.classList.add('listening');[cite: 1]
+            micButton.innerText = "🛑";[cite: 1]
         };
 
         currentSpeechRecognition.onerror = function(event) {
-            console.error("Speech recognition error", event.error);
-            cleanupSpeechUI();
+            console.error("Speech input error tracking parameters", event.error);[cite: 1]
+            cleanupSpeechUI();[cite: 1]
         };
 
-        currentSpeechRecognition.onend = function() { cleanupSpeechUI(); };
+        currentSpeechRecognition.onend = function() { cleanupSpeechUI(); };[cite: 1]
 
         currentSpeechRecognition.onresult = function(event) {
-            let resultText = "";
+            let bufferString = "";
             for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) resultText += event.results[i][0].transcript;
+                if (event.results[i].isFinal) bufferString += event.results[i][0].transcript;[cite: 1]
             }
-            if (resultText) {
-                const currentVal = targetTextArea.value.trim();
-                targetTextArea.value = currentVal ? currentVal + " " + resultText : resultText;
-                targetTextArea.dispatchEvent(new Event('input'));
+            if (bufferString) {
+                const legacyVal = targetTextArea.value.trim();[cite: 1]
+                targetTextArea.value = legacyVal ? legacyVal + " " + bufferString : bufferString;[cite: 1]
+                targetTextArea.dispatchEvent(new Event('input'));[cite: 1]
             }
         };
-        currentSpeechRecognition.start();
+        currentSpeechRecognition.start();[cite: 1]
     }
 
     function cleanupSpeechUI() {
         if (currentActiveTextAreaId) {
-            const micButton = document.getElementById(`mic-${currentActiveTextAreaId}`);
-            if (micButton) {
-                micButton.classList.remove('listening');
-                micButton.innerText = "🎤";
+            const targetMic = document.getElementById(`mic-${currentActiveTextAreaId}`);[cite: 1]
+            if (targetMic) {
+                targetMic.classList.remove('listening');[cite: 1]
+                targetMic.innerText = "🎤";[cite: 1]
             }
         }
-        currentSpeechRecognition = null;
-        currentActiveTextAreaId = null;
+        currentSpeechRecognition = null;[cite: 1]
+        currentActiveTextAreaId = null;[cite: 1]
     }
 
-    // SIGNATURE CANVAS INTERACTION INTERFACE
-    const canvases = ['sig-customer', 'sig-tech'];
+    // --- 5. RESPONSIVE SIGNATURE INTERACTIVE PAD STAGE ---
+    const canvases = ['sig-customer', 'sig-tech'];[cite: 1]
     canvases.forEach(id => {
-        const cvs = document.getElementById(id);
+        const cvs = document.getElementById(id);[cite: 1]
         if (!cvs) return;
-        const ctx = cvs.getContext('2d');
+        const ctx = cvs.getContext('2d');[cite: 1]
         
-        // Match dynamically on client bounding sizes for responsive tablets
-        cvs.width = cvs.parentElement.clientWidth || 300;
-        cvs.height = 120;
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 2.5;
-        ctx.lineCap = 'round';
+        cvs.width = cvs.parentElement.clientWidth || 300;[cite: 1]
+        cvs.height = 120;[cite: 1]
+        ctx.strokeStyle = '#000000';[cite: 1]
+        ctx.lineWidth = 2.5;[cite: 1]
+        ctx.lineCap = 'round';[cite: 1]
 
-        let drawing = false;
+        let drawing = false;[cite: 1]
         function getPos(e) {
-            const rect = cvs.getBoundingClientRect();
-            const cX = e.touches ? e.touches[0].clientX : e.clientX;
-            const cY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: cX - rect.left, y: cY - rect.top };
+            const rect = cvs.getBoundingClientRect();[cite: 1]
+            const cX = e.touches ? e.touches[0].clientX : e.clientX;[cite: 1]
+            const cY = e.touches ? e.touches[0].clientY : e.clientY;[cite: 1]
+            return { x: cX - rect.left, y: cY - rect.top };[cite: 1]
         }
-        cvs.addEventListener('touchstart', function(e) { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }, {passive: false});
-        cvs.addEventListener('touchmove', function(e) { if(!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, {passive: false});
-        window.addEventListener('touchend', () => drawing = false);
+        cvs.addEventListener('touchstart', function(e) { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }, {passive: false});[cite: 1]
+        cvs.addEventListener('touchmove', function(e) { if(!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, {passive: false});[cite: 1]
+        window.addEventListener('touchend', () => drawing = false);[cite: 1]
     });
 
     function clearCanvas(id) {
-        const cvs = document.getElementById(id);
-        if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
+        const cvs = document.getElementById(id);[cite: 1]
+        if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);[cite: 1]
     }
 
-    // FORM PROCESSING SUBMISSION PIPELINE
+    // --- 6. CORE REPAIR / PICKUP ADMISSION PIPELINE PROCESSING ---
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        if (intakePurpose === 'pcbuild') return; // Handled internally inside sidebar engine
+        event.preventDefault();[cite: 1]
+        if (intakePurpose === 'pcbuild') return;
 
-        if (currentSpeechRecognition) currentSpeechRecognition.stop();
+        if (currentSpeechRecognition) currentSpeechRecognition.stop();[cite: 1]
 
-        const customerName = document.getElementById('c-name').value.trim();
-        const formattedName = customerName.replace(/[^a-zA-Z0-9]/g, '_');
+        const customerName = document.getElementById('c-name').value.trim();[cite: 1]
+        const formattedName = customerName.replace(/[^a-zA-Z0-9]/g, '_');[cite: 1]
         
-        document.getElementById('p-timestamp').innerText = new Date().toLocaleString();
-        document.getElementById('p-name').innerText = customerName;
+        document.getElementById('p-timestamp').innerText = new Date().toLocaleString();[cite: 1]
+        document.getElementById('p-name').innerText = customerName;[cite: 1]
         
-        const dateVal = document.getElementById('c-date').value;
-        document.getElementById('p-date').innerText = dateVal ? dateVal.replace('T', ' ') : 'Unspecified';
+        const dateVal = document.getElementById('c-date').value;[cite: 1]
+        document.getElementById('p-date').innerText = dateVal ? dateVal.replace('T', ' ') : 'Unspecified';[cite: 1]
         
-        document.getElementById('p-phone').innerText = document.getElementById('c-phone').value.trim();
-        document.getElementById('p-email').innerText = document.getElementById('c-email').value.trim();
+        document.getElementById('p-phone').innerText = document.getElementById('c-phone').value.trim();[cite: 1]
+        document.getElementById('p-email').innerText = document.getElementById('c-email').value.trim();[cite: 1]
 
-        const printDeviceBlock = document.getElementById('print-meta-service-device-block');
-        const printStudentBlock = document.getElementById('print-meta-student-credential-block');
+        const printDeviceBlock = document.getElementById('print-meta-service-device-block');[cite: 1]
+        const printStudentBlock = document.getElementById('print-meta-student-credential-block');[cite: 1]
         const printPcBlock = document.getElementById('print-meta-pcbuild-block');
 
-        // Reset printing slots default hides
-        printDeviceBlock.classList.add('print-hidden');
-        printStudentBlock.classList.add('print-hidden');
+        printDeviceBlock.classList.add('print-hidden');[cite: 1]
+        printStudentBlock.classList.add('print-hidden');[cite: 1]
         printPcBlock.classList.add('print-hidden');
 
         if (intakePurpose === 'service') {
-            const serviceId = document.getElementById('c-service-id').value.trim();
-            document.title = `Service_Ticket_${serviceId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;
+            const serviceId = document.getElementById('c-service-id').value.trim();[cite: 1]
+            document.title = `Service_Ticket_${serviceId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;[cite: 1]
 
-            document.getElementById('p-category-title').innerText = "Intake Process Category";
-            document.getElementById('p-category-title').style.display = "block";
-            document.getElementById('p-selected-purpose').innerText = "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION";
-            document.getElementById('p-sec1-title').innerText = "1. Customer Admission Details";
+            document.getElementById('p-category-title').innerText = "Intake Process Category";[cite: 1]
+            document.getElementById('p-category-title').style.display = "block";[cite: 1]
+            document.getElementById('p-selected-purpose').innerText = "DEVICE INSPECTION & TECHNICAL SERVICE ADMISSION";[cite: 1]
+            document.getElementById('p-sec1-title').innerText = "1. Customer Admission Details";[cite: 1]
             
-            document.getElementById('p-uid-label').innerText = "Service ID";
-            document.getElementById('p-uid-value').innerText = serviceId;
+            document.getElementById('p-uid-label').innerText = "Service ID";[cite: 1]
+            document.getElementById('p-uid-value').innerText = serviceId;[cite: 1]
 
-            printDeviceBlock.classList.remove('print-hidden');
+            printDeviceBlock.classList.remove('print-hidden');[cite: 1]
 
-            document.getElementById('p-model').innerText = document.getElementById('d-model').value.trim() || 'N/A';
-            document.getElementById('p-serial').innerText = document.getElementById('d-serial').value.trim() || 'N/A';
-            document.getElementById('p-mobile').innerText = document.getElementById('d-mobile').value.trim() || 'N/A';
-            document.getElementById('p-imei').innerText = document.getElementById('d-imei').value.trim() || 'N/A';
-            document.getElementById('p-faults').innerText = document.getElementById('sr-faults').value.trim() || 'N/A';
-            document.getElementById('p-physical').innerText = document.getElementById('sr-physical').value.trim() || 'No visual damage recorded.';
+            document.getElementById('p-model').innerText = document.getElementById('d-model').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-serial').innerText = document.getElementById('d-serial').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-mobile').innerText = document.getElementById('d-mobile').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-imei').innerText = document.getElementById('d-imei').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-faults').innerText = document.getElementById('sr-faults').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-physical').innerText = document.getElementById('sr-physical').value.trim() || 'No visual damage recorded.';[cite: 1]
             
-            const addFeeVal = parseFloat(document.getElementById('fee-additional').value);
-            document.getElementById('p-add-fee').innerText = !isNaN(addFeeVal) ? '€' + addFeeVal.toFixed(2) : '€0.00';
+            const addFeeVal = parseFloat(document.getElementById('fee-additional').value);[cite: 1]
+            document.getElementById('p-add-fee').innerText = !isNaN(addFeeVal) ? '€' + addFeeVal.toFixed(2) : '€0.00';[cite: 1]
 
-            let srvList = [];
-            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics (€50)[cite: 1]");
-            if(document.getElementById('srv-soft').checked) srvList.push("Software Repair / OS Reinstall");
-            if(document.getElementById('srv-hard').checked) srvList.push("Hardware Replacement");
-            if(document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");
-            if(document.getElementById('srv-other').value.trim()) srvList.push("Other: " + document.getElementById('srv-other').value.trim());
-            document.getElementById('p-services').innerText = srvList.length ? srvList.join(', ') : 'None Selected';
+            let srvList = [];[cite: 1]
+            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics (€50)[cite: 1]");[cite: 1]
+            if(document.getElementById('srv-soft').checked) srvList.push("Software Repair / OS Reinstall");[cite: 1]
+            if(document.getElementById('srv-hard').checked) srvList.push("Hardware Replacement");[cite: 1]
+            if(document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");[cite: 1]
+            if(document.getElementById('srv-other').value.trim()) srvList.push("Other: " + document.getElementById('srv-other').value.trim());[cite: 1]
+            document.getElementById('p-services').innerText = srvList.length ? srvList.join(', ') : 'None Selected';[cite: 1]
 
-            const auditListUl = document.getElementById('p-audit-results');
-            auditListUl.innerHTML = ''; 
+            const auditListUl = document.getElementById('p-audit-results');[cite: 1]
+            auditListUl.innerHTML = '';[cite: 1]
             document.querySelectorAll('input[name="tech_audit"]').forEach(item => {
-                const status = item.checked ? "☑" : "☒";
-                const li = document.createElement('li');
-                li.innerText = `${status} ${item.parentElement.innerText}`;
-                auditListUl.appendChild(li);
+                const status = item.checked ? "☑" : "☒";[cite: 1]
+                const li = document.createElement('li');[cite: 1]
+                li.innerText = `${status} ${item.parentElement.innerText}`;[cite: 1]
+                auditListUl.appendChild(li);[cite: 1]
             });
 
-            document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();
-            document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();
+            document.getElementById('img-sig-customer').src = document.getElementById('sig-customer').toDataURL();[cite: 1]
+            document.getElementById('img-sig-tech').src = document.getElementById('sig-tech').toDataURL();[cite: 1]
         } else if (intakePurpose === 'pickup') {
-            const studentId = document.getElementById('c-student-id-top').value.trim();
-            document.title = `Device_Assignment_${studentId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;
+            const studentId = document.getElementById('c-student-id-top').value.trim();[cite: 1]
+            document.title = `Device_Assignment_${studentId.replace(/[^a-zA-Z0-9]/g, '_')}_${formattedName}`;[cite: 1]
 
-            document.getElementById('p-category-title').style.display = "none"; 
-            document.getElementById('p-selected-purpose').innerText = "New device assignment process";
-            document.getElementById('p-sec1-title').innerText = "1. Customer & Device Assignment Details";
+            document.getElementById('p-category-title').style.display = "none";[cite: 1]
+            document.getElementById('p-selected-purpose').innerText = "New device assignment process";[cite: 1]
+            document.getElementById('p-sec1-title').innerText = "1. Customer & Device Assignment Details";[cite: 1]
             
-            document.getElementById('p-uid-label').innerText = "Student ID";
-            document.getElementById('p-uid-value').innerText = studentId;
+            document.getElementById('p-uid-label').innerText = "Student ID";[cite: 1]
+            document.getElementById('p-uid-value').innerText = studentId;[cite: 1]
 
-            printStudentBlock.classList.remove('print-hidden');
+            printStudentBlock.classList.remove('print-hidden');[cite: 1]
 
-            document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value.trim() || 'N/A';
-            document.getElementById('p-password').innerText = document.getElementById('sch-password').value.trim() || 'N/A';
-            document.getElementById('p-mfa').innerText = document.getElementById('sch-mfa').value.trim() || 'N/A';
-            document.getElementById('p-pickup-serial').innerText = document.getElementById('sch-serial').value.trim() || 'N/A';
+            document.getElementById('p-sch-use').innerText = document.getElementById('sch-use').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-password').innerText = document.getElementById('sch-password').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-mfa').innerText = document.getElementById('sch-mfa').value.trim() || 'N/A';[cite: 1]
+            document.getElementById('p-pickup-serial').innerText = document.getElementById('sch-serial').value.trim() || 'N/A';[cite: 1]
             
-            let setupStrat = [];
-            if(document.getElementById('setup-inperson').checked) setupStrat.push("In Person Setup");
-            if(document.getElementById('setup-pickup').checked) setupStrat.push("Client Pickup Without Setup");
-            document.getElementById('p-setup-strat').innerText = setupStrat.join(' & ') || 'None';
+            let setupStrat = [];[cite: 1]
+            if(document.getElementById('setup-inperson').checked) setupStrat.push("In Person Setup");[cite: 1]
+            if(document.getElementById('setup-pickup').checked) setupStrat.push("Client Pickup Without Setup");[cite: 1]
+            document.getElementById('p-setup-strat').innerText = setupStrat.join(' & ') || 'None';[cite: 1]
 
-            let hwAlloc = [];
-            if(document.getElementById('hw-lap').checked) hwAlloc.push("Laptop / PC (€650)");
-            if(document.getElementById('hw-mob').checked) hwAlloc.push("Android Mobile Phone (€99)");
-            document.getElementById('p-hw-cost').innerText = hwAlloc.join(', ') || 'None Assigned';
+            let hwAlloc = [];[cite: 1]
+            if(document.getElementById('hw-lap').checked) hwAlloc.push("Laptop / PC (€650)");[cite: 1]
+            if(document.getElementById('hw-mob').checked) hwAlloc.push("Android Mobile Phone (€99)");[cite: 1]
+            document.getElementById('p-hw-cost').innerText = hwAlloc.join(', ') || 'None Assigned';[cite: 1]
 
-            document.getElementById('p-cf-cost').innerText = document.getElementById('opt-content-filtering').value;
-            document.getElementById('p-pp-cost').innerText = document.getElementById('opt-protection-plan').value;
+            document.getElementById('p-cf-cost').innerText = document.getElementById('opt-content-filtering').value;[cite: 1]
+            document.getElementById('p-pp-cost').innerText = document.getElementById('opt-protection-plan').value;[cite: 1]
         }
 
-        window.print();
-        document.title = "iteireann - Client facing UI";
+        window.print();[cite: 1]
+        document.title = "iteireann - Client facing UI";[cite: 1]
 
-        this.reset();
-        clearCanvas('sig-customer');
-        clearCanvas('sig-tech');
+        this.reset();[cite: 1]
+        clearCanvas('sig-customer');[cite: 1]
+        clearCanvas('sig-tech');[cite: 1]
         currentPcSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null };
         updatePcCompatibility();
         renderPcSummary();
-        setDefaultTimestamp();
-        setPurpose('service'); 
+        setDefaultTimestamp();[cite: 1]
+        setPurpose('service');[cite: 1]
     });
 
     window.onload = function() {
         initPcBuilder();
-        // Recalculate signature line sizing limits dynamically on tablet orientation change
+        
+        // Handle responsive scaling dynamically for signature blocks on tablet rotation flips
         window.addEventListener('resize', () => {
             canvases.forEach(id => {
-                const cvs = document.getElementById(id);
-                if(cvs) cvs.width = cvs.parentElement.clientWidth || 300;
+                const cvs = document.getElementById(id);[cite: 1]
+                if(cvs) cvs.width = cvs.parentElement.clientWidth || 300;[cite: 1]
             });
         });
     };
