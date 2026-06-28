@@ -458,6 +458,7 @@
 
     <form id="admissionForm">
         
+        <!-- GLOBAL CLIENT BASE FIELDS -->
         <div id="section-customer-core-details">
             <h2>1. Customer Admission Details</h2>
             <div class="grid-2">
@@ -490,6 +491,7 @@
             </div>
         </div>
 
+        <!-- TAB 1: DEVICE INSPECTION & TECHNICAL SERVICE -->
         <div id="section-service-only" class="dynamic-section">
             <h2>2. Service Device Details</h2>
             <div class="grid-2">
@@ -552,20 +554,21 @@
 
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
             <div class="legal-box">
-                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory inspection fee of €50.00 incl. VAT applies to all device admissions. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer.</p>
-                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences.</p>
-                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE).</p>
-                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device. While we take every reasonable precaution, iteireann accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes. Data recovery is never guaranteed.</p>
-                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact. iteireann is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation.</p>
-                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned. In accordance with legal principles regarding uncollected goods, iteireann reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees.</p>
+                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory inspection fee of €50.00 incl. VAT applies to all device admissions[cite: 1]. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer[cite: 1].</p>
+                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences[cite: 1].</p>
+                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE)[cite: 1].</p>
+                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, iteireann accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes[cite: 1]. Data recovery is never guaranteed[cite: 1].</p>
+                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1]. iteireann is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation[cite: 1].</p>
+                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned[cite: 1]. In accordance with legal principles regarding uncollected goods, iteireann reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees[cite: 1].</p>
             </div>
 
             <h2>5. Customer Declaration & Authorisation</h2>
             <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50 incl. VAT inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE). I hereby authorize iteireann to perform the technical assessment.
+                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services[cite: 1]. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50 incl. VAT inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE)[cite: 1]. I hereby authorize iteireann to perform the technical assessment[cite: 1].
             </p>
         </div>
 
+        <!-- TAB 2: SCHOOL LAPTOP DISTRIBUTION / ASSIGNMENT -->
         <div id="section-pickup-only" class="dynamic-section hidden">
             <h2>2. Institutional Security Identification & Assignment</h2>
             <div class="grid-2">
@@ -630,20 +633,25 @@
 
             <h2>4. Acknowledgement & Authorization</h2>
             <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
-                By completing this step, I confirm that the designated device allocations indicated above are logged and mapped correctly to my instructional deployment requirements.
+                By completing this step, I confirm that the designated device allocations indicated above are logged and mapped correctly to my instructional deployment requirements[cite: 1].
             </p>
         </div>
 
+        <!-- TAB 3: CUSTOM PC COMPONENT BUILDER MODULE -->
         <div id="section-pcbuild-only" class="dynamic-section hidden">
             <h2>Custom PC Builder Matrix</h2>
             <div class="pc-builder-layout">
+                <!-- Build Steps Matrix -->
                 <div class="builder-steps" id="pc-builder-steps">
-                    </div>
+                    <!-- Target for dynamic JS card generation loops -->
+                </div>
 
+                <!-- Live Sticky Total Board Sidebar -->
                 <div class="summary-panel">
                     <h3>Active Spec Sheet</h3>
                     <ul class="summary-list" id="pc-summary-list">
-                        </ul>
+                        <!-- Instantly tracked hardware selection metrics -->
+                    </ul>
                     <div class="total-row">
                         <span class="total-title">Est. Total</span>
                         <span class="total-amount" id="pc-total-amount">€0.00</span>
@@ -654,12 +662,13 @@
             </div>
         </div>
 
+        <!-- DIGITAL INTERACTIVE SIGNATURE BOXES (SHARED BY TAB 1 & TAB 2) -->
         <div id="wrapper-signatures-zone">
             <div class="signature-section">
                 <label>Customer / Authorised Signature</label>
                 <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions.</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions[cite: 1].</p>
             </div>
 
             <div class="signature-section" style="margin-top:20px;">
@@ -691,7 +700,7 @@
 
                 <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
-                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client.</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client[cite: 1].</p>
             </div>
         </div>
 
@@ -699,6 +708,7 @@
     </form>
 </div>
 
+<!-- INVISIBLE HARDWARE PRINT OUTPUT RENDERING DESK -->
 <div id="print-rendering-zone">
     <div class="print-brand-wrap">
         <div class="logo-src-data print-logo-box"></div>
@@ -722,6 +732,7 @@
         <tr><th>Phone Number</th><td id="p-phone"></td><th>Email Address</th><td id="p-email"></td></tr>
     </table>
 
+    <!-- PROCESS SLOT A: HARDWARE REPAIR FORM TICKET -->
     <div id="print-meta-service-device-block">
         <div class="print-sec-title">2. Service Device Details</div>
         <table>
@@ -734,12 +745,12 @@
             <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
             <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
-            <tr><th>Diagnostic Fee</th><td>€50.00 incl. VAT</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
+            <tr><th>Diagnostic Fee</th><td>€50.00 incl. VAT[cite: 1]</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
         </table>
 
         <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
         <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable. Financial parts processing totals must be processed upfront. Quote metrics are valid for 1 working day (E&OE). iteireann disclaims all data liability during hardware bench interaction stress tests. Items left past 60 days will trigger asset liquidation channels.
+            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable[cite: 1]. Financial parts processing totals must be processed upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
         </div>
         
         <div class="print-sig-block">
@@ -758,6 +769,7 @@
         </div>
     </div>
 
+    <!-- PROCESS SLOT B: SCHOOL SYSTEM ENROLLMENT RECEIPT -->
     <div id="print-meta-student-credential-block" class="print-hidden">
         <div class="print-sec-title">2. Institutional Security Identification</div>
         <table>
@@ -778,57 +790,123 @@
         </table>
     </div>
 
+    <!-- PROCESS SLOT C: CUSTOM PC COMPONENT TICKET SPEC SHEET -->
     <div id="print-meta-pcbuild-block" class="print-hidden">
         <div class="print-sec-title">2. Custom PC Hardware Specification Build Manifest</div>
         <table id="print-pc-hardware-table">
-            </table>
+            <!-- Populated on click loop matching active selections -->
+        </table>
         <div class="print-sec-title">3. Terms & Custom Assembly Conditions</div>
         <div style="font-size: 9.5px; text-align: justify; border: 1px solid #ccc; padding: 8px; line-height:1.3;">
-            All hardware setups require full component resource clearance processing upfront before physical bench mounting operations launch. component quotes are bound strictly to a 24-hour baseline margin limit to guard against system cost inventory flux (E&OE).
+            All hardware setups require full component resource clearance processing upfront before physical bench mounting operations launch[cite: 1]. Component quotes are bound strictly to a 24-hour baseline margin limit to guard against system cost inventory flux (E&OE)[cite: 1].
         </div>
     </div>
 </div>
 
 <script>
     // --- 1. CORE COMPONENT PRICING & INVENTORY DATABASE ---
+    // Expanded array featuring structural socket parameters and wattage tracking
     function getProductDatabase() {
         return {
             cpu: [
-                { id: 'cpu1', name: 'AMD Ryzen 5 5600 (AM4)', price: 125.00, socket: 'am4', wattage: 65 },
-                { id: 'cpu2', name: 'AMD Ryzen 7 5700X (AM4)', price: 190.00, socket: 'am4', wattage: 65 },
-                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D (AM5)', price: 395.00, socket: 'am5', wattage: 120 },
-                { id: 'cpu4', name: 'Intel Core i5-14600K (LGA1700)', price: 320.00, socket: 'lga1700', wattage: 181 }
+                // AMD AM4 Platform
+                { id: 'cpu_am4_1', name: 'AMD Ryzen 5 4600G (APU / Integrated Core)', price: 85.00, socket: 'am4', wattage: 65 },
+                { id: 'cpu_am4_2', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4', wattage: 65 },
+                { id: 'cpu_am4_3', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4', wattage: 65 },
+                { id: 'cpu_am4_4', name: 'AMD Ryzen 7 5700X3D (Gaming Spec Cache)', price: 245.00, socket: 'am4', wattage: 105 },
+                
+                // AMD AM5 Platform
+                { id: 'cpu_am5_1', name: 'AMD Ryzen 5 7600', price: 210.00, socket: 'am5', wattage: 65 },
+                { id: 'cpu_am5_2', name: 'AMD Ryzen 5 7600X', price: 230.00, socket: 'am5', wattage: 105 },
+                { id: 'cpu_am5_3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5', wattage: 120 },
+                { id: 'cpu_am5_4', name: 'AMD Ryzen 9 7950X3D', price: 620.00, socket: 'am5', wattage: 120 },
+
+                // Intel LGA1700 Platform
+                { id: 'cpu_int_1', name: 'Intel Core i3-12100F', price: 95.00, socket: 'lga1700', wattage: 58 },
+                { id: 'cpu_int_2', name: 'Intel Core i5-12400F', price: 135.00, socket: 'lga1700', wattage: 65 },
+                { id: 'cpu_int_3', name: 'Intel Core i5-13600K', price: 310.00, socket: 'lga1700', wattage: 125 },
+                { id: 'cpu_int_4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700', wattage: 125 },
+                { id: 'cpu_int_5', name: 'Intel Core i7-14700K', price: 420.00, socket: 'lga1700', wattage: 253 },
+                { id: 'cpu_int_6', name: 'Intel Core i9-14900K', price: 600.00, socket: 'lga1700', wattage: 253 }
             ],
             motherboard: [
-                { id: 'mb1', name: 'MSI B550-A Pro DDR4', price: 110.00, socket: 'am4' },
-                { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
-                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' }
+                // AM4 Mainboards
+                { id: 'mb_am4_1', name: 'Gigabyte A520M K V2 Micro-ATX', price: 65.00, socket: 'am4' },
+                { id: 'mb_am4_2', name: 'MSI B550M PRO-VDH WIFI', price: 110.00, socket: 'am4' },
+                { id: 'mb_am4_3', name: 'ASUS ROG Strix B550-F Gaming WiFi II', price: 180.00, socket: 'am4' },
+
+                // AM5 Mainboards
+                { id: 'mb_am5_1', name: 'ASRock A620M Pro RS WiFi', price: 135.00, socket: 'am5' },
+                { id: 'mb_am5_2', name: 'MSI B650 Gaming Plus WIFI', price: 180.00, socket: 'am5' },
+                { id: 'mb_am5_3', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
+                { id: 'mb_am5_4', name: 'Gigabyte X670E AORUS Master Enthusiast', price: 450.00, socket: 'am5' },
+
+                // Intel LGA1700 Mainboards
+                { id: 'mb_int_1', name: 'Gigabyte H610M H V2 DDR4 Elite', price: 80.00, socket: 'lga1700' },
+                { id: 'mb_int_2', name: 'MSI B760 Gaming Plus WIFI (DDR5 Execution)', price: 165.00, socket: 'lga1700' },
+                { id: 'mb_int_3', name: 'Gigabyte Z790 AORUS Elite AX (DDR5)', price: 260.00, socket: 'lga1700' },
+                { id: 'mb_int_4', name: 'ASUS ROG Maximus Z790 Hero Content Creator', price: 650.00, socket: 'lga1700' }
             ],
             ram: [
-                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200', price: 45.00, socket: 'am4' },
-                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000', price: 120.00, socket: 'am5' },
-                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000', price: 125.00, socket: 'lga1700' }
+                // DDR4 System RAM Modules (AM4 and core Intel profiles)
+                { id: 'ram_d4_1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
+                { id: 'ram_d4_2', name: 'Kingston FURY Beast 32GB (2x16GB) DDR4 3200MHz', price: 75.00, socket: 'am4' },
+                { id: 'ram_d4_3', name: 'G.Skill Trident Z RGB 32GB (2x16GB) DDR4 3600MHz', price: 95.00, socket: 'am4' },
+
+                // DDR5 System RAM Modules (AM5 Specialized Blocks)
+                { id: 'ram_d5a_1', name: 'Crucial Pro 32GB (2x16GB) DDR5 5600MHz', price: 95.00, socket: 'am5' },
+                { id: 'ram_d5a_2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz CL30', price: 120.00, socket: 'am5' },
+                { id: 'ram_d5a_3', name: 'Corsair Vengeance RGB 64GB (2x32GB) DDR5 6000MHz CL30', price: 230.00, socket: 'am5' },
+
+                // DDR5 System RAM Modules (Intel XMP Profiles)
+                { id: 'ram_d5i_1', name: 'Crucial Pro 32GB (2x16GB) DDR5 5600MHz Block', price: 95.00, socket: 'lga1700' },
+                { id: 'ram_d5i_2', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz CL36', price: 125.00, socket: 'lga1700' },
+                { id: 'ram_d5i_3', name: 'G.Skill Trident Z5 RGB 64GB (2x32GB) DDR5 6400MHz CL32', price: 245.00, socket: 'lga1700' }
             ],
             gpu: [
-                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB GDDR6', price: 315.00, socket: 'universal', wattage: 115 },
-                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal', wattage: 220 },
-                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal', wattage: 320 }
+                { id: 'gpu_none', name: 'No Discrete GPU (Rely on Processor Architecture)', price: 0.00, socket: 'universal', wattage: 0 },
+                
+                // Nvidia Graphics Accelerators
+                { id: 'gpu_nv_1', name: 'Nvidia RTX 4060 8GB GDDR6', price: 315.00, socket: 'universal', wattage: 115 },
+                { id: 'gpu_nv_2', name: 'Nvidia RTX 4060 Ti 8GB Core', price: 410.00, socket: 'universal', wattage: 160 },
+                { id: 'gpu_nv_3', name: 'Nvidia RTX 4070 Super 12GB GDDR6X', price: 630.00, socket: 'universal', wattage: 220 },
+                { id: 'gpu_nv_4', name: 'Nvidia RTX 4070 Ti Super 16GB GDDR6X', price: 850.00, socket: 'universal', wattage: 285 },
+                { id: 'gpu_nv_5', name: 'Nvidia RTX 4080 Super 16GB Ray-Tracing Block', price: 1050.00, socket: 'universal', wattage: 320 },
+                { id: 'gpu_nv_6', name: 'Nvidia RTX 4090 24GB Flagship Beast', price: 1950.00, socket: 'universal', wattage: 450 },
+
+                // AMD Radeon Graphics Accelerators
+                { id: 'gpu_amd_1', name: 'AMD Radeon RX 7600 8GB Engine', price: 285.00, socket: 'universal', wattage: 165 },
+                { id: 'gpu_amd_2', name: 'AMD Radeon RX 7800 XT 16GB Studio Module', price: 540.00, socket: 'universal', wattage: 263 },
+                { id: 'gpu_amd_3', name: 'AMD Radeon RX 7900 XTX 24GB Ultra Core', price: 990.00, socket: 'universal', wattage: 355 }
             ],
             storage: [
-                { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
-                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' }
+                { id: 'st_1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0 SSD', price: 75.00, socket: 'universal' },
+                { id: 'st_2', name: 'WD Blue SN580 1TB M.2 NVMe Performance Plus', price: 80.00, socket: 'universal' },
+                { id: 'st_3', name: 'Samsung 990 Pro 1TB High-End NVMe Cache Unit', price: 115.00, socket: 'universal' },
+                { id: 'st_4', name: 'Crucial P3 Plus 2TB M.2 NVMe Secondary Drive', price: 135.00, socket: 'universal' },
+                { id: 'st_5', name: 'Samsung 990 Pro 2TB Extreme Speed Drive', price: 170.00, socket: 'universal' },
+                { id: 'st_6', name: 'WD Black SN850X 4TB Workstation Array', price: 340.00, socket: 'universal' }
             ],
             psu: [
-                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal', maxOutput: 750 },
-                { id: 'psu2', name: 'MSI MAG A850GL 850W ATX 3.0 Gold', price: 130.00, socket: 'universal', maxOutput: 850 }
+                { id: 'psu_1', name: 'MSI MAG A650BN 650W 80+ Bronze Level Block', price: 65.00, socket: 'universal', maxOutput: 650 },
+                { id: 'psu_2', name: 'Corsair RM750e 750W 80+ Gold Modular ATX 3.0 Platform', price: 115.00, socket: 'universal', maxOutput: 750 },
+                { id: 'psu_3', name: 'MSI MAG A850GL 850W 80+ Gold Modular ATX 3.0 Standard', price: 130.00, socket: 'universal', maxOutput: 850 },
+                { id: 'psu_4', name: 'Corsair RM850x 850W 80+ Premium Gold Modular', price: 145.00, socket: 'universal', maxOutput: 850 },
+                { id: 'psu_5', name: 'Corsair RM1000e 1000W 80+ Gold Heavy Modular Unit', price: 175.00, socket: 'universal', maxOutput: 1000 },
+                { id: 'psu_6', name: 'ASUS ROG Thor 1200W Platinum II Digital Display', price: 350.00, socket: 'universal', maxOutput: 1200 }
             ],
             case: [
-                { id: 'cs1', name: 'NZXT H5 Flow Midi-Chassis Black', price: 95.00, socket: 'universal' },
-                { id: 'cs2', name: 'Lian Li O11 Vision Dual-Chamber Chrome', price: 150.00, socket: 'universal' }
+                { id: 'cs_1', name: 'Tecware Forge M ARGB (M-ATX Compact Skeleton) Black', price: 55.00, socket: 'universal' },
+                { id: 'cs_2', name: 'Montech AIR 903 MAX Performance Tower Black', price: 85.00, socket: 'universal' },
+                { id: 'cs_3', name: 'NZXT H5 Flow Midi-Chassis High-Airflow Frame', price: 95.00, socket: 'universal' },
+                { id: 'cs_4', name: 'Corsair 4000D Airflow Tempered Glass Structural Black', price: 105.00, socket: 'universal' },
+                { id: 'cs_5', name: 'Lian Li O11 Vision Dual-Chamber Premium Chrome glass', price: 150.00, socket: 'universal' },
+                { id: 'cs_6', name: 'Fractal Design North Charcoal Black (Premium Walnut Front Accent)', price: 165.00, socket: 'universal' }
             ],
             service: [
-                { id: 'sv1', name: 'Standard Assembly, Testing & Burn-In (30-Day Check)', price: 80.00, socket: 'universal' },
-                { id: 'sv2', name: 'Premium Assembly Tier (1-Year Collection Support)', price: 150.00, socket: 'universal' }
+                { id: 'sv_1', name: 'Standard Assembly, Testing & Burn-In Profile (30-Day Evaluation)', price: 80.00, socket: 'universal' },
+                { id: 'sv_2', name: 'Premium Assembly Tier (1-Year Collection Cover Logistics)', price: 150.00, socket: 'universal' },
+                { id: 'sv_3', name: 'Enterprise Assembly Suite (3-Year Next-Business-Day Repair Assured)', price: 250.00, socket: 'universal' }
             ]
         };
     }
@@ -859,7 +937,7 @@
     }
 
     // --- 2. MULTI-TAB DISPLAY INTERFACE CONTROL ROUTINES ---
-    // Refactored to be 100% null-safe. Prevents single missing HTML elements from crashing the entire tab switch.
+    // Hardened null-safe runtime execution layout switch
     function setPurpose(type) {
         try {
             intakePurpose = type;
@@ -968,7 +1046,7 @@
         } else {
             currentPcSelection[category] = item;
             
-            // Auto-cascading logic resets for hardware incompatibilities
+            // Auto-cascading structural logical checks
             if (category === 'cpu') {
                 if (currentPcSelection.motherboard && currentPcSelection.motherboard.socket !== item.socket) currentPcSelection.motherboard = null;
                 if (currentPcSelection.ram && currentPcSelection.ram.socket !== item.socket) currentPcSelection.ram = null;
@@ -1227,7 +1305,7 @@
         initPcBuilder();
         initCanvases();
         
-        // Handle responsive scaling dynamically for signature blocks on tablet rotation flips
+        // Handle dynamic width recalculation for signature fields on window adjust or flip
         window.addEventListener('resize', () => {
             canvases.forEach(id => {
                 const cvs = document.getElementById(id);
