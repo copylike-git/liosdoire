@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom PC Builder | iteireann</title>
+    <title>Custom PC Configurator | iteireann</title>
     <style>
         :root {
             --primary: #111111;
@@ -180,13 +180,13 @@
         .summary-list {
             list-style: none;
             padding: 0;
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 1.25rem 0;
             display: flex;
             flex-direction: column;
             gap: 0.85rem;
             font-size: 0.9rem;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
         }
 
         .summary-list li {
@@ -206,22 +206,43 @@
             font-weight: 500;
         }
 
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+        /* Pricing breakdown table layout */
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
         }
 
-        .total-title {
-            font-size: 1.1rem;
+        .breakdown-table td {
+            padding: 0.4rem 0;
+        }
+
+        .breakdown-table .val {
+            text-align: right;
             font-weight: 500;
         }
 
-        .total-amount {
-            font-size: 1.6rem;
+        .breakdown-table tr.total-highlight td {
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
             font-weight: 700;
+        }
+
+        .breakdown-table tr.total-highlight .val {
+            font-size: 1.4rem;
             color: var(--primary);
+        }
+
+        .breakdown-table tr.deposit-highlight td {
+            border-top: 2px dashed var(--accent);
+            padding-top: 0.75rem;
+            font-weight: 700;
+            color: #b5814c;
+        }
+
+        .breakdown-table tr.deposit-highlight .val {
+            font-size: 1.4rem;
         }
 
         /* Legal Disclaimer Box */
@@ -310,6 +331,45 @@
         .whatsapp-btn:hover {
             background-color: #20ba56;
         }
+
+        /* Print Media Queries optimization styling rules */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+            header, .builder-steps, .signature-clear, .action-btn, .whatsapp-btn, .legal-disclaimer::-webkit-scrollbar {
+                display: none !important;
+            }
+            .container {
+                display: block;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .summary-panel {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                position: relative;
+                top: 0;
+                width: 100%;
+            }
+            .legal-disclaimer {
+                max-height: none;
+                overflow: visible;
+                background: none;
+                border: 1px solid #000;
+                page-break-inside: avoid;
+            }
+            .signature-canvas-wrapper {
+                border: 1px solid #000;
+            }
+            canvas#signature-pad {
+                background: white;
+            }
+        }
     </style>
 </head>
 <body>
@@ -335,16 +395,40 @@
             <!-- Javascript updates selected components here -->
         </ul>
         
-        <div class="total-row">
-            <span class="total-title">Estimated Total</span>
-            <span class="total-amount" id="total-amount">€0.00</span>
-        </div>
+        <!-- Detailed Financial Matrix Breakdown -->
+        <table class="breakdown-table">
+            <tr>
+                <td>Components Net</td>
+                <td class="val" id="net-components">€0.00</td>
+            </tr>
+            <tr>
+                <td>Standardised Labour (15%)</td>
+                <td class="val" id="net-labour">€0.00</td>
+            </tr>
+            <tr>
+                <td>Total Net (Excl. VAT)</td>
+                <td class="val" id="total-net">€0.00</td>
+            </tr>
+            <tr>
+                <td>Irish VAT (21.00%)</td>
+                <td class="val" id="vat-amount">€0.00</td>
+            </tr>
+            <tr class="total-highlight">
+                <td>Gross Total (Inc. VAT)</td>
+                <td class="val" id="gross-total">€0.00</td>
+            </tr>
+            <tr class="deposit-highlight">
+                <td>Compulsory Deposit (25%)</td>
+                <td class="val" id="compulsory-deposit">€0.00</td>
+            </tr>
+        </table>
 
         <!-- Comprehensive Protection Disclaimer Section -->
         <div class="legal-disclaimer">
-            <strong>iteireann Legal Disclaimer & Sales Policy:</strong> All system quotes are subject to underlying component cost availability. 
-            <strong>Price Fluctuations & Shortages:</strong> Due to volatile supply channels, final system pricing may change or components may fall out of stock before order processing. In such cases, iteireann reserves the sole right to cancel the execution request or offer an equivalent substitution alternative. 
-            <strong>Cancellations & Refunds:</strong> Custom system builds involve immediate hardware acquisition and dedicated professional assembly. Once physical allocation or build phase starts, customer-initiated cancellations are strictly subject to a minimum 25% restocking liability charge, and custom components modifications or unique configuration parts choices are non-refundable. By signing below, you fully acknowledge, understand, and accept these custom trade terms.
+            <strong>iteireann Legal Disclaimer & Sales Policy:</strong> All system configurations are treated as specialized build-to-order projects. 
+            <strong>Deposit Requirement:</strong> A compulsory non-refundable deposit of twenty-five percent (25%) is required immediately upon signing to authorize components procurement sequences. 
+            <strong>Price Fluctuations & Shortages:</strong> Due to continuous supply line variations, final stock status or raw vendor costs can fluctuate. iteireann reserves direct legal authorization to invalidate allocations or offer comparable system choices if parts face structural shortages. 
+            <strong>Cancellations & Warranty Framework:</strong> System packages feature an inclusive thirty (30) days baseline setup diagnostics support plan framework. Component change requests or customer cancellation intentions introduced post-procurement are strictly prohibited from full cash recovery. By providing your explicit signature below, you validate and authenticate strict compliance terms.
         </div>
 
         <!-- Signature Workspace Frame -->
@@ -358,14 +442,14 @@
             </div>
         </div>
 
-        <button class="action-btn" id="cart-submit-btn" onclick="addToCart()" disabled>Add Configuration to Cart</button>
+        <button class="action-btn" id="print-submit-btn" onclick="triggerAndroidPrint()" disabled>Print / Save Receipt</button>
         <button class="action-btn whatsapp-btn" id="wa-submit-btn" onclick="shareToWhatsApp()" disabled>Order via WhatsApp</button>
     </div>
 </div>
 
 <script>
     // --- PRODUCT DATABASE FUNCTION ---
-    // Expanded with verified 30% marked up values from cost records
+    // Expanded data layers featuring values compiled from supplier invoices[cite: 2, 3] with 30% calculation markups applied
     function getProductDatabase() {
         return {
             cpu: [
@@ -378,12 +462,11 @@
                 { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
                 { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
                 { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' },
-                // Added options from supplier invoice with 30% markup calculation
-                { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' },
-                { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' },
-                { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' },
-                { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' },
-                { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' }
+                { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' }, // Cost €264.15[cite: 2]
+                { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' }, // Cost €125.21[cite: 3]
+                { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' }, // Cost €132.22[cite: 3]
+                { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' }, // Cost €115.96[cite: 3]
+                { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' } // Cost €60.22[cite: 3]
             ],
             ram: [
                 { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
@@ -398,37 +481,33 @@
             storage: [
                 { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
                 { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' },
-                // Added option from supplier invoice with 30% markup calculation
-                { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' }
+                { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' } // Cost €88.73[cite: 3]
             ],
             psu: [
                 { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
                 { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' },
-                // Added options from supplier invoice with 30% markup calculation
-                { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' }
+                { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' } // Cost €76.77[cite: 3]
             ],
             case: [
                 { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
                 { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' },
-                // Added options from supplier invoice with 30% markup calculation
-                { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' },
-                { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' },
-                { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' },
-                { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 104.17, socket: 'universal' },
-                { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 272.66, socket: 'universal' },
-                { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' }
+                { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' }, // Cost €50.34[cite: 2]
+                { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' }, // Cost €67.18[cite: 2]
+                { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' }, // Cost €53.17[cite: 3]
+                { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 104.17, socket: 'universal' }, // Cost €80.13[cite: 3]
+                { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 272.66, socket: 'universal' }, // Cost €209.74[cite: 3]
+                { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' } // Cost €75.55[cite: 3]
             ],
             service: [
-                { id: 'sv1', name: 'Standard Build, Stress-Testing & Delivery (30-Day On-Site Check)', price: 80.00, socket: 'universal' },
-                { id: 'sv2', name: 'Premium Build Tier (1-Year Collection Cover, Priority Support)', price: 150.00, socket: 'universal' }
+                { id: 'sv_basic', name: 'Baseline System Config (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
+                { id: 'sv_1yr', name: 'Premium Support Plan Upgrade (30 Days to 1 Year Tier)', price: 0.00, percentage: 0.10, type: 'tier' },
+                { id: 'sv_3yr', name: 'Enterprise Support Plan Upgrade (1 Year to 3 Years Tier)', price: 0.00, percentage: 0.33, type: 'tier' }
             ]
         };
     }
 
-    // Global application reference to database array
     const dataset = getProductDatabase();
 
-    // Human-readable names for UI steps
     const categoryNames = {
         cpu: 'Processor (CPU)',
         motherboard: 'Motherboard',
@@ -437,15 +516,13 @@
         storage: 'Storage (M.2/SSD)',
         psu: 'Power Supply (PSU)',
         case: 'PC Chassis (Case)',
-        service: 'iteireann Assembly & Warranty Service'
+        service: 'Support Plan & Warranty Option'
     };
 
-    // Selected items pointer state tracking
     let currentSelection = {
         cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null
     };
 
-    // Signature Pad Operations Engine
     let canvas, ctx;
     let isDrawing = false;
     let signatureProvided = false;
@@ -454,11 +531,9 @@
         canvas = document.getElementById('signature-pad');
         ctx = canvas.getContext('2d');
         
-        // Dynamically compute absolute sizing properties
         resizeSignatureCanvas();
         window.addEventListener('resize', resizeSignatureCanvas);
 
-        // Core Interaction event tracking setups
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', stopDrawing);
@@ -501,7 +576,7 @@
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
         ctx.strokeStyle = '#111111';
-        clearSignatureCanvas(); // Resets tracking state on resize layout change
+        clearSignatureCanvas(); 
     }
 
     function startDrawing(e) {
@@ -533,18 +608,17 @@
     }
 
     function toggleSubmissionButtons() {
-        const cartBtn = document.getElementById('cart-submit-btn');
+        const printBtn = document.getElementById('print-submit-btn');
         const waBtn = document.getElementById('wa-submit-btn');
         if (signatureProvided) {
-            cartBtn.removeAttribute('disabled');
+            printBtn.removeAttribute('disabled');
             waBtn.removeAttribute('disabled');
         } else {
-            cartBtn.setAttribute('disabled', 'true');
+            printBtn.setAttribute('disabled', 'true');
             waBtn.setAttribute('disabled', 'true');
         }
     }
 
-    // Main Engine Initialization
     function initBuilder() {
         const builderContainer = document.getElementById('builder-steps');
         builderContainer.innerHTML = '';
@@ -563,16 +637,30 @@
             optionsList.className = 'options-list';
             optionsList.id = `options-${cat}`;
 
+            // Fallback default selection for service category to match compulsory rules safely
+            if (cat === 'service' && !currentSelection.service) {
+                currentSelection.service = dataset.service[0];
+            }
+
             dataset[cat].forEach(item => {
                 const opt = document.createElement('div');
                 opt.className = 'option-item';
                 opt.id = `item-${item.id}`;
+                
+                // If it is a dynamically scaled warranty, show label instead of hardcoded numbers upfront
+                let priceLabel = `€${item.price.toFixed(2)}`;
+                if(item.type === 'tier' && item.percentage > 0) {
+                    priceLabel = `+${item.percentage * 100}% of Build`;
+                } else if (item.type === 'tier' && item.percentage === 0) {
+                    priceLabel = "Included";
+                }
+
                 opt.innerHTML = `
                     <div class="item-details">
                         <span class="item-name">${item.name}</span>
-                        ${item.socket !== 'universal' ? `<span class="item-socket">Platform: ${item.socket}</span>` : ''}
+                        ${item.socket !== 'universal' && item.socket !== undefined ? `<span class="item-socket">Platform: ${item.socket}</span>` : ''}
                     </div>
-                    <span class="item-price">€${item.price.toFixed(2)}</span>
+                    <span class="item-price">${priceLabel}</span>
                 `;
                 opt.onclick = () => selectComponent(cat, item);
                 optionsList.appendChild(opt);
@@ -587,14 +675,13 @@
         initSignaturePad();
     }
 
-    // Handles picking a component and cascading compatibility logic rules
     function selectComponent(category, item) {
         if (currentSelection[category]?.id === item.id) {
-            currentSelection[category] = null; // Toggle off if clicked again
+            if (category === 'service') return; // Enforce continuous warranty choice selection
+            currentSelection[category] = null; 
         } else {
             currentSelection[category] = item;
             
-            // Auto-cascading structural logic resets if platform rules break
             if (category === 'cpu') {
                 if (currentSelection.motherboard && currentSelection.motherboard.socket !== item.socket) {
                     currentSelection.motherboard = null;
@@ -609,7 +696,6 @@
         renderSummary();
     }
 
-    // Filters visual arrays by matching sockets (AM4/AM5/LGA1700) 
     function updateCompatibilityRules() {
         const selectedCpu = currentSelection.cpu;
 
@@ -618,15 +704,12 @@
                 const element = document.getElementById(`item-${item.id}`);
                 if (!element) return;
 
-                // Reset standard UI classes
                 element.classList.remove('active', 'disabled');
 
-                // Apply active select border
                 if (currentSelection[cat]?.id === item.id) {
                     element.classList.add('active');
                 }
 
-                // Motherboard and RAM matching rules based on Selected CPU Socket
                 if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
                     if (item.socket !== 'universal' && item.socket !== selectedCpu.socket) {
                         element.classList.add('disabled');
@@ -634,10 +717,9 @@
                 }
             });
 
-            // Handle Category Badges updating live
             const badge = document.getElementById(`badge-${cat}`);
             if (currentSelection[cat]) {
-                badge.innerText = 'Selected';
+                badge.innerText = cat === 'service' ? currentSelection[cat].name.split('(')[0] : 'Selected';
                 badge.style.color = 'green';
             } else {
                 badge.innerText = 'None Selected';
@@ -646,22 +728,38 @@
         });
     }
 
-    // Updates calculation tables on sidebar Panel
     function renderSummary() {
         const summaryList = document.getElementById('summary-list');
-        const totalAmountText = document.getElementById('total-amount');
         summaryList.innerHTML = '';
-        let total = 0;
+        
+        let componentsCost = 0;
+        let dynamicWarrantyCost = 0;
 
+        // Step 1: Compute cumulative raw physical parts hardware costs
+        Object.keys(categoryNames).forEach(cat => {
+            const selectedItem = currentSelection[cat];
+            if (selectedItem && cat !== 'service') {
+                componentsCost += selectedItem.price;
+            }
+        });
+
+        // Step 2: Extract proportional warranty parameters using hardware baseline costs
+        if (currentSelection.service && currentSelection.service.type === 'tier') {
+            dynamicWarrantyCost = componentsCost * currentSelection.service.percentage;
+        }
+
+        // Display line items inside the list view
         Object.keys(categoryNames).forEach(cat => {
             const selectedItem = currentSelection[cat];
             const li = document.createElement('li');
             
             if (selectedItem) {
-                total += selectedItem.price;
+                let printCost = selectedItem.price;
+                if(cat === 'service') printCost = dynamicWarrantyCost;
+
                 li.innerHTML = `
                     <span class="part-type">${categoryNames[cat]}</span>
-                    <span class="part-name">${selectedItem.name} (€${selectedItem.price.toFixed(2)})</span>
+                    <span class="part-name">${selectedItem.name} (€${printCost.toFixed(2)})</span>
                 `;
             } else {
                 li.innerHTML = `
@@ -672,36 +770,49 @@
             summaryList.appendChild(li);
         });
 
-        totalAmountText.innerText = `€${total.toFixed(2)}`;
+        // Step 3: Run comprehensive logic operations for Irish taxation and mandatory fees
+        let standardLabourCost = componentsCost * 0.15;
+        let cumulativeNetTotal = componentsCost + dynamicWarrantyCost + standardLabourCost;
+        let calculatedIrishVat = cumulativeNetTotal * 0.21; // Standard Irish VAT rate
+        let finalGrossTotal = cumulativeNetTotal + calculatedIrishVat;
+        let compulsoryDepositRequired = finalGrossTotal * 0.25;
+
+        // Step 4: Map values to UI DOM elements
+        document.getElementById('net-components').innerText = `€${componentsCost.toFixed(2)}`;
+        document.getElementById('net-labour').innerText = `€${standardLabourCost.toFixed(2)}`;
+        document.getElementById('total-net').innerText = `€${cumulativeNetTotal.toFixed(2)}`;
+        document.getElementById('vat-amount').innerText = `€${calculatedIrishVat.toFixed(2)}`;
+        document.getElementById('gross-total').innerText = `€${finalGrossTotal.toFixed(2)}`;
+        document.getElementById('compulsory-deposit').innerText = `€${compulsoryDepositRequired.toFixed(2)}`;
     }
 
-    function addToCart() {
+    // Android/Mobile Friendly Window Printing Routine Function
+    function triggerAndroidPrint() {
         if (!signatureProvided) {
-            alert('Please review and sign the terms configuration disclaimer box before proceeding.');
+            alert('Please sign the legal protection disclaimer before printing.');
             return;
         }
-        alert('Configuration saved along with signed disclaimer parameters! Ready to route parameters into your store checkout pipeline.');
+        window.print();
     }
 
-    // Compiles parts array into a cleanly read payload string for direct WhatsApp execution
     function shareToWhatsApp() {
         if (!signatureProvided) {
-            alert('Please review and sign the terms configuration disclaimer box before proceeding.');
+            alert('Please sign the legal protection disclaimer before proceeding.');
             return;
         }
         
-        let text = "Hello iteireann, I would like to request a quote for a custom PC configuration. I have reviewed and signed the legal protection disclosure regarding price fluctuations, cancellation policies, and restocking rules:\n\n";
-        let total = 0;
+        let text = "Hello iteireann, I would like to place an order for this custom PC build. I have signed the legal declaration acknowledging terms, 15% standardised labour, 21% Irish VAT, and the mandatory 25% allocation deposit:\n\n";
         
         Object.keys(categoryNames).forEach(cat => {
             const item = currentSelection[cat];
             if (item) {
-                text += `• ${categoryNames[cat]}: ${item.name} (€${item.price.toFixed(2)})\n`;
-                total += item.price;
+                text += `• ${categoryNames[cat]}: ${item.name}\n`;
             }
         });
         
-        text += `\n*Estimated Total: €${total.toFixed(2)}*\n*Terms Acceptance Status: Signed & Verified*`;
+        text += `\n*Gross Total (Inc. VAT): ${document.getElementById('gross-total').innerText}*`;
+        text += `\n*Compulsory Deposit Due (25%): ${document.getElementById('compulsory-deposit').innerText}*`;
+        text += `\n\n*Terms Agreement: Electronically Signed & Validated*`;
         
         const encodedText = encodeURIComponent(text);
         window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
