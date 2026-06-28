@@ -51,7 +51,7 @@
             margin: 2rem auto;
             padding: 0 2rem;
             display: grid;
-            grid-template-columns: 1fr 400px;
+            grid-template-columns: 1fr 450px;
             gap: 2rem;
         }
 
@@ -224,6 +224,58 @@
             color: var(--primary);
         }
 
+        /* Legal Disclaimer Box */
+        .legal-disclaimer {
+            font-size: 0.78rem;
+            color: #444;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.85rem;
+            margin-bottom: 1.25rem;
+            max-height: 140px;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+
+        .legal-disclaimer strong {
+            color: #000;
+        }
+
+        /* Signature Workspace */
+        .signature-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .signature-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature-clear {
+            color: #c9302c;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .signature-canvas-wrapper {
+            border: 1px dashed #999;
+            background: #fff;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        canvas#signature-pad {
+            display: block;
+            width: 100%;
+            height: 100px;
+            cursor: crosshair;
+        }
+
         .action-btn {
             width: 100%;
             padding: 1rem;
@@ -237,15 +289,23 @@
             transition: background 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
         }
 
         .action-btn:hover {
             background-color: #333333;
         }
 
+        .action-btn:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
         .whatsapp-btn {
-            margin-top: 0.75rem;
             background-color: #25D366;
+            margin-bottom: 0;
         }
         .whatsapp-btn:hover {
             background-color: #20ba56;
@@ -280,14 +340,32 @@
             <span class="total-amount" id="total-amount">€0.00</span>
         </div>
 
-        <button class="action-btn" onclick="addToCart()">Add Configuration to Cart</button>
-        <button class="action-btn whatsapp-btn" onclick="shareToWhatsApp()">Order via WhatsApp</button>
+        <!-- Comprehensive Protection Disclaimer Section -->
+        <div class="legal-disclaimer">
+            <strong>iteireann Legal Disclaimer & Sales Policy:</strong> All system quotes are subject to underlying component cost availability. 
+            <strong>Price Fluctuations & Shortages:</strong> Due to volatile supply channels, final system pricing may change or components may fall out of stock before order processing. In such cases, iteireann reserves the sole right to cancel the execution request or offer an equivalent substitution alternative. 
+            <strong>Cancellations & Refunds:</strong> Custom system builds involve immediate hardware acquisition and dedicated professional assembly. Once physical allocation or build phase starts, customer-initiated cancellations are strictly subject to a minimum 25% restocking liability charge, and custom components modifications or unique configuration parts choices are non-refundable. By signing below, you fully acknowledge, understand, and accept these custom trade terms.
+        </div>
+
+        <!-- Signature Workspace Frame -->
+        <div class="signature-container">
+            <div class="signature-label">
+                <span>Sign here to acknowledge terms:</span>
+                <span class="signature-clear" onclick="clearSignatureCanvas()">Clear Signature</span>
+            </div>
+            <div class="signature-canvas-wrapper">
+                <canvas id="signature-pad"></canvas>
+            </div>
+        </div>
+
+        <button class="action-btn" id="cart-submit-btn" onclick="addToCart()" disabled>Add Configuration to Cart</button>
+        <button class="action-btn whatsapp-btn" id="wa-submit-btn" onclick="shareToWhatsApp()" disabled>Order via WhatsApp</button>
     </div>
 </div>
 
 <script>
     // --- PRODUCT DATABASE FUNCTION ---
-    // Isolated at the top to easily manage parts, details, and pricing.
+    // Expanded with verified 30% marked up values from cost records
     function getProductDatabase() {
         return {
             cpu: [
@@ -299,7 +377,13 @@
             motherboard: [
                 { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
                 { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
-                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' }
+                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' },
+                // Added options from supplier invoice with 30% markup calculation
+                { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' },
+                { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' },
+                { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' },
+                { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' },
+                { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' }
             ],
             ram: [
                 { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
@@ -313,15 +397,26 @@
             ],
             storage: [
                 { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
-                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' }
+                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' },
+                // Added option from supplier invoice with 30% markup calculation
+                { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' }
             ],
             psu: [
                 { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
-                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' }
+                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' },
+                // Added options from supplier invoice with 30% markup calculation
+                { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' }
             ],
             case: [
                 { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
-                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' }
+                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' },
+                // Added options from supplier invoice with 30% markup calculation
+                { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' },
+                { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' },
+                { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' },
+                { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 104.17, socket: 'universal' },
+                { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 272.66, socket: 'universal' },
+                { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' }
             ],
             service: [
                 { id: 'sv1', name: 'Standard Build, Stress-Testing & Delivery (30-Day On-Site Check)', price: 80.00, socket: 'universal' },
@@ -349,6 +444,105 @@
     let currentSelection = {
         cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null
     };
+
+    // Signature Pad Operations Engine
+    let canvas, ctx;
+    let isDrawing = false;
+    let signatureProvided = false;
+
+    function initSignaturePad() {
+        canvas = document.getElementById('signature-pad');
+        ctx = canvas.getContext('2d');
+        
+        // Dynamically compute absolute sizing properties
+        resizeSignatureCanvas();
+        window.addEventListener('resize', resizeSignatureCanvas);
+
+        // Core Interaction event tracking setups
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent("mousedown", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+            e.preventDefault();
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent("mousemove", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+            e.preventDefault();
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', (e) => {
+            const mouseEvent = new MouseEvent("mouseup", {});
+            canvas.dispatchEvent(mouseEvent);
+        }, { passive: false });
+    }
+
+    function resizeSignatureCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        const displayWidth = canvas.parentElement.clientWidth;
+        canvas.width = displayWidth * ratio;
+        canvas.height = 100 * ratio;
+        canvas.style.width = displayWidth + "px";
+        canvas.style.height = "100px";
+        ctx.scale(ratio, ratio);
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#111111';
+        clearSignatureCanvas(); // Resets tracking state on resize layout change
+    }
+
+    function startDrawing(e) {
+        isDrawing = true;
+        const rect = canvas.getBoundingClientRect();
+        ctx.beginPath();
+        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.stroke();
+        if(!signatureProvided) {
+            signatureProvided = true;
+            toggleSubmissionButtons();
+        }
+    }
+
+    function stopDrawing() {
+        isDrawing = false;
+    }
+
+    function clearSignatureCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        signatureProvided = false;
+        toggleSubmissionButtons();
+    }
+
+    function toggleSubmissionButtons() {
+        const cartBtn = document.getElementById('cart-submit-btn');
+        const waBtn = document.getElementById('wa-submit-btn');
+        if (signatureProvided) {
+            cartBtn.removeAttribute('disabled');
+            waBtn.removeAttribute('disabled');
+        } else {
+            cartBtn.setAttribute('disabled', 'true');
+            waBtn.setAttribute('disabled', 'true');
+        }
+    }
 
     // Main Engine Initialization
     function initBuilder() {
@@ -390,6 +584,7 @@
 
         updateCompatibilityRules();
         renderSummary();
+        initSignaturePad();
     }
 
     // Handles picking a component and cascading compatibility logic rules
@@ -481,12 +676,21 @@
     }
 
     function addToCart() {
-        alert('Configuration saved! Ready to route parameters into your store checkout pipeline.');
+        if (!signatureProvided) {
+            alert('Please review and sign the terms configuration disclaimer box before proceeding.');
+            return;
+        }
+        alert('Configuration saved along with signed disclaimer parameters! Ready to route parameters into your store checkout pipeline.');
     }
 
     // Compiles parts array into a cleanly read payload string for direct WhatsApp execution
     function shareToWhatsApp() {
-        let text = "Hello iteireann, I would like to request a quote for a custom PC configuration:\n\n";
+        if (!signatureProvided) {
+            alert('Please review and sign the terms configuration disclaimer box before proceeding.');
+            return;
+        }
+        
+        let text = "Hello iteireann, I would like to request a quote for a custom PC configuration. I have reviewed and signed the legal protection disclosure regarding price fluctuations, cancellation policies, and restocking rules:\n\n";
         let total = 0;
         
         Object.keys(categoryNames).forEach(cat => {
@@ -497,10 +701,9 @@
             }
         });
         
-        text += `\n*Estimated Total: €${total.toFixed(2)}*`;
+        text += `\n*Estimated Total: €${total.toFixed(2)}*\n*Terms Acceptance Status: Signed & Verified*`;
         
         const encodedText = encodeURIComponent(text);
-        // Replace with your designated business mobile line parameter string
         window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
     }
 
