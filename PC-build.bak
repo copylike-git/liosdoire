@@ -141,7 +141,6 @@
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
-            flex-grow: 1;
         }
 
         .item-name {
@@ -157,115 +156,6 @@
         .item-price {
             font-weight: 600;
             font-size: 1rem;
-            margin-left: 1rem;
-            white-space: nowrap;
-        }
-
-        /* Quantity Controller Widget */
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-left: 1rem;
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 2px;
-        }
-
-        .qty-btn {
-            background: #111;
-            color: #fff;
-            border: none;
-            width: 26px;
-            height: 26px;
-            border-radius: 3px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qty-btn:hover {
-            background: #333;
-        }
-
-        .qty-val {
-            font-size: 0.95rem;
-            font-weight: bold;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        /* Technician Labour Control Interface */
-        .tech-labour-box {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-labour-box h3 {
-            margin: 0 0 1rem 0;
-            font-size: 1.1rem;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .verification-row {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            background: #fdf8f2;
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .verification-row input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .labour-selector-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 0.5rem;
-        }
-
-        .labour-btn {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 0.25rem;
-            text-align: center;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .labour-btn.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .labour-btn.disabled {
-            opacity: 0.4;
-            pointer-events: none;
-            background: #f5f5f5;
         }
 
         /* Summary Sidebar */
@@ -442,65 +332,14 @@
             background-color: #20ba56;
         }
 
-        /* CSV Management Bar Layout */
-        .csv-management-panel {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1.25rem;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .csv-btn {
-            background-color: #fff;
-            color: #111;
-            border: 1px solid #111;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-        }
-
-        .csv-btn:hover {
-            background-color: #111;
-            color: #fff;
-        }
-
-        .file-import-label {
-            background-color: #005a70;
-            color: #fff;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-
-        .file-import-label:hover {
-            background-color: #004252;
-        }
-
-        input[type="file"]#csv-file-input {
-            display: none;
-        }
-
+        /* Print Media Queries optimization styling rules */
         @media print {
             body {
                 background: white;
                 color: black;
                 font-size: 12pt;
             }
-            header, .builder-steps, .signature-clear, .action-btn, .whatsapp-btn, .qty-controls, .tech-labour-box, .csv-management-panel, .legal-disclaimer::-webkit-scrollbar {
+            header, .builder-steps, .signature-clear, .action-btn, .whatsapp-btn, .legal-disclaimer::-webkit-scrollbar {
                 display: none !important;
             }
             .container {
@@ -545,23 +384,8 @@
 
 <div class="container">
     <!-- Component Selector Matrix -->
-    <div class="builder-steps">
-        <div id="builder-steps-container"></div>
-        
-        <!-- Tech Control Box injected into Matrix View Flow -->
-        <div class="tech-labour-box">
-            <h3>iteireann Service Engineering Desk</h3>
-            <div class="verification-row">
-                <input type="checkbox" id="labour-checkbox" onchange="toggleLabourVerification()">
-                <label for="labour-checkbox">Confirm Custom Assembly Order Verification</label>
-            </div>
-            <div class="labour-selector-group">
-                <div id="btn-labour-0" class="labour-btn disabled" onclick="selectFixedLabour(0)">Self Build<br><strong>€0.00</strong></div>
-                <div id="btn-labour-50" class="labour-btn disabled" onclick="selectFixedLabour(50)">Standard Build<br><strong>€50.00</strong></div>
-                <div id="btn-labour-150" class="labour-btn disabled" onclick="selectFixedLabour(150)">Premium Tier<br><strong>€150.00</strong></div>
-                <div id="btn-labour-300" class="labour-btn disabled" onclick="selectFixedLabour(300)">Enterprise Deploy<br><strong>€300.00</strong></div>
-            </div>
-        </div>
+    <div class="builder-steps" id="builder-steps">
+        <!-- Javascript renders categories here -->
     </div>
 
     <!-- Live Checkout Panel -->
@@ -578,7 +402,7 @@
                 <td class="val" id="net-components">€0.00</td>
             </tr>
             <tr>
-                <td>Fixed Assembly Labour</td>
+                <td>Standardised Labour (15%)</td>
                 <td class="val" id="net-labour">€0.00</td>
             </tr>
             <tr>
@@ -623,97 +447,66 @@
     </div>
 </div>
 
-<!-- Bottom CSV Operations Frame -->
-<div class="container" style="margin-top: 0; margin-bottom: 3rem;">
-    <div class="csv-management-panel">
-        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-            <strong style="font-size: 0.95rem;">Catalog Ledger Sync</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Sync active pricing models with back-office stock arrays</span>
-        </div>
-        <div style="display: flex; gap: 0.75rem; align-items: center;">
-            <button class="csv-btn" onclick="exportCatalogToCSV()">Export Prices to CSV</button>
-            <label for="csv-file-input" class="file-import-label">Import Prices via CSV</label>
-            <input type="file" id="csv-file-input" accept=".csv" onchange="importCatalogFromCSV(event)">
-        </div>
-    </div>
-</div>
-
 <script>
-    // =========================================================================
-    // CENTRALIZED MASTER CONFIGURATION LEDGER (INCLUDES INVOICE ITEMS WITH 30% MARKUP)
-    // =========================================================================
-    let dataset = {
-        cpu: [
-            { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
-            { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
-            { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
-            { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' },
-            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 473.20, socket: 'am4' }, 
-            { id: 'cpu_inv2', name: 'AMD Ryzen 7 7800X3D 8-Core Tray', price: 375.70, socket: 'am5' }, 
-            { id: 'cpu_inv3', name: 'AMD Ryzen 9 5900XT 16-Core Boxed', price: 440.57, socket: 'am4' } 
-        ],
-        motherboard: [
-            { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
-            { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
-            { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' },
-            { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' }, // Cost €264.15[cite: 6]
-            { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' }, // Cost €125.21[cite: 7]
-            { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' }, // Cost €132.22[cite: 7]
-            { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' }, // Cost €115.96[cite: 7]
-            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' } // Cost €60.22[cite: 7]
-        ],
-        ram: [
-            { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
-            { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
-            { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' },
-            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16', price: 355.10, socket: 'am4' } 
-        ],
-        gpu: [
-            { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
-            { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
-            { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' },
-            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 581.41, socket: 'universal' } 
-        ],
-        storage: [
-            { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
-            { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' },
-            { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' } // Cost €88.73[cite: 7]
-        ],
-        psu: [
-            { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
-            { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' },
-            { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' }, // Cost €76.77[cite: 7]
-            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 160.71, socket: 'universal' } 
-        ],
-        case: [
-            { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
-            { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' },
-            { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' }, // Cost €50.34[cite: 6]
-            { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' }, // Cost €67.18[cite: 6]
-            { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' }, // Cost €53.17[cite: 7]
-            { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 104.17, socket: 'universal' }, // Cost €80.13[cite: 7]
-            { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 272.66, socket: 'universal' }, // Cost €209.74[cite: 7]
-            { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' }, // Cost €75.55[cite: 7]
-            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 122.27, socket: 'universal' }, 
-            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 249.38, socket: 'universal' }, 
-            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 131.35, socket: 'universal' }, 
-            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 90.87, socket: 'universal' }, 
-            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 139.37, socket: 'universal' }, 
-            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 76.57, socket: 'universal' },
-            { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 146.38, socket: 'universal' } // Cost €112.60[cite: 6]
-        ],
-        fans: [
-            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 53.22 }, 
-            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 22.74 }, 
-            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 21.46 }, 
-            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 23.06 } 
-        ],
-        service: [
-            { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
-            { id: 'sv_1yr', name: 'Premium Support Plan Upgrade (30 Days to 1 Year Tier)', price: 0.00, percentage: 0.10, type: 'tier' },
-            { id: 'sv_3yr', name: 'Enterprise Support Plan Upgrade (1 Year to 3 Years Tier)', price: 0.00, percentage: 0.33, type: 'tier' }
-        ]
-    };
+    // --- PRODUCT DATABASE FUNCTION ---
+    // Expanded data layers featuring values compiled from supplier invoices with 30% calculation markups applied[cite: 2, 3]
+    function getProductDatabase() {
+        return {
+            cpu: [
+                { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
+                { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
+                { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
+                { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' }
+            ],
+            motherboard: [
+                { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
+                { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
+                { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' },
+                { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' }, // Cost €264.15[cite: 2]
+                { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' }, // Cost €125.21[cite: 3]
+                { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' }, // Cost €132.22[cite: 3]
+                { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' }, // Cost €115.96[cite: 3]
+                { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' } // Cost €60.22[cite: 3]
+            ],
+            ram: [
+                { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
+                { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
+                { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' }
+            ],
+            gpu: [
+                { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
+                { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
+                { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' }
+            ],
+            storage: [
+                { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
+                { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' },
+                { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' } // Cost €88.73[cite: 3]
+            ],
+            psu: [
+                { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
+                { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' },
+                { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' } // Cost €76.77[cite: 3]
+            ],
+            case: [
+                { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
+                { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' },
+                { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' }, // Cost €50.34[cite: 2]
+                { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' }, // Cost €67.18[cite: 2]
+                { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' }, // Cost €53.17[cite: 3]
+                { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 104.17, socket: 'universal' }, // Cost €80.13[cite: 3]
+                { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 272.66, socket: 'universal' }, // Cost €209.74[cite: 3]
+                { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' } // Cost €75.55[cite: 3]
+            ],
+            service: [
+                { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
+                { id: 'sv_1yr', name: 'Premium Support Plan Upgrade (30 Days to 1 Year Tier)', price: 0.00, percentage: 0.10, type: 'tier' },
+                { id: 'sv_3yr', name: 'Enterprise Support Plan Upgrade (1 Year to 3 Years Tier)', price: 0.00, percentage: 0.33, type: 'tier' }
+            ]
+        };
+    }
+
+    const dataset = getProductDatabase();
 
     const categoryNames = {
         cpu: 'Processor (CPU)',
@@ -723,17 +516,12 @@
         storage: 'Storage (M.2/SSD)',
         psu: 'Power Supply (PSU)',
         case: 'PC Chassis (Case)',
-        fans: 'Additional Case Fans',
         service: 'Support Plan & Warranty Option'
     };
 
     let currentSelection = {
-        cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, fans: null, service: null
+        cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, service: null
     };
-
-    let fanQuantity = 1;
-    let selectedLabourFee = -1; 
-    let labourVerified = false;
 
     let canvas, ctx;
     let isDrawing = false;
@@ -819,54 +607,10 @@
         toggleSubmissionButtons();
     }
 
-    function toggleLabourVerification() {
-        const checkbox = document.getElementById('labour-checkbox');
-        labourVerified = checkbox.checked;
-
-        const btn0 = document.getElementById('btn-labour-0');
-        const btn50 = document.getElementById('btn-labour-50');
-        const btn150 = document.getElementById('btn-labour-150');
-        const btn300 = document.getElementById('btn-labour-300');
-
-        if (labourVerified) {
-            btn0.classList.remove('disabled');
-            btn50.classList.remove('disabled');
-            btn150.classList.remove('disabled');
-            btn300.classList.remove('disabled');
-            selectFixedLabour(0); 
-        } else {
-            btn0.classList.add('disabled');
-            btn50.classList.add('disabled');
-            btn150.classList.add('disabled');
-            btn300.classList.add('disabled');
-            btn0.classList.remove('active');
-            btn50.classList.remove('active');
-            btn150.classList.remove('active');
-            btn300.classList.remove('active');
-            selectedLabourFee = -1;
-            renderSummary();
-        }
-        toggleSubmissionButtons();
-    }
-
-    function selectFixedLabour(value) {
-        if (!labourVerified) return;
-        selectedLabourFee = value;
-
-        document.getElementById('btn-labour-0').classList.remove('active');
-        document.getElementById('btn-labour-50').classList.remove('active');
-        document.getElementById('btn-labour-150').classList.remove('active');
-        document.getElementById('btn-labour-300').classList.remove('active');
-
-        document.getElementById(`btn-labour-${value}`).classList.add('active');
-        renderSummary();
-    }
-
     function toggleSubmissionButtons() {
         const printBtn = document.getElementById('print-submit-btn');
         const waBtn = document.getElementById('wa-submit-btn');
-        
-        if (signatureProvided && labourVerified && selectedLabourFee >= 0) {
+        if (signatureProvided) {
             printBtn.removeAttribute('disabled');
             waBtn.removeAttribute('disabled');
         } else {
@@ -876,7 +620,7 @@
     }
 
     function initBuilder() {
-        const builderContainer = document.getElementById('builder-steps-container');
+        const builderContainer = document.getElementById('builder-steps');
         builderContainer.innerHTML = '';
 
         Object.keys(categoryNames).forEach(cat => {
@@ -914,14 +658,9 @@
                         <span class="item-name">${item.name}</span>
                         ${item.socket !== 'universal' && item.socket !== undefined ? `<span class="item-socket">Platform: ${item.socket}</span>` : ''}
                     </div>
-                    <div id="wrapper-interactive-${item.id}" style="display: flex; align-items: center;">
-                        <span class="item-price">${priceLabel}</span>
-                    </div>
+                    <span class="item-price">${priceLabel}</span>
                 `;
-                opt.onclick = (e) => {
-                    if (e.target.closest('.qty-controls')) return;
-                    selectComponent(cat, item);
-                };
+                opt.onclick = () => selectComponent(cat, item);
                 optionsList.appendChild(opt);
             });
 
@@ -931,13 +670,13 @@
 
         updateCompatibilityRules();
         renderSummary();
+        initSignaturePad();
     }
 
     function selectComponent(category, item) {
         if (currentSelection[category]?.id === item.id) {
             if (category === 'service') return; 
             currentSelection[category] = null; 
-            if (category === 'fans') fanQuantity = 1; 
         } else {
             currentSelection[category] = item;
             
@@ -955,44 +694,18 @@
         renderSummary();
     }
 
-    function adjustFanQty(amount, event) {
-        event.stopPropagation();
-        const nextQty = fanQuantity + amount;
-        if (nextQty >= 1 && nextQty <= 10) {
-            fanQuantity = nextQty;
-            const qtyTextNode = event.target.parentElement.querySelector('.qty-val');
-            if (qtyTextNode) qtyTextNode.innerText = fanQuantity;
-            renderSummary();
-        }
-    }
-
     function updateCompatibilityRules() {
         const selectedCpu = currentSelection.cpu;
 
         Object.keys(dataset).forEach(cat => {
             dataset[cat].forEach(item => {
                 const element = document.getElementById(`item-${item.id}`);
-                const dynamicWrap = document.getElementById(`wrapper-interactive-${item.id}`);
                 if (!element) return;
 
                 element.classList.remove('active', 'disabled');
 
-                const staleSteppers = dynamicWrap.querySelector('.qty-controls');
-                if (staleSteppers) staleSteppers.remove();
-
                 if (currentSelection[cat]?.id === item.id) {
                     element.classList.add('active');
-
-                    if (cat === 'fans') {
-                        const stepper = document.createElement('div');
-                        stepper.className = 'qty-controls';
-                        stepper.innerHTML = `
-                            <button class="qty-btn" onclick="adjustFanQty(-1, event)">-</button>
-                            <span class="qty-val">${fanQuantity}</span>
-                            <button class="qty-btn" onclick="adjustFanQty(1, event)">+</button>
-                        `;
-                        dynamicWrap.insertBefore(stepper, dynamicWrap.firstChild);
-                    }
                 }
 
                 if (selectedCpu && (cat === 'motherboard' || cat === 'ram')) {
@@ -1002,15 +715,9 @@
                 }
             });
 
-            const badge = document.getElementById('badge-' + cat);
+            const badge = document.getElementById(`badge-${cat}`);
             if (currentSelection[cat]) {
-                if (cat === 'service') {
-                    badge.innerText = currentSelection[cat].name.split('(')[0];
-                } else if (cat === 'fans') {
-                    badge.innerText = `Selected (x${fanQuantity})`;
-                } else {
-                    badge.innerText = 'Selected';
-                }
+                badge.innerText = cat === 'service' ? currentSelection[cat].name.split('(')[0] : 'Selected';
                 badge.style.color = 'green';
             } else {
                 badge.innerText = 'None Selected';
@@ -1029,11 +736,7 @@
         Object.keys(categoryNames).forEach(cat => {
             const selectedItem = currentSelection[cat];
             if (selectedItem && cat !== 'service') {
-                if (cat === 'fans') {
-                    componentsCost += (selectedItem.price * fanQuantity);
-                } else {
-                    componentsCost += selectedItem.price;
-                }
+                componentsCost += selectedItem.price;
             }
         });
 
@@ -1047,17 +750,11 @@
             
             if (selectedItem) {
                 let printCost = selectedItem.price;
-                let displayName = selectedItem.name;
-
-                if (cat === 'service') printCost = dynamicWarrantyCost;
-                if (cat === 'fans') {
-                    printCost = selectedItem.price * fanQuantity;
-                    displayName = `${selectedItem.name} (x${fanQuantity})`;
-                }
+                if(cat === 'service') printCost = dynamicWarrantyCost;
 
                 li.innerHTML = `
                     <span class="part-type">${categoryNames[cat]}</span>
-                    <span class="part-name">${displayName} (€${printCost.toFixed(2)})</span>
+                    <span class="part-name">${selectedItem.name} (€${printCost.toFixed(2)})</span>
                 `;
             } else {
                 li.innerHTML = `
@@ -1068,123 +765,46 @@
             summaryList.appendChild(li);
         });
 
-        let currentLabour = selectedLabourFee >= 0 ? selectedLabourFee : 0;
-        let cumulativeNetTotal = componentsCost + dynamicWarrantyCost + currentLabour;
-        let calculatedIrishVat = cumulativeNetTotal * 0.23; 
+        let standardLabourCost = componentsCost * 0.15;
+        let cumulativeNetTotal = componentsCost + dynamicWarrantyCost + standardLabourCost;
+        let calculatedIrishVat = cumulativeNetTotal * 0.23; // Fixed Standard Irish VAT Rate to 23%
         let finalGrossTotal = cumulativeNetTotal + calculatedIrishVat;
         let compulsoryDepositRequired = finalGrossTotal * 0.25;
 
         document.getElementById('net-components').innerText = `€${componentsCost.toFixed(2)}`;
-        document.getElementById('net-labour').innerText = `€${currentLabour.toFixed(2)}`;
+        document.getElementById('net-labour').innerText = `€${standardLabourCost.toFixed(2)}`;
         document.getElementById('total-net').innerText = `€${cumulativeNetTotal.toFixed(2)}`;
         document.getElementById('vat-amount').innerText = `€${calculatedIrishVat.toFixed(2)}`;
         document.getElementById('gross-total').innerText = `€${finalGrossTotal.toFixed(2)}`;
         document.getElementById('compulsory-deposit').innerText = `€${compulsoryDepositRequired.toFixed(2)}`;
     }
 
-    // =========================================================================
-    // CSV CATALOG MANAGEMENT MODULE ENGINE
-    // =========================================================================
-    function exportCatalogToCSV() {
-        let csvRows = ["Category,Part ID,Product Name,Retail Price,Socket/Platform,Percentage,Tier Type"];
-        
-        Object.keys(dataset).forEach(category => {
-            dataset[category].forEach(item => {
-                let socket = item.socket || "universal";
-                let pct = item.percentage || 0;
-                let type = item.type || "standard";
-                csvRows.push(`"${category}","${item.id}","${item.name.replace(/"/g, '""')}",${item.price},"${socket}",${pct},"${type}"`);
-            });
-        });
-
-        const csvBlob = new Blob([csvRows.join("\n")], { type: 'text/csv;charset=utf-8;' });
-        const downloadLink = document.createElement("a");
-        downloadLink.href = URL.createObjectURL(csvBlob);
-        downloadLink.setAttribute("download", "iteireann_catalog_prices.csv");
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
-
-    function importCatalogFromCSV(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const text = e.target.result;
-            const lines = text.split(/\r?\n/);
-            if (lines.length <= 1) return;
-
-            let parsedDataset = { cpu:[], motherboard:[], ram:[], gpu:[], storage:[], psu:[], case:[], fans:[], service:[] };
-
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                
-                let matches = lines[i].match(/(".*?"|[^,\s]+)(?=\s*,|\s*$)/g);
-                if (!matches || matches.length < 4) {
-                    matches = lines[i].split(",");
-                }
-
-                let category = matches[0].replace(/"/g, '').trim();
-                let id = matches[1].replace(/"/g, '').trim();
-                let name = matches[2].replace(/"/g, '').trim();
-                let price = parseFloat(matches[3]);
-                let socket = matches[4] ? matches[4].replace(/"/g, '').trim() : "universal";
-                let percentage = matches[5] ? parseFloat(matches[5]) : 0;
-                let type = matches[6] ? matches[6].replace(/"/g, '').trim() : "standard";
-
-                if (parsedDataset[category]) {
-                    let entry = { id: id, name: name, price: price };
-                    if (socket !== "universal") entry.socket = socket;
-                    if (percentage > 0) entry.percentage = percentage;
-                    if (type !== "standard") entry.type = type;
-                    
-                    parsedDataset[category].push(entry);
-                }
-            }
-
-            dataset = parsedDataset;
-            currentSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, fans: null, service: null };
-            fanQuantity = 1;
-            
-            initBuilder();
-            alert("Pricing catalog updated successfully from spreadsheet!");
-        };
-        reader.readAsText(file);
-    }
-
     function triggerAndroidPrint() {
-        if (!signatureProvided || !labourVerified) {
-            alert('Please complete verification and sign the disclaimer before printing.');
+        if (!signatureProvided) {
+            alert('Please sign the legal protection disclaimer before printing.');
             return;
         }
         window.print();
     }
 
     function shareToWhatsApp() {
-        if (!signatureProvided || !labourVerified) {
-            alert('Please complete verification and sign the disclaimer before proceeding.');
+        if (!signatureProvided) {
+            alert('Please sign the legal protection disclaimer before proceeding.');
             return;
         }
         
-        let text = "Hello iteireann, I would like to place an order for this custom PC build. I have signed the legal declaration acknowledging terms, verified layout labour assembly fee, 23% Irish VAT, and the mandatory 25% allocation deposit:\n\n";
+        let text = "Hello iteireann, I would like to place an order for this custom PC build. I have signed the legal declaration acknowledging terms, 15% standardised labour, 23% Irish VAT, and the mandatory 25% allocation deposit:\n\n";
         
         Object.keys(categoryNames).forEach(cat => {
             const item = currentSelection[cat];
             if (item) {
-                if (cat === 'fans') {
-                    text += `• ${categoryNames[cat]}: ${item.name} (x${fanQuantity})\n`;
-                } else {
-                    text += `• ${categoryNames[cat]}: ${item.name}\n`;
-                }
+                text += `• ${categoryNames[cat]}: ${item.name}\n`;
             }
         });
         
-        text += `\n*Selected Assembly Tier: €${selectedLabourFee.toFixed(2)}*`;
         text += `\n*Gross Total (Inc. 23% VAT): ${document.getElementById('gross-total').innerText}*`;
         text += `\n*Compulsory Deposit Due (25%): ${document.getElementById('compulsory-deposit').innerText}*`;
-        text += `\n\n*Terms Agreement & Labour Verification: Electronically Signed & Validated*`;
+        text += `\n\n*Terms Agreement: Electronically Signed & Validated*`;
         
         const encodedText = encodeURIComponent(text);
         window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
