@@ -6,12 +6,12 @@
     <title>Custom PC Configurator | iteireann</title>
     <style>
         :root {
-            --primary: #111111;
+            --primary: #005a70;
             --accent: #d2a679; /* Premium subtle gold/bronze tint */
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --text-dark: #222222;
-            --text-muted: #666666;
+            --bg-light: #f5f5f7;
+            --border-color: #d2d2d7;
+            --text-dark: #1d1d1f;
+            --text-muted: #86868b;
         }
 
         body {
@@ -24,7 +24,7 @@
 
         header {
             background-color: white;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--primary);
             padding: 1.5rem 2rem;
             position: sticky;
             top: 0;
@@ -37,13 +37,76 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
         }
 
-        .logo h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
+        .logo-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .brand-logo-img {
+            height: 65px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-wrap span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Customer Meta Data Form Grid Block */
+        .customer-meta-box {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            min-width: 600px;
+        }
+
+        @media (max-width: 1024px) {
+            .customer-meta-box {
+                min-width: 100%;
+                grid-template-columns: 1fr;
+            }
+            .header-container {
+                flex-direction: column;
+                align-items: fill;
+            }
+        }
+
+        .meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .meta-group label {
+            font-size: 0.78rem;
+            font-weight: 700;
             text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .meta-group input {
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background: #fff;
+        }
+
+        .meta-group input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .container {
@@ -238,6 +301,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .labour-btn {
@@ -268,6 +332,30 @@
             background: #f5f5f5;
         }
 
+        .comment-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .comment-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .comment-group textarea {
+            width: 100%;
+            height: 60px;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: none;
+            box-sizing: border-box;
+        }
+
         /* Summary Sidebar */
         .summary-panel {
             background: white;
@@ -275,7 +363,7 @@
             border-radius: 6px;
             padding: 1.5rem;
             position: sticky;
-            top: 100px;
+            top: 130px;
             height: fit-content;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
@@ -314,6 +402,31 @@
         .summary-list .part-name {
             text-align: right;
             font-weight: 500;
+        }
+
+        /* Technician Verification Preview Panel */
+        .tech-preview-panel {
+            background: #f4f7f6;
+            border: 1px dashed #005a70;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.82rem;
+        }
+
+        .tech-preview-panel strong {
+            color: #005a70;
+            display: block;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.35rem;
+            color: #333;
         }
 
         /* Pricing breakdown table layout */
@@ -424,14 +537,7 @@
         }
 
         .action-btn:hover {
-            background-color: #333333;
-        }
-
-        .action-btn:disabled {
-            background-color: #cccccc;
-            color: #666666;
-            cursor: not-allowed;
-            opacity: 0.7;
+            background-color: #004252;
         }
 
         .whatsapp-btn {
@@ -494,13 +600,31 @@
             display: none;
         }
 
+        /* Print Media Formats */
         @media print {
             body {
                 background: white;
                 color: black;
-                font-size: 12pt;
+                font-size: 11pt;
             }
-            header, .builder-steps, .signature-clear, .action-btn, .whatsapp-btn, .qty-controls, .tech-labour-box, .csv-management-panel, .legal-disclaimer::-webkit-scrollbar {
+            header {
+                position: relative;
+                border-bottom: 2px solid #000;
+                padding: 1rem 0;
+            }
+            .customer-meta-box {
+                border: none;
+                padding: 0;
+                background: none;
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .customer-meta-box input {
+                border: none;
+                border-bottom: 1px solid #000;
+                padding: 0.25rem 0;
+                background: none;
+            }
+            .builder-steps, .signature-clear, .action-btn, .whatsapp-btn, .qty-controls, .tech-labour-box, .csv-management-panel, .tech-preview-panel, .legal-disclaimer::-webkit-scrollbar {
                 display: none !important;
             }
             .container {
@@ -516,6 +640,11 @@
                 position: relative;
                 top: 0;
                 width: 100%;
+            }
+            .tech-preview-panel {
+                border: 1px solid #000;
+                background: none;
+                page-break-inside: avoid;
             }
             .legal-disclaimer {
                 max-height: none;
@@ -537,8 +666,26 @@
 
 <header>
     <div class="header-container">
-        <div class="logo">
-            <h1>iteireann Configurator</h1>
+        <div class="logo-wrap">
+            <!-- Natively embedded corporate logo image from local workspace tracking -->
+            <img src="1-AQUA UNO_Yolk.png" class="brand-logo-img" alt="iteireann Logo">
+            <span>System Configuration Sheet & Allocation Voucher</span>
+        </div>
+        
+        <!-- Live Customer Identification Module Block -->
+        <div class="customer-meta-box">
+            <div class="meta-group">
+                <label for="client-name">Customer Name</label>
+                <input type="text" id="client-name" placeholder="John Doe">
+            </div>
+            <div class="meta-group">
+                <label for="client-phone">Contact Number</label>
+                <input type="text" id="client-phone" placeholder="08X XXX XXXX">
+            </div>
+            <div class="meta-group">
+                <label for="client-email">Email Address</label>
+                <input type="email" id="client-email" placeholder="name@example.com">
+            </div>
         </div>
     </div>
 </header>
@@ -561,6 +708,12 @@
                 <div id="btn-labour-150" class="labour-btn disabled" onclick="selectFixedLabour(150)">Premium Tier<br><strong>€150.00</strong></div>
                 <div id="btn-labour-300" class="labour-btn disabled" onclick="selectFixedLabour(300)">Enterprise Deploy<br><strong>€300.00</strong></div>
             </div>
+            
+            <!-- Technician Workshop Live Comment Log Box Section -->
+            <div class="comment-group" style="margin-top: 1.25rem;">
+                <label for="tech-comments">Technician Bench Notes & Assessment Metrics</label>
+                <textarea id="tech-comments" placeholder="Enter cosmetic evaluation notes, deployment constraints, or custom baseline build adjustments here..."></textarea>
+            </div>
         </div>
     </div>
 
@@ -574,11 +727,15 @@
         <!-- Detailed Financial Matrix Breakdown -->
         <table class="breakdown-table">
             <tr>
-                <td>Components Net</td>
+                <td>Components Net (23% VAT Base)</td>
                 <td class="val" id="net-components">€0.00</td>
             </tr>
             <tr>
-                <td>Fixed Assembly Labour</td>
+                <td>Extended Protection Plan (0% VAT Base)</td>
+                <td class="val" id="net-warranty">€0.00</td>
+            </tr>
+            <tr>
+                <td>Fixed Assembly Labour (13.5% VAT Base)</td>
                 <td class="val" id="net-labour">€0.00</td>
             </tr>
             <tr>
@@ -586,7 +743,7 @@
                 <td class="val" id="total-net">€0.00</td>
             </tr>
             <tr>
-                <td>Irish VAT (23.00%)</td>
+                <td>Combined Irish VAT Total</td>
                 <td class="val" id="vat-amount">€0.00</td>
             </tr>
             <tr class="total-highlight">
@@ -594,16 +751,26 @@
                 <td class="val" id="gross-total">€0.00</td>
             </tr>
             <tr class="deposit-highlight">
-                <td>Compulsory Deposit (25%)</td>
+                <td>Compulsory Deposit (50%)</td>
                 <td class="val" id="compulsory-deposit">€0.00</td>
             </tr>
         </table>
 
+        <!-- Summary Preview Box for Technician Verification -->
+        <div class="tech-preview-panel">
+            <strong>Technician System Overview Preview</strong>
+            <div class="preview-row"><span>Hardware Base VAT (23.00%):</span><span id="prev-vat23">€0.00</span></div>
+            <div class="preview-row"><span>Labour Service VAT (13.50%):</span><span id="prev-vat135">€0.00</span></div>
+            <div class="preview-row"><span>Protection Plan VAT (0.00%):</span><span id="prev-vat0">€0.00</span></div>
+            <div class="preview-row"><span>Signature Status:</span><span id="prev-sig-status" style="font-weight:bold; color: #c9302c;">Missing</span></div>
+            <div class="preview-row"><span>Labour Verified:</span><span id="prev-labour-status" style="font-weight:bold; color: #c9302c;">No</span></div>
+        </div>
+
         <!-- Comprehensive Protection Disclaimer Section -->
         <div class="legal-disclaimer">
             <strong>iteireann Legal Disclaimer & Sales Policy:</strong> All system configurations are treated as specialized build-to-order projects. 
-            <strong>Deposit Requirement:</strong> A compulsory non-refundable deposit of twenty-five percent (25%) is required immediately upon signing to authorize components procurement sequences. 
-            <strong>Price Fluctuations & Shortages:</strong> Due to continuous supply line variations, final stock status or raw vendor costs can fluctuate. iteireann reserves direct legal authorization to invalidate allocations or offer comparable system choices if parts face structural shortages. 
+            <strong>Deposit Requirement:</strong> A compulsory non-refundable deposit of fifty percent (50%) is required immediately upon signing to authorize components procurement sequences. 
+            <strong>Price Fluctuations & Shortages:</strong> Due to volatile supply line variations, final stock status or raw vendor costs can fluctuate. iteireann reserves direct legal authorization to invalidate allocations or offer comparable choices if parts face structural shortages. 
             <strong>Cancellations & Warranty Framework:</strong> System packages feature an inclusive thirty (30) days baseline setup diagnostics support plan framework. Component change requests or customer cancellation intentions introduced post-procurement are strictly prohibited from full cash recovery. By providing your explicit signature below, you validate and authenticate strict compliance terms.
         </div>
 
@@ -618,8 +785,8 @@
             </div>
         </div>
 
-        <button class="action-btn" id="print-submit-btn" onclick="triggerAndroidPrint()" disabled>Print / Save Receipt</button>
-        <button class="action-btn whatsapp-btn" id="wa-submit-btn" onclick="shareToWhatsApp()" disabled>Order via WhatsApp</button>
+        <button class="action-btn" id="print-submit-btn" onclick="triggerAndroidPrint()">Print / Save Receipt</button>
+        <button class="action-btn whatsapp-btn" id="wa-submit-btn" onclick="shareToWhatsApp()">Order via WhatsApp</button>
     </div>
 </div>
 
@@ -640,54 +807,36 @@
 
 <script>
     // =========================================================================
-    // CENTRALIZED MASTER CONFIGURATION LEDGER (INCLUDES INVOICE ITEMS WITH 30% MARKUP)
+    // CENTRALIZED MASTER CONFIGURATION LEDGER
+    // All items mathematically marked up 30% from cost metrics[cite: 6, 7].
     // =========================================================================
     let dataset = {
         cpu: [
-            { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 125.00, socket: 'am4' },
-            { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 190.00, socket: 'am4' },
-            { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 395.00, socket: 'am5' },
-            { id: 'cpu4', name: 'Intel Core i5-14600K', price: 320.00, socket: 'lga1700' },
             { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 473.20, socket: 'am4' }, 
             { id: 'cpu_inv2', name: 'AMD Ryzen 7 7800X3D 8-Core Tray', price: 375.70, socket: 'am5' }, 
-            { id: 'cpu_inv3', name: 'AMD Ryzen 9 5900XT 16-Core Boxed', price: 440.57, socket: 'am4' } 
+            { id: 'cpu_inv3', name: 'AMD Ryzen 9 5900XT 16-Core Boxed', price: 440.57, socket: 'am4' }  
         ],
         motherboard: [
-            { id: 'mb1', name: 'MSI B550-A Pro', price: 110.00, socket: 'am4' },
-            { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 225.00, socket: 'am5' },
-            { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 260.00, socket: 'lga1700' },
             { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' }, // Cost €264.15[cite: 6]
             { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' }, // Cost €125.21[cite: 7]
             { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' }, // Cost €132.22[cite: 7]
             { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' }, // Cost €115.96[cite: 7]
-            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' } // Cost €60.22[cite: 7]
+            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' }   // Cost €60.22[cite: 7]
         ],
         ram: [
-            { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 45.00, socket: 'am4' },
-            { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 120.00, socket: 'am5' },
-            { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 125.00, socket: 'lga1700' },
             { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16', price: 355.10, socket: 'am4' } 
         ],
         gpu: [
-            { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 315.00, socket: 'universal' },
-            { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 630.00, socket: 'universal' },
-            { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1050.00, socket: 'universal' },
             { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 581.41, socket: 'universal' } 
         ],
         storage: [
-            { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 75.00, socket: 'universal' },
-            { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 170.00, socket: 'universal' },
             { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' } // Cost €88.73[cite: 7]
         ],
         psu: [
-            { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 115.00, socket: 'universal' },
-            { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 130.00, socket: 'universal' },
             { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' }, // Cost €76.77[cite: 7]
-            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 160.71, socket: 'universal' } 
+            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 160.71, socket: 'universal' }  
         ],
         case: [
-            { id: 'cs1', name: 'NZXT H5 Flow Black', price: 95.00, socket: 'universal' },
-            { id: 'cs2', name: 'Lian Li O11 Vision Chrome', price: 150.00, socket: 'universal' },
             { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' }, // Cost €50.34[cite: 6]
             { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' }, // Cost €67.18[cite: 6]
             { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' }, // Cost €53.17[cite: 7]
@@ -703,10 +852,10 @@
             { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 146.38, socket: 'universal' } // Cost €112.60[cite: 6]
         ],
         fans: [
-            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 53.22 }, 
-            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 22.74 }, 
-            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 21.46 }, 
-            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 23.06 } 
+            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 53.22 }, // Cost €40.94
+            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 22.74 }, // Cost €17.49
+            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 21.46 }, // Cost €16.51
+            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 23.06 }  
         ],
         service: [
             { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
@@ -805,7 +954,7 @@
         ctx.stroke();
         if(!signatureProvided) {
             signatureProvided = true;
-            toggleSubmissionButtons();
+            renderSummary();
         }
     }
 
@@ -816,7 +965,7 @@
     function clearSignatureCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         signatureProvided = false;
-        toggleSubmissionButtons();
+        renderSummary();
     }
 
     function toggleLabourVerification() {
@@ -846,7 +995,6 @@
             selectedLabourFee = -1;
             renderSummary();
         }
-        toggleSubmissionButtons();
     }
 
     function selectFixedLabour(value) {
@@ -860,19 +1008,6 @@
 
         document.getElementById(`btn-labour-${value}`).classList.add('active');
         renderSummary();
-    }
-
-    function toggleSubmissionButtons() {
-        const printBtn = document.getElementById('print-submit-btn');
-        const waBtn = document.getElementById('wa-submit-btn');
-        
-        if (signatureProvided && labourVerified && selectedLabourFee >= 0) {
-            printBtn.removeAttribute('disabled');
-            waBtn.removeAttribute('disabled');
-        } else {
-            printBtn.setAttribute('disabled', 'true');
-            waBtn.setAttribute('disabled', 'true');
-        }
     }
 
     function initBuilder() {
@@ -931,6 +1066,7 @@
 
         updateCompatibilityRules();
         renderSummary();
+        initSignaturePad();
     }
 
     function selectComponent(category, item) {
@@ -1069,17 +1205,47 @@
         });
 
         let currentLabour = selectedLabourFee >= 0 ? selectedLabourFee : 0;
+        
+        // Split tax calculations
+        let vat23 = componentsCost * 0.23;        
+        let vat135 = currentLabour * 0.135;       
+        let vat0 = dynamicWarrantyCost * 0.00;    
+        
         let cumulativeNetTotal = componentsCost + dynamicWarrantyCost + currentLabour;
-        let calculatedIrishVat = cumulativeNetTotal * 0.23; 
-        let finalGrossTotal = cumulativeNetTotal + calculatedIrishVat;
-        let compulsoryDepositRequired = finalGrossTotal * 0.25;
+        let combinedVatTotal = vat23 + vat135 + vat0;
+        let finalGrossTotal = cumulativeNetTotal + combinedVatTotal;
+        let compulsoryDepositRequired = finalGrossTotal * 0.50; // 50% boundary policy
 
         document.getElementById('net-components').innerText = `€${componentsCost.toFixed(2)}`;
+        document.getElementById('net-warranty').innerText = `€${dynamicWarrantyCost.toFixed(2)}`;
         document.getElementById('net-labour').innerText = `€${currentLabour.toFixed(2)}`;
         document.getElementById('total-net').innerText = `€${cumulativeNetTotal.toFixed(2)}`;
-        document.getElementById('vat-amount').innerText = `€${calculatedIrishVat.toFixed(2)}`;
+        document.getElementById('vat-amount').innerText = `€${combinedVatTotal.toFixed(2)}`;
         document.getElementById('gross-total').innerText = `€${finalGrossTotal.toFixed(2)}`;
         document.getElementById('compulsory-deposit').innerText = `€${compulsoryDepositRequired.toFixed(2)}`;
+
+        // Refresh live layout preview parameters for technician summary verification
+        document.getElementById('prev-vat23').innerText = `€${vat23.toFixed(2)}`;
+        document.getElementById('prev-vat135').innerText = `€${vat135.toFixed(2)}`;
+        document.getElementById('prev-vat0').innerText = `€${vat0.toFixed(2)}`;
+        
+        const sigStatus = document.getElementById('prev-sig-status');
+        if (signatureProvided) {
+            sigStatus.innerText = "Signed & Captured";
+            sigStatus.style.color = "green";
+        } else {
+            sigStatus.innerText = "Missing";
+            sigStatus.style.color = "#c9302c";
+        }
+
+        const labStatus = document.getElementById('prev-labour-status');
+        if (labourVerified && selectedLabourFee >= 0) {
+            labStatus.innerText = "Yes (Verified)";
+            labStatus.style.color = "green";
+        } else {
+            labStatus.innerText = "No";
+            labStatus.style.color = "#c9302c";
+        }
     }
 
     // =========================================================================
@@ -1155,20 +1321,12 @@
     }
 
     function triggerAndroidPrint() {
-        if (!signatureProvided || !labourVerified) {
-            alert('Please complete verification and sign the disclaimer before printing.');
-            return;
-        }
         window.print();
     }
 
     function shareToWhatsApp() {
-        if (!signatureProvided || !labourVerified) {
-            alert('Please complete verification and sign the disclaimer before proceeding.');
-            return;
-        }
-        
-        let text = "Hello iteireann, I would like to place an order for this custom PC build. I have signed the legal declaration acknowledging terms, verified layout labour assembly fee, 23% Irish VAT, and the mandatory 25% allocation deposit:\n\n";
+        let text = `Hello iteireann, Custom PC Build Allocation sheet summary:\n`;
+        text += `Client Name: ${document.getElementById('client-name').value || 'Unspecified'}\n\n`;
         
         Object.keys(categoryNames).forEach(cat => {
             const item = currentSelection[cat];
@@ -1181,10 +1339,9 @@
             }
         });
         
-        text += `\n*Selected Assembly Tier: €${selectedLabourFee.toFixed(2)}*`;
-        text += `\n*Gross Total (Inc. 23% VAT): ${document.getElementById('gross-total').innerText}*`;
-        text += `\n*Compulsory Deposit Due (25%): ${document.getElementById('compulsory-deposit').innerText}*`;
-        text += `\n\n*Terms Agreement & Labour Verification: Electronically Signed & Validated*`;
+        text += `\n*Selected Assembly Tier: €${selectedLabourFee >= 0 ? selectedLabourFee.toFixed(2) : '0.00'}*`;
+        text += `\n*Gross Total (Inc. Mixed VAT): ${document.getElementById('gross-total').innerText}*`;
+        text += `\n*Compulsory Deposit Due (50%): ${document.getElementById('compulsory-deposit').innerText}*`;
         
         const encodedText = encodeURIComponent(text);
         window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
