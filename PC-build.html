@@ -809,55 +809,75 @@
 
 <script>
     // =========================================================================
-    // CENTRALIZED MASTER CONFIGURATION LEDGER (CLEANED: ONLY ATTACHMENT ITEMS REMAIN)
-    // Recalculated based strictly on Wholesale Cost + 15% Markup framework.
+    // UNFILTERED MASTER CONFIGURATION LEDGER (ALL ARCHIVE ITEMS AT COST + 15%)
     // =========================================================================
     let dataset = {
         cpu: [
-            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 418.60, socket: 'am4' }, // Cost €364.00[cite: 6]
-            { id: 'cpu_inv2', name: 'AMD Ryzen™ 7 7800X3D 8-Kern Sockel AM5 Tray', price: 332.35, socket: 'am5' }, // Cost €289.00[cite: 6]
-            { id: 'cpu_inv3', name: 'AMD Ryzen™ 9 5900XT 16-Kern Sockel AM4 Boxed', price: 389.73, socket: 'am4' }  // Cost €338.90[cite: 6]
+            { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 143.75, socket: 'am4' },
+            { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 218.50, socket: 'am4' },
+            { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 454.25, socket: 'am5' },
+            { id: 'cpu4', name: 'Intel Core i5-14600K', price: 368.00, socket: 'lga1700' },
+            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 418.60, socket: 'am4' }, // Cost €364.00
+            { id: 'cpu_inv2', name: 'AMD Ryzen™ 7 7800X3D 8-Kern CPU Sockel AM5 Tray', price: 332.35, socket: 'am5' }, // Cost €289.00
+            { id: 'cpu_inv3', name: 'AMD Ryzen™ 9 5900XT 16-Kern CPU Sockel AM4 Boxed', price: 389.73, socket: 'am4' }  // Cost €338.90
         ],
         motherboard: [
-            { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 303.77, socket: 'am4' }, // Cost €264.15[cite: 6]
-            { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 143.99, socket: 'am4' }, // Cost €125.21[cite: 7]
-            { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 152.05, socket: 'am5' }, // Cost €132.22[cite: 7]
-            { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 133.35, socket: 'am4' }, // Cost €115.96[cite: 7]
-            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 69.25, socket: 'am4' }   // Cost €60.22[cite: 7]
+            { id: 'mb1', name: 'MSI B550-A Pro', price: 126.50, socket: 'am4' },
+            { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 258.75, socket: 'am5' },
+            { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 299.00, socket: 'lga1700' },
+            { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 303.77, socket: 'am4' }, // Cost €264.15
+            { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX Mainboard', price: 102.04, socket: 'am4' }, // Cost €88.73
+            { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX Mainboard', price: 152.05, socket: 'am5' }, // Cost €132.22
+            { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 133.35, socket: 'am4' }, // Cost €115.96
+            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX Mainboard', price: 69.25, socket: 'am4' }   // Cost €60.22
         ],
         ram: [
-            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16 Kit', price: 314.12, socket: 'am4' } // Cost €273.15[cite: 6]
+            { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 51.75, socket: 'am4' },
+            { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 138.00, socket: 'am5' },
+            { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 143.75, socket: 'lga1700' },
+            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16 Kit', price: 314.12, socket: 'am4' } // Cost €273.15
         ],
         gpu: [
-            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 514.33, socket: 'universal' } // Cost €447.24[cite: 6]
+            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 514.33, socket: 'universal' } // Cost €447.24
         ],
         storage: [
-            { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 102.04, socket: 'universal' } // Cost €88.73[cite: 7]
+            { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVMe PCIe 4.0', price: 86.25, socket: 'universal' },
+            { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 195.50, socket: 'universal' },
+            { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 146.36, socket: 'universal' } // Cost €127.27
         ],
         psu: [
-            { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 88.29, socket: 'universal' }, // Cost €76.77[cite: 7]
-            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 142.16, socket: 'universal' }  // Cost €123.62[cite: 6]
+            { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 132.25, socket: 'universal' },
+            { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 149.50, socket: 'universal' },
+            { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 88.29, socket: 'universal' }, // Cost €76.77
+            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 142.16, socket: 'universal' }  // Cost €123.62
         ],
         case: [
-            { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 57.89, socket: 'universal' }, // Cost €50.34[cite: 6]
-            { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 77.26, socket: 'universal' }, // Cost €67.18[cite: 6]
-            { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 61.15, socket: 'universal' }, // Cost €53.17[cite: 7]
-            { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 92.15, socket: 'universal' }, // Cost €80.13[cite: 7]
-            { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 241.20, socket: 'universal' }, // Cost €209.74[cite: 7]
-            { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 86.88, socket: 'universal' }, // Cost €75.55[cite: 7]
-            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 108.16, socket: 'universal' }, // Cost €94.05[cite: 6]
-            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 220.60, socket: 'universal' }, // Cost €191.83[cite: 6]
-            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 116.20, socket: 'universal' }, // Cost €101.04[cite: 6]
-            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 80.39, socket: 'universal' }, // Cost €69.90[cite: 6]
-            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 123.29, socket: 'universal' }, // Cost €107.21[cite: 6]
-            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 67.73, socket: 'universal' }, // Cost €58.90[cite: 6]
-            { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 129.49, socket: 'universal' } // Cost €112.60[cite: 6]
+            { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh (Schwarz)', price: 57.89, socket: 'universal' }, // Cost €50.34
+            { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 77.26, socket: 'universal' }, // Cost €67.18
+            { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 61.15, socket: 'universal' }, // Cost €53.17
+            { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 92.15, socket: 'universal' }, // Cost €80.13
+            { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 241.20, socket: 'universal' }, // Cost €209.74
+            { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 86.88, socket: 'universal' }, // Cost €75.55
+            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 108.16, socket: 'universal' }, // Cost €94.05
+            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 220.60, socket: 'universal' }, // Cost €191.83
+            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 116.20, socket: 'universal' }, // Cost €101.04
+            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 80.39, socket: 'universal' }, // Cost €69.90
+            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 123.29, socket: 'universal' }, // Cost €107.21
+            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 67.73, socket: 'universal' }, // Cost €58.90
+            { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 129.49, socket: 'universal' } // Cost €112.60
         ],
         fans: [
-            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 47.08 }, // Cost €40.94[cite: 6]
-            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 20.11 }, // Cost €17.49[cite: 6]
-            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 18.99 }, // Cost €16.51[cite: 6]
-            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 20.40 }  // Cost €17.74[cite: 6]
+            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 47.08 }, // Cost €40.94
+            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 20.11 }, // Cost €17.49
+            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 18.99 }, // Cost €16.51
+            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 20.40 }, // Cost €17.74
+            { id: 'fan_inv5', name: 'NZXT GPU Riser Card Bundle for H7 Chassis', price: 34.38 }, // Cost €29.90
+            { id: 'fan_inv6', name: 'ASUS TUF Gaming ARGB PWM Fan Control Hub', price: 24.02 }  // Cost €20.89
+        ],
+        thermal: [
+            { id: 'th1', name: 'Arctic Hochleistungs-Wärmeleitpaste MX-4 (4g)', price: 3.38 }, // Cost €2.94
+            { id: 'th2', name: 'Corsair TM30 Performance Thermal Interface Paste', price: 6.23 }, // Cost €5.42
+            { id: 'th3', name: 'Corsair XTM70 Extreme Performance Paste Kit', price: 17.58 }   // Cost €15.29
         ],
         service: [
             { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
@@ -874,12 +894,13 @@
         storage: 'Storage (M.2/SSD)',
         psu: 'Power Supply (PSU)',
         case: 'PC Chassis (Case)',
-        fans: 'Additional Case Fans',
+        fans: 'Fans & Bracket Upgrades',
+        thermal: 'Thermal Compound & Solutions',
         service: 'Support Plan & Warranty Option'
     };
 
     let currentSelection = {
-        cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, fans: null, service: null
+        cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, fans: null, thermal: null, service: null
     };
 
     let fanQuantity = 1;
@@ -1141,18 +1162,14 @@
             });
 
             const badge = document.getElementById('badge-' + cat);
-            if (currentSelection[cat]) {
-                if (cat === 'service') {
-                    badge.innerText = currentSelection[cat].name.split('(')[0];
-                } else if (cat === 'fans') {
-                    badge.innerText = `Selected (x${fanQuantity})`;
+            if (badge) {
+                if (currentSelection[cat]) {
+                    badge.innerText = cat === 'service' ? currentSelection[cat].name.split('(')[0] : 'Selected';
+                    badge.style.color = 'green';
                 } else {
-                    badge.innerText = 'Selected';
+                    badge.innerText = 'None Selected';
+                    badge.style.color = 'var(--accent)';
                 }
-                badge.style.color = 'green';
-            } else {
-                badge.innerText = 'None Selected';
-                badge.style.color = 'var(--accent)';
             }
         });
     }
@@ -1208,7 +1225,7 @@
 
         let currentLabour = selectedLabourFee >= 0 ? selectedLabourFee : 0;
         
-        // Split tax calculations
+        // Split tax lines matrix mapping criteria
         let vat23 = componentsCost * 0.23;        
         let vat135 = currentLabour * 0.135;       
         let vat0 = dynamicWarrantyCost * 0.00;    
@@ -1226,7 +1243,6 @@
         document.getElementById('gross-total').innerText = `€${finalGrossTotal.toFixed(2)}`;
         document.getElementById('compulsory-deposit').innerText = `€${compulsoryDepositRequired.toFixed(2)}`;
 
-        // Refresh live dashboard status blocks
         document.getElementById('prev-vat23').innerText = `€${vat23.toFixed(2)}`;
         document.getElementById('prev-vat135').innerText = `€${vat135.toFixed(2)}`;
         document.getElementById('prev-vat0').innerText = `€${vat0.toFixed(2)}`;
@@ -1284,7 +1300,7 @@
             const lines = text.split(/\r?\n/);
             if (lines.length <= 1) return;
 
-            let parsedDataset = { cpu:[], motherboard:[], ram:[], gpu:[], storage:[], psu:[], case:[], fans:[], service:[] };
+            let parsedDataset = { cpu:[], motherboard:[], ram:[], gpu:[], storage:[], psu:[], case:[], fans:[], thermal:[], service:[] };
 
             for (let i = 1; i < lines.length; i++) {
                 if (!lines[i].trim()) continue;
@@ -1313,7 +1329,7 @@
             }
 
             dataset = parsedDataset;
-            currentSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, fans: null, service: null };
+            currentSelection = { cpu: null, motherboard: null, ram: null, gpu: null, storage: null, psu: null, case: null, fans: null, thermal: null, service: null };
             fanQuantity = 1;
             
             initBuilder();
