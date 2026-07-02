@@ -809,22 +809,16 @@
 
 <script>
     // =========================================================================
-    // CENTRALIZED MASTER CONFIGURATION LEDGER (RECALCULATED AT RRP + 15% MARKUP)[cite: 6, 7]
+    // CENTRALIZED MASTER CONFIGURATION LEDGER (CLEANED: ONLY ATTACHMENT ITEMS REMAIN)
+    // Recalculated based strictly on Wholesale Cost + 15% Markup framework.
     // =========================================================================
     let dataset = {
         cpu: [
-            { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 143.75, socket: 'am4' },
-            { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 218.50, socket: 'am4' },
-            { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 454.25, socket: 'am5' },
-            { id: 'cpu4', name: 'Intel Core i5-14600K', price: 368.00, socket: 'lga1700' },
-            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 418.60, socket: 'am4' }, // Cost €364.00
-            { id: 'cpu_inv2', name: 'AMD Ryzen 7 7800X3D 8-Core Tray', price: 332.35, socket: 'am5' }, // Cost €289.00
-            { id: 'cpu_inv3', name: 'AMD Ryzen 9 5900XT 16-Core Boxed', price: 389.73, socket: 'am4' }  // Cost €338.90
+            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 418.60, socket: 'am4' }, // Cost €364.00[cite: 6]
+            { id: 'cpu_inv2', name: 'AMD Ryzen™ 7 7800X3D 8-Kern Sockel AM5 Tray', price: 332.35, socket: 'am5' }, // Cost €289.00[cite: 6]
+            { id: 'cpu_inv3', name: 'AMD Ryzen™ 9 5900XT 16-Kern Sockel AM4 Boxed', price: 389.73, socket: 'am4' }  // Cost €338.90[cite: 6]
         ],
         motherboard: [
-            { id: 'mb1', name: 'MSI B550-A Pro', price: 126.50, socket: 'am4' },
-            { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 258.75, socket: 'am5' },
-            { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 299.00, socket: 'lga1700' },
             { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 303.77, socket: 'am4' }, // Cost €264.15[cite: 6]
             { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 143.99, socket: 'am4' }, // Cost €125.21[cite: 7]
             { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 152.05, socket: 'am5' }, // Cost €132.22[cite: 7]
@@ -832,27 +826,17 @@
             { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 69.25, socket: 'am4' }   // Cost €60.22[cite: 7]
         ],
         ram: [
-            { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 51.75, socket: 'am4' },
-            { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 138.00, socket: 'am5' },
-            { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 143.75, socket: 'lga1700' },
-            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16', price: 314.12, socket: 'am4' } // Cost €273.15
+            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16 Kit', price: 314.12, socket: 'am4' } // Cost €273.15[cite: 6]
         ],
         gpu: [
-            { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 362.25, socket: 'universal' },
-            { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 724.50, socket: 'universal' },
-            { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1207.50, socket: 'universal' },
-            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 514.33, socket: 'universal' } // Cost €447.24
+            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 514.33, socket: 'universal' } // Cost €447.24[cite: 6]
         ],
         storage: [
-            { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVSe PCIe 4.0', price: 86.25, socket: 'universal' },
-            { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 195.50, socket: 'universal' },
             { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 102.04, socket: 'universal' } // Cost €88.73[cite: 7]
         ],
         psu: [
-            { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 132.25, socket: 'universal' },
-            { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 149.50, socket: 'universal' },
             { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 88.29, socket: 'universal' }, // Cost €76.77[cite: 7]
-            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 142.16, socket: 'universal' }  // Cost €123.62
+            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 142.16, socket: 'universal' }  // Cost €123.62[cite: 6]
         ],
         case: [
             { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 57.89, socket: 'universal' }, // Cost €50.34[cite: 6]
@@ -861,19 +845,19 @@
             { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 92.15, socket: 'universal' }, // Cost €80.13[cite: 7]
             { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 241.20, socket: 'universal' }, // Cost €209.74[cite: 7]
             { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 86.88, socket: 'universal' }, // Cost €75.55[cite: 7]
-            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 108.16, socket: 'universal' }, 
-            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 220.60, socket: 'universal' }, 
-            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 116.20, socket: 'universal' }, 
-            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 80.39, socket: 'universal' }, 
-            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 123.29, socket: 'universal' }, 
-            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 67.73, socket: 'universal' },
+            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 108.16, socket: 'universal' }, // Cost €94.05[cite: 6]
+            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 220.60, socket: 'universal' }, // Cost €191.83[cite: 6]
+            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 116.20, socket: 'universal' }, // Cost €101.04[cite: 6]
+            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 80.39, socket: 'universal' }, // Cost €69.90[cite: 6]
+            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 123.29, socket: 'universal' }, // Cost €107.21[cite: 6]
+            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 67.73, socket: 'universal' }, // Cost €58.90[cite: 6]
             { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 129.49, socket: 'universal' } // Cost €112.60[cite: 6]
         ],
         fans: [
-            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 47.08 }, // Cost €40.94
-            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 20.11 }, // Cost €17.49
-            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 18.99 }, // Cost €16.51
-            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 20.40 }  
+            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 47.08 }, // Cost €40.94[cite: 6]
+            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 20.11 }, // Cost €17.49[cite: 6]
+            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 18.99 }, // Cost €16.51[cite: 6]
+            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 20.40 }  // Cost €17.74[cite: 6]
         ],
         service: [
             { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
