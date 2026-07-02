@@ -477,13 +477,15 @@
             border-radius: 4px;
             padding: 0.85rem;
             margin-bottom: 1.25rem;
-            max-height: 140px;
+            max-height: 180px;
             overflow-y: auto;
             line-height: 1.4;
         }
 
         .legal-disclaimer strong {
             color: #000;
+            display: block;
+            margin-top: 0.4rem;
         }
 
         /* Signature Workspace */
@@ -667,7 +669,6 @@
 <header>
     <div class="header-container">
         <div class="logo-wrap">
-            <!-- Natively embedded corporate logo image from local workspace tracking -->
             <img src="1-AQUA UNO_Yolk.png" class="brand-logo-img" alt="iteireann Logo">
             <span>System Configuration Sheet & Allocation Voucher</span>
         </div>
@@ -751,7 +752,7 @@
                 <td class="val" id="gross-total">€0.00</td>
             </tr>
             <tr class="deposit-highlight">
-                <td>Compulsory Deposit (50%)</td>
+                <td>Compulsory Deposit (25%)</td>
                 <td class="val" id="compulsory-deposit">€0.00</td>
             </tr>
         </table>
@@ -769,9 +770,10 @@
         <!-- Comprehensive Protection Disclaimer Section -->
         <div class="legal-disclaimer">
             <strong>iteireann Legal Disclaimer & Sales Policy:</strong> All system configurations are treated as specialized build-to-order projects. 
-            <strong>Deposit Requirement:</strong> A compulsory non-refundable deposit of fifty percent (50%) is required immediately upon signing to authorize components procurement sequences. 
-            <strong>Price Fluctuations & Shortages:</strong> Due to volatile supply line variations, final stock status or raw vendor costs can fluctuate. iteireann reserves direct legal authorization to invalidate allocations or offer comparable choices if parts face structural shortages. 
-            <strong>Cancellations & Warranty Framework:</strong> System packages feature an inclusive thirty (30) days baseline setup diagnostics support plan framework. Component change requests or customer cancellation intentions introduced post-procurement are strictly prohibited from full cash recovery. By providing your explicit signature below, you validate and authenticate strict compliance terms.
+            <strong>Deposit Requirement:</strong> A compulsory non-refundable deposit of twenty-five percent (25%) is required immediately upon signing to authorize component procurement pipelines.
+            <strong>5-Day Collection & Settlement Mandate:</strong> The customer is legally obligated to settle all outstanding balances and collect the completed PC within five (5) working days of receiving official notice of build completion. 
+            <strong>Default, Forfeiture, and Abandonment:</strong> Failure to pay the remaining balance within five (5) working days constitutes a breach of contract. The order will be deemed completely abandoned, the custom component allocations will be rescinded, and the 25% deposit will be forfeited in full to offset benchmarking labor and hardware procurement costs.
+            <strong>Price Fluctuation Clause:</strong> Due to continuous volatility in global IT trade components and exchange lines, quotes are time-restricted. `iteireann` is fully indemnified against cost changes resulting from uncollected, defaulted builds, and reserves the absolute right to re-invoice items at current market replacement values if collection thresholds are violated.
         </div>
 
         <!-- Signature Workspace Frame -->
@@ -807,55 +809,71 @@
 
 <script>
     // =========================================================================
-    // CENTRALIZED MASTER CONFIGURATION LEDGER
-    // All items mathematically marked up 30% from cost metrics[cite: 6, 7].
+    // CENTRALIZED MASTER CONFIGURATION LEDGER (RECALCULATED AT RRP + 15% MARKUP)[cite: 6, 7]
     // =========================================================================
     let dataset = {
         cpu: [
-            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 473.20, socket: 'am4' }, 
-            { id: 'cpu_inv2', name: 'AMD Ryzen 7 7800X3D 8-Core Tray', price: 375.70, socket: 'am5' }, 
-            { id: 'cpu_inv3', name: 'AMD Ryzen 9 5900XT 16-Core Boxed', price: 440.57, socket: 'am4' }  
+            { id: 'cpu1', name: 'AMD Ryzen 5 5600', price: 143.75, socket: 'am4' },
+            { id: 'cpu2', name: 'AMD Ryzen 7 5700X', price: 218.50, socket: 'am4' },
+            { id: 'cpu3', name: 'AMD Ryzen 7 7800X3D', price: 454.25, socket: 'am5' },
+            { id: 'cpu4', name: 'Intel Core i5-14600K', price: 368.00, socket: 'lga1700' },
+            { id: 'cpu_inv1', name: 'AMD Ryzen 7 5800X3D 10th Anniversary Boxed', price: 418.60, socket: 'am4' }, // Cost €364.00
+            { id: 'cpu_inv2', name: 'AMD Ryzen 7 7800X3D 8-Core Tray', price: 332.35, socket: 'am5' }, // Cost €289.00
+            { id: 'cpu_inv3', name: 'AMD Ryzen 9 5900XT 16-Core Boxed', price: 389.73, socket: 'am4' }  // Cost €338.90
         ],
         motherboard: [
-            { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 343.40, socket: 'am4' }, // Cost €264.15[cite: 6]
-            { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 162.77, socket: 'am4' }, // Cost €125.21[cite: 7]
-            { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 171.89, socket: 'am5' }, // Cost €132.22[cite: 7]
-            { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 150.75, socket: 'am4' }, // Cost €115.96[cite: 7]
-            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 78.29, socket: 'am4' }   // Cost €60.22[cite: 7]
+            { id: 'mb1', name: 'MSI B550-A Pro', price: 126.50, socket: 'am4' },
+            { id: 'mb2', name: 'ASUS ROG Strix B650-A Gaming WiFi', price: 258.75, socket: 'am5' },
+            { id: 'mb3', name: 'Gigabyte Z790 AORUS Elite AX', price: 299.00, socket: 'lga1700' },
+            { id: 'mb_invoice1', name: 'ASUS ROG Crosshair VIII Impact X570 Mini-DTX', price: 303.77, socket: 'am4' }, // Cost €264.15[cite: 6]
+            { id: 'mb_invoice2', name: 'ASUS TUF GAMING B550-PLUS ATX', price: 143.99, socket: 'am4' }, // Cost €125.21[cite: 7]
+            { id: 'mb_invoice3', name: 'ASUS B650E MAX GAMING WIFI W ATX', price: 152.05, socket: 'am5' }, // Cost €132.22[cite: 7]
+            { id: 'mb_invoice4', name: 'ASUS ROG Strix B550-F Gaming Wi-Fi II ATX', price: 133.35, socket: 'am4' }, // Cost €115.96[cite: 7]
+            { id: 'mb_invoice5', name: 'ASUS TUF GAMING A520M-PLUS II mATX', price: 69.25, socket: 'am4' }   // Cost €60.22[cite: 7]
         ],
         ram: [
-            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16', price: 355.10, socket: 'am4' } 
+            { id: 'ram1', name: 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', price: 51.75, socket: 'am4' },
+            { id: 'ram2', name: 'G.Skill Flare X5 32GB (2x16GB) DDR5 6000MHz', price: 138.00, socket: 'am5' },
+            { id: 'ram3', name: 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz', price: 143.75, socket: 'lga1700' },
+            { id: 'ram_inv1', name: '32GB (2x16GB) G.Skill RipJaws V DDR4-3200 CL16', price: 314.12, socket: 'am4' } // Cost €273.15
         ],
         gpu: [
-            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 581.41, socket: 'universal' } 
+            { id: 'gpu1', name: 'Nvidia RTX 4060 8GB', price: 362.25, socket: 'universal' },
+            { id: 'gpu2', name: 'Nvidia RTX 4070 Super 12GB', price: 724.50, socket: 'universal' },
+            { id: 'gpu3', name: 'Nvidia RTX 4080 Super 16GB', price: 1207.50, socket: 'universal' },
+            { id: 'gpu_inv1', name: 'ASROCK Radeon RX 9060 XT Steel Legend OC 16GB', price: 514.33, socket: 'universal' } // Cost €447.24
         ],
         storage: [
-            { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 115.35, socket: 'universal' } // Cost €88.73[cite: 7]
+            { id: 'st1', name: 'Crucial P3 Plus 1TB M.2 NVSe PCIe 4.0', price: 86.25, socket: 'universal' },
+            { id: 'st2', name: 'Samsung 990 Pro 2TB M.2 NVMe', price: 195.50, socket: 'universal' },
+            { id: 'st_invoice1', name: 'Crucial P310 NVMe SSD 1 TB M.2 2280 PCIe', price: 102.04, socket: 'universal' } // Cost €88.73[cite: 7]
         ],
         psu: [
-            { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 99.80, socket: 'universal' }, // Cost €76.77[cite: 7]
-            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 160.71, socket: 'universal' }  
+            { id: 'psu1', name: 'Corsair RM750e 750W 80+ Gold Modular', price: 132.25, socket: 'universal' },
+            { id: 'psu2', name: 'MSI MAG A850GL 850W 80+ Gold ATX 3.0', price: 149.50, socket: 'universal' },
+            { id: 'psu_invoice1', name: 'Thermaltake ToughPower GF A3 850 Watt', price: 88.29, socket: 'universal' }, // Cost €76.77[cite: 7]
+            { id: 'psu_inv1', name: 'MSI MAG A850GL White 850W ATX3.0 80+ Gold', price: 142.16, socket: 'universal' }  // Cost €123.62
         ],
         case: [
-            { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 65.44, socket: 'universal' }, // Cost €50.34[cite: 6]
-            { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 87.33, socket: 'universal' }, // Cost €67.18[cite: 6]
-            { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 69.12, socket: 'universal' }, // Cost €53.17[cite: 7]
-            { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 104.17, socket: 'universal' }, // Cost €80.13[cite: 7]
-            { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 272.66, socket: 'universal' }, // Cost €209.74[cite: 7]
-            { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 98.22, socket: 'universal' }, // Cost €75.55[cite: 7]
-            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 122.27, socket: 'universal' }, 
-            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 249.38, socket: 'universal' }, 
-            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 131.35, socket: 'universal' }, 
-            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 90.87, socket: 'universal' }, 
-            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 139.37, socket: 'universal' }, 
-            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 76.57, socket: 'universal' },
-            { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 146.38, socket: 'universal' } // Cost €112.60[cite: 6]
+            { id: 'cs_invoice1', name: 'ASUS AP201 PrimeCase Mesh', price: 57.89, socket: 'universal' }, // Cost €50.34[cite: 6]
+            { id: 'cs_invoice2', name: 'ASUS A31 Plus TG ARGB ATX Gaming Case', price: 77.26, socket: 'universal' }, // Cost €67.18[cite: 6]
+            { id: 'cs_invoice3', name: 'ASUS A21 PLUS TG ARGB Micro-ATX Case', price: 61.15, socket: 'universal' }, // Cost €53.17[cite: 7]
+            { id: 'cs_invoice4', name: 'ASUS A32 PLUS TG ARGB ATX Midi-Tower', price: 92.15, socket: 'universal' }, // Cost €80.13[cite: 7]
+            { id: 'cs_invoice5', name: 'Corsair Air 5400 LX-R RGB iCUE LINK Black', price: 241.20, socket: 'universal' }, // Cost €209.74[cite: 7]
+            { id: 'cs_invoice6', name: 'Corsair iCUE 5000X RGB QL Edition Mid-Tower', price: 86.88, socket: 'universal' }, // Cost €75.55[cite: 7]
+            { id: 'cs_inv4', name: 'NZXT H7 Flow White RGB (2024) Midi Tower ATX', price: 108.16, socket: 'universal' }, 
+            { id: 'cs_inv5', name: 'NZXT Kraken Plus 360 V2 RGB AIO Fluid Loop', price: 220.60, socket: 'universal' }, 
+            { id: 'cs_inv6', name: 'NZXT H6 Flow RGB Mid-Tower White', price: 116.20, socket: 'universal' }, 
+            { id: 'cs_inv9', name: 'ASUS TUF Gaming LC II 360 ARGB Triple Loop', price: 80.39, socket: 'universal' }, 
+            { id: 'cs_inv10', name: 'ASUS TUF Gaming LC III 360 ARGB White AIO', price: 123.29, socket: 'universal' }, 
+            { id: 'cs_inv12', name: 'ASUS Prime AP201 mATX Glas Window Edition', price: 67.73, socket: 'universal' },
+            { id: 'cs_invoice7', name: 'ASUS ROG Ryujin II 240 Premium Liquid Loop', price: 129.49, socket: 'universal' } // Cost €112.60[cite: 6]
         ],
         fans: [
-            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 53.22 }, // Cost €40.94
-            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 22.74 }, // Cost €17.49
-            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 21.46 }, // Cost €16.51
-            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 23.06 }  
+            { id: 'fan_inv1', name: 'ASUS TUF Gaming TF120 ARGB White (3er Set)', price: 47.08 }, // Cost €40.94
+            { id: 'fan_inv2', name: 'ASUS TUF Gaming TR120 ARGB Reverse (Schwarz)', price: 20.11 }, // Cost €17.49
+            { id: 'fan_inv3', name: 'ASUS TUF Gaming TR120 ARGB Standard (Schwarz)', price: 18.99 }, // Cost €16.51
+            { id: 'fan_inv4', name: 'GIGABYTE AORUS 120 ARGB Chassis Fan', price: 20.40 }  
         ],
         service: [
             { id: 'sv_basic', name: 'Baseline Support (30 Days Basic Diagnostic Cover)', price: 0.00, percentage: 0.00, type: 'tier' },
@@ -1214,7 +1232,7 @@
         let cumulativeNetTotal = componentsCost + dynamicWarrantyCost + currentLabour;
         let combinedVatTotal = vat23 + vat135 + vat0;
         let finalGrossTotal = cumulativeNetTotal + combinedVatTotal;
-        let compulsoryDepositRequired = finalGrossTotal * 0.50; // 50% boundary policy
+        let compulsoryDepositRequired = finalGrossTotal * 0.25; 
 
         document.getElementById('net-components').innerText = `€${componentsCost.toFixed(2)}`;
         document.getElementById('net-warranty').innerText = `€${dynamicWarrantyCost.toFixed(2)}`;
@@ -1224,7 +1242,7 @@
         document.getElementById('gross-total').innerText = `€${finalGrossTotal.toFixed(2)}`;
         document.getElementById('compulsory-deposit').innerText = `€${compulsoryDepositRequired.toFixed(2)}`;
 
-        // Refresh live layout preview parameters for technician summary verification
+        // Refresh live dashboard status blocks
         document.getElementById('prev-vat23').innerText = `€${vat23.toFixed(2)}`;
         document.getElementById('prev-vat135').innerText = `€${vat135.toFixed(2)}`;
         document.getElementById('prev-vat0').innerText = `€${vat0.toFixed(2)}`;
@@ -1341,7 +1359,7 @@
         
         text += `\n*Selected Assembly Tier: €${selectedLabourFee >= 0 ? selectedLabourFee.toFixed(2) : '0.00'}*`;
         text += `\n*Gross Total (Inc. Mixed VAT): ${document.getElementById('gross-total').innerText}*`;
-        text += `\n*Compulsory Deposit Due (50%): ${document.getElementById('compulsory-deposit').innerText}*`;
+        text += `\n*Compulsory Deposit Due (25%): ${document.getElementById('compulsory-deposit').innerText}*`;
         
         const encodedText = encodeURIComponent(text);
         window.open('https://wa.me/353870000000?text=' + encodedText, '_blank');
