@@ -82,7 +82,11 @@
             <div class="brand-right"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Ricoh_logo.svg/1280px-Ricoh_logo.svg.png" class="ricoh-logo-img"></div>
         </div>
         
-        <div class="sub-header"><strong>Quotation & Order Form</strong><br>Date: <span id="pDate"></span></div>
+        <div class="sub-header">
+            <strong>Quotation & Order Form</strong><br>
+            Date: <span id="pDate"></span><br>
+            <span style="color: #CF122E; font-weight: bold; font-size: 0.75rem;">Prices valid for 7 working days from quotation date</span>
+        </div>
 
         <div class="info-grid">
             <div class="info-item"><strong>Business / School</strong><span id="pBusiness"></span></div>
@@ -136,7 +140,10 @@
 
         <div class="sig-section">
             <h3 style="margin-bottom:10px; color:#CF122E;">Authorisation</h3>
-            <p style="font-size:0.8rem; color:#64748b;">By signing below, I confirm I am authorised to order on behalf of the client.</p>
+            <p style="font-size:0.8rem; color:#64748b;">
+                By signing below, I confirm I am authorised to order on behalf of the client. 
+                <strong>Quotation Terms:</strong> All quoted prices and allowance structures are valid for 7 working days from the quotation date shown above.
+            </p>
             <div class="sig-box"><canvas id="sigCanvas"></canvas></div>
             <div style="display:flex; justify-content:space-between; margin-top:5px;">
                 <span style="font-size:0.8rem; color:#64748b;">Client Signature</span>
@@ -149,7 +156,7 @@
         <button onclick="window.print()" class="btn btn-print">🖨️ Print Page</button>
         <button onclick="submitOrder()" class="btn">🚀 Submit Order to Office</button>
     </div>
-    <div style="text-align:center; margin-bottom:50px;"><br><a href="liosdoire_quote_v19.html" style="color:#cbd5e1; text-decoration:none;">← Go Back to Calculator</a></div>
+    <div style="text-align:center; margin-bottom:50px;"><br><a href="liosdoire_quote_v23.html" style="color:#cbd5e1; text-decoration:none;">← Go Back to Calculator</a></div>
 
     <script>
         // Same Logic as Quote Tool
