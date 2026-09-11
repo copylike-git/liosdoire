@@ -12,6 +12,8 @@
             --text-color: #1d1d1f;
             --border-color: #c7c7cc;
             --section-bg: #ffffff;
+            --warning-border: #d9381e;
+            --warning-bg: #fff5f5;
         }
 
         body {
@@ -200,9 +202,7 @@
             transition: background 0.15s ease, border-color 0.15s ease;
         }
 
-        .check-group:hover {
-            background: #f0f6f8;
-        }
+        .check-group:hover { background: #f0f6f8; }
 
         .check-group-inner {
             display: flex;
@@ -230,6 +230,90 @@
             color: var(--primary-color);
         }
 
+        /* HIGHLIGHTED DATA BACKUP DISCLAIMER CALLOUT */
+        .backup-warning-card {
+            background-color: var(--warning-bg);
+            border: 2px solid var(--warning-border);
+            border-radius: 10px;
+            padding: 20px 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 12px rgba(217, 56, 30, 0.1);
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .backup-warning-card.shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .backup-warning-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .backup-warning-icon {
+            font-size: 26px;
+            line-height: 1;
+        }
+
+        .backup-warning-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--warning-border);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .backup-warning-text {
+            font-size: 14.5px;
+            color: #3b110b;
+            line-height: 1.45;
+            margin-bottom: 14px;
+        }
+
+        .backup-checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            background: #ffffff;
+            border: 2px solid #e26754;
+            border-radius: 8px;
+            padding: 14px 16px;
+            cursor: pointer;
+        }
+
+        .backup-checkbox-row:hover {
+            border-color: var(--warning-border);
+            background: #fffafa;
+        }
+
+        .backup-checkbox-row input {
+            width: 26px;
+            height: 26px;
+            margin-right: 14px;
+            margin-top: 2px;
+            accent-color: var(--warning-border);
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .backup-checkbox-row label {
+            margin-bottom: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #222;
+            cursor: pointer;
+            line-height: 1.35;
+        }
+
+        /* LIVE CALCULATION SUMMARY CARD */
         .fee-calc-card {
             background: #eef5f8;
             border: 1.5px solid #b7d6e1;
@@ -294,7 +378,6 @@
             margin-bottom: 22px;
         }
 
-        /* HARDENED SIGNATURE PAD STYLING */
         .signature-section {
             border: 1.5px dashed #a1a1a6;
             padding: 18px;
@@ -319,7 +402,7 @@
             height: 160px;
             background-color: #ffffff;
             cursor: crosshair;
-            touch-action: none; /* Prevents touch dragging screen */
+            touch-action: none;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -570,6 +653,23 @@
 
             </div>
 
+            <!-- MANDATORY DATA BACKUP DISCLAIMER CHECKBOX -->
+            <div id="box-backup-warning" class="backup-warning-card">
+                <div class="backup-warning-header">
+                    <span class="backup-warning-icon">⚠️</span>
+                    <span class="backup-warning-title">Critical Notice: Data Backup Disclaimer</span>
+                </div>
+                <div class="backup-warning-text">
+                    iteireann accepts absolutely <strong>no liability or responsibility</strong> for any data loss, corrupted files, missing operating systems, or account configurations during hardware diagnostics, bench stress-testing, or component repairs[cite: 1]. <strong>Customer data backup is not covered under any standard diagnostic or repair service.</strong>
+                </div>
+                <div class="backup-checkbox-row" onclick="document.getElementById('chk-backup-confirmed').click();">
+                    <input type="checkbox" id="chk-backup-confirmed" required onclick="event.stopPropagation();">
+                    <label for="chk-backup-confirmed">
+                        I hereby confirm that I have backed up my data, OR I acknowledge and accept that data backup is NOT covered and that data may be completely lost during service[cite: 1]. <span class="required-star">*</span>
+                    </label>
+                </div>
+            </div>
+
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
             <div class="legal-box">
                 <p><strong>3.1 Mandatory Inspection Fee:</strong> When applicable, inspection fees cover diagnostic resources and bench time required to assess hardware and are strictly non-refundable[cite: 1].</p>
@@ -662,7 +762,6 @@
             </p>
         </div>
 
-        <!-- RELIABLE SIGNATURE SYSTEM -->
         <div id="wrapper-signatures-zone">
             <div class="signature-section">
                 <label>Customer / Authorised Signature</label>
@@ -753,6 +852,10 @@
             </tr>
             <tr>
                 <th>Total Accumulated Cost</th><td colspan="3" id="p-total-due" style="font-weight: bold; font-size: 14px; color: #005a70;">€50.00</td>
+            </tr>
+            <tr>
+                <th style="color: #d9381e;">Data Disclaimer Verified</th>
+                <td colspan="3" id="p-backup-status" style="font-weight: bold; color: #d9381e;">CONFIRMED: Customer accepts data backup is NOT covered.</td>
             </tr>
         </table>
 
@@ -856,6 +959,7 @@
         const groupStudentIdTop = document.getElementById('group-student-id-top');
         const inputServiceId = document.getElementById('c-service-id');
         const inputStudentIdTop = document.getElementById('c-student-id-top');
+        const chkBackup = document.getElementById('chk-backup-confirmed');
 
         if (type === 'service') {
             btnService.classList.add('active');
@@ -868,6 +972,7 @@
             groupStudentIdTop.classList.add('hidden');
             inputServiceId.required = true;
             inputStudentIdTop.required = false;
+            chkBackup.required = true;
         } else {
             btnPickup.classList.add('active');
             btnService.classList.remove('active');
@@ -879,6 +984,7 @@
             groupServiceId.classList.add('hidden');
             inputStudentIdTop.required = true;
             inputServiceId.required = false;
+            chkBackup.required = false;
         }
     }
 
@@ -913,6 +1019,7 @@
         };
 
         currentSpeechRecognition.onerror = function(event) {
+            console.error("Speech recognition error", event.error);
             cleanupSpeechUI();
         };
 
@@ -949,7 +1056,7 @@
         currentActiveTextAreaId = null;
     }
 
-    // ROBUST SIGNATURE ENGINE (Pointer + Touch + Mouse Fallbacks)
+    // ROBUST SIGNATURE ENGINE
     function setupSignature(canvasId) {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return;
@@ -1003,12 +1110,10 @@
             }
         }
 
-        // Mouse Events
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
         window.addEventListener('mouseup', stopDrawing);
 
-        // Touch Events
         canvas.addEventListener('touchstart', startDrawing, { passive: false });
         canvas.addEventListener('touchmove', draw, { passive: false });
         window.addEventListener('touchend', stopDrawing);
@@ -1029,9 +1134,22 @@
         calculateTotal();
     });
 
-    // FORM SUBMISSION & PRINT
+    // FORM SUBMISSION PIPELINE WITH BACKUP VERIFICATION CHECK
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
+
+        // Enforce Backup Disclaimer Check for service workflow
+        if (intakePurpose === 'service') {
+            const backupConfirmed = document.getElementById('chk-backup-confirmed').checked;
+            if (!backupConfirmed) {
+                const warningBox = document.getElementById('box-backup-warning');
+                warningBox.classList.add('shake');
+                warningBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => warningBox.classList.remove('shake'), 500);
+                alert("CRITICAL NOTICE:\n\nYou must verify and tick the Data Backup Disclaimer checkbox before this service request can proceed.");
+                return;
+            }
+        }
 
         if (currentSpeechRecognition) {
             currentSpeechRecognition.stop();
