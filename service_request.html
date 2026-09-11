@@ -191,11 +191,22 @@
         .check-group {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 12px;
             padding: 14px 16px;
             border: 1px solid #e0e0e5;
             border-radius: 8px;
             background: #fafafa;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .check-group:hover {
+            background: #f0f6f8;
+        }
+
+        .check-group-inner {
+            display: flex;
+            align-items: center;
         }
 
         .check-group input {
@@ -213,13 +224,18 @@
             cursor: pointer;
         }
 
-        /* LIVE CALCULATION SUMMARY CARD */
+        .service-badge-price {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-color);
+        }
+
         .fee-calc-card {
             background: #eef5f8;
             border: 1.5px solid #b7d6e1;
             border-radius: 10px;
-            padding: 18px 20px;
-            margin-top: 15px;
+            padding: 20px 22px;
+            margin-top: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -227,12 +243,12 @@
         }
 
         .fee-breakdown {
-            font-size: 14px;
+            font-size: 14.5px;
             color: #333;
         }
 
         .fee-breakdown div {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .fee-total-highlight {
@@ -248,7 +264,7 @@
         }
 
         .fee-total-highlight .total-number {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 800;
             color: var(--primary-color);
             line-height: 1.1;
@@ -278,6 +294,7 @@
             margin-bottom: 22px;
         }
 
+        /* HARDENED SIGNATURE PAD STYLING */
         .signature-section {
             border: 1.5px dashed #a1a1a6;
             padding: 18px;
@@ -292,14 +309,19 @@
             border-radius: 8px;
             margin: 10px 0;
             position: relative;
+            overflow: hidden;
+            width: 100%;
         }
 
-        canvas {
+        canvas.signature-canvas {
             display: block;
             width: 100%;
-            height: 150px;
-            touch-action: none;
+            height: 160px;
+            background-color: #ffffff;
             cursor: crosshair;
+            touch-action: none; /* Prevents touch dragging screen */
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .clear-btn {
@@ -457,17 +479,6 @@
                 </div>
             </div>
 
-            <label>Requested Services</label>
-            <div class="check-group"><input type="checkbox" id="srv-diag" value="Inspection & Diagnostics" checked><label for="srv-diag">Inspection & Diagnostics</label></div>
-            <div class="check-group"><input type="checkbox" id="srv-soft" value="Software Repair / OS Reinstall"><label for="srv-soft">Software Repair / OS Reinstall</label></div>
-            <div class="check-group"><input type="checkbox" id="srv-hard" value="Hardware Replacement"><label for="srv-hard">Hardware Replacement</label></div>
-            <div class="check-group"><input type="checkbox" id="srv-data" value="Data Recovery / Backup"><label for="srv-data">Data Recovery / Backup</label></div>
-            
-            <div class="form-group">
-                <label for="srv-other">Other requested items (Specify):</label>
-                <input type="text" id="srv-other" placeholder="Specify other service metrics...">
-            </div>
-
             <div class="form-group">
                 <label for="sr-physical">Physical Inspection Notes</label>
                 <div class="dictation-wrapper">
@@ -476,18 +487,62 @@
                 </div>
             </div>
 
-            <!-- SERVICE SELECTION DROPDOWN & REAL-TIME CALCULATION -->
-            <div style="background:#f1f2f6; padding:20px; border-radius:10px; margin-bottom: 22px;">
-                <div class="grid-2">
+            <!-- MULTI-SELECT SERVICE TIERS -->
+            <label style="margin-top:20px; font-size:17px;">Select Services & Repairs (Multiple Selectable):</label>
+            <div style="background:#f9f9fb; padding:16px; border:1px solid var(--border-color); border-radius:10px; margin-bottom:18px;">
+                
+                <div class="check-group">
+                    <div class="check-group-inner">
+                        <input type="checkbox" class="service-calc-item" id="srv-warranty" data-name="Warranty Service" data-price="0">
+                        <label for="srv-warranty">€0 Warranty</label>
+                    </div>
+                    <span class="service-badge-price">€0.00</span>
+                </div>
+
+                <div class="check-group">
+                    <div class="check-group-inner">
+                        <input type="checkbox" class="service-calc-item" id="srv-inspect" data-name="Inspection Fee" data-price="50" checked>
+                        <label for="srv-inspect">€50 (Inspection & Diagnostics)</label>
+                    </div>
+                    <span class="service-badge-price">€50.00</span>
+                </div>
+
+                <div class="check-group">
+                    <div class="check-group-inner">
+                        <input type="checkbox" class="service-calc-item" id="srv-reload" data-name="System Reload" data-price="100">
+                        <label for="srv-reload">System reload</label>
+                    </div>
+                    <span class="service-badge-price">€100.00</span>
+                </div>
+
+                <div class="check-group">
+                    <div class="check-group-inner">
+                        <input type="checkbox" class="service-calc-item" id="srv-screen" data-name="Screen Replacement" data-price="250">
+                        <label for="srv-screen">Screen replacement</label>
+                    </div>
+                    <span class="service-badge-price">€250.00</span>
+                </div>
+
+                <div class="check-group">
+                    <div class="check-group-inner">
+                        <input type="checkbox" class="service-calc-item" id="srv-keyboard" data-name="Keyboard Replacement" data-price="150">
+                        <label for="srv-keyboard">Keyboard replacement</label>
+                    </div>
+                    <span class="service-badge-price">€150.00</span>
+                </div>
+
+                <div class="check-group">
+                    <div class="check-group-inner">
+                        <input type="checkbox" class="service-calc-item" id="srv-data" data-name="Data Recovery / Backup" data-price="0">
+                        <label for="srv-data">Data Recovery / Backup</label>
+                    </div>
+                    <span class="service-badge-price">To Quote</span>
+                </div>
+
+                <div class="grid-2" style="margin-top:16px;">
                     <div class="form-group" style="margin-bottom:0;">
-                        <label for="service-tier-select">Service Fee Selection</label>
-                        <select id="service-tier-select">
-                            <option value="€0 Warranty" data-price="0">€0 Warranty</option>
-                            <option value="€50 (inspection)" data-price="50" selected>€50 (inspection)</option>
-                            <option value="System reload €100" data-price="100">System reload €100</option>
-                            <option value="Screen replacement €250" data-price="250">Screen replacement €250</option>
-                            <option value="Keyboard replacement €150" data-price="150">Keyboard replacement €150</option>
-                        </select>
+                        <label for="fee-custom">Custom Amount (€)</label>
+                        <input type="number" id="fee-custom" step="0.01" min="0" placeholder="e.g. 75.00">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
                         <label for="fee-additional">Additional Work Total (€)</label>
@@ -495,17 +550,24 @@
                     </div>
                 </div>
 
+                <div class="form-group" style="margin-top:15px; margin-bottom:0;">
+                    <label for="srv-other">Other / Custom Service Notes:</label>
+                    <input type="text" id="srv-other" placeholder="Describe any custom parts or special service parameters...">
+                </div>
+
                 <div class="fee-calc-card">
                     <div class="fee-breakdown">
-                        <div>Base Tier: <strong id="calc-base-text">€50.00</strong></div>
+                        <div>Selected Services: <strong id="calc-services-count">1 item(s)</strong> (<strong id="calc-services-sum">€50.00</strong>)</div>
+                        <div>Custom Amount: <strong id="calc-custom-text">€0.00</strong></div>
                         <div>Additional Work: <strong id="calc-add-text">€0.00</strong></div>
-                        <div style="font-size:12px; color:#666; margin-top:4px;">All prices inclusive of standard VAT.</div>
+                        <div style="font-size:12.5px; color:#666; margin-top:4px;">All fees inclusive of standard VAT.</div>
                     </div>
                     <div class="fee-total-highlight">
-                        <div class="total-label">Estimated Total</div>
+                        <div class="total-label">Accumulated Total</div>
                         <div class="total-number" id="calc-grand-total">€50.00</div>
                     </div>
                 </div>
+
             </div>
 
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
@@ -549,22 +611,30 @@
             <div style="border: 1px solid var(--border-color); padding: 18px; border-radius:8px; background:#fff;">
                 <label>Device Setup Distribution Strategy</label>
                 <div class="check-group">
-                    <input type="checkbox" id="setup-inperson" value="In person setup">
-                    <label for="setup-inperson">In person setup</label>
+                    <div class="check-group-inner">
+                        <input type="checkbox" id="setup-inperson" value="In person setup">
+                        <label for="setup-inperson">In person setup</label>
+                    </div>
                 </div>
                 <div class="check-group">
-                    <input type="checkbox" id="setup-pickup" value="Client pickup without setup">
-                    <label for="setup-pickup">Client pickup without setup</label>
+                    <div class="check-group-inner">
+                        <input type="checkbox" id="setup-pickup" value="Client pickup without setup">
+                        <label for="setup-pickup">Client pickup without setup</label>
+                    </div>
                 </div>
 
                 <label style="margin-top:14px;">Hardware Item Allocation Selection</label>
                 <div class="check-group">
-                    <input type="checkbox" id="hw-lap" value="Laptop / PC (€650)">
-                    <label for="hw-lap">Laptop / PC Assignment (€650)</label>
+                    <div class="check-group-inner">
+                        <input type="checkbox" id="hw-lap" value="Laptop / PC (€650)">
+                        <label for="hw-lap">Laptop / PC Assignment (€650)</label>
+                    </div>
                 </div>
                 <div class="check-group">
-                    <input type="checkbox" id="hw-mob" value="Android Mobile Phone (€99)">
-                    <label for="hw-mob">Android Mobile Phone Assignment (€99)</label>
+                    <div class="check-group-inner">
+                        <input type="checkbox" id="hw-mob" value="Android Mobile Phone (€99)">
+                        <label for="hw-mob">Android Mobile Phone Assignment (€99)</label>
+                    </div>
                 </div>
 
                 <div class="form-group" style="margin-top:16px;">
@@ -592,11 +662,14 @@
             </p>
         </div>
 
+        <!-- RELIABLE SIGNATURE SYSTEM -->
         <div id="wrapper-signatures-zone">
             <div class="signature-section">
                 <label>Customer / Authorised Signature</label>
-                <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
-                <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
+                <div class="canvas-container">
+                    <canvas id="sig-customer" class="signature-canvas" width="700" height="160"></canvas>
+                </div>
+                <button type="button" class="clear-btn" onclick="clearSig('sig-customer')">Clear Signature</button>
                 <p style="font-size:13px; font-style:italic; margin-top:8px; color:#555;">I confirm that I fully understand the terms and condition of the service and I am authorised to provide permission for the above instructions[cite: 1].</p>
             </div>
 
@@ -627,8 +700,10 @@
                     </div>
                 </div>
 
-                <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
-                <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
+                <div class="canvas-container">
+                    <canvas id="sig-tech" class="signature-canvas" width="700" height="160"></canvas>
+                </div>
+                <button type="button" class="clear-btn" onclick="clearSig('sig-tech')">Clear Signature</button>
                 <p style="font-size:13px; font-style:italic; margin-top:8px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service to the client[cite: 1].</p>
             </div>
         </div>
@@ -670,14 +745,14 @@
         <div class="print-sec-title">3. Service Request Assessment Summary</div>
         <table>
             <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
-            <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
+            <tr><th>Selected Services & Parts</th><td colspan="3" id="p-services" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
             <tr>
-                <th>Base Service Tier</th><td id="p-base-service">€50 (inspection)</td>
-                <th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td>
+                <th>Custom Amount</th><td id="p-custom-fee">€0.00</td>
+                <th>Additional Quoted Work</th><td id="p-add-fee">€0.00</td>
             </tr>
             <tr>
-                <th>Total Estimated Cost</th><td colspan="3" id="p-total-due" style="font-weight: bold; font-size: 13px; color: #005a70;">€50.00</td>
+                <th>Total Accumulated Cost</th><td colspan="3" id="p-total-due" style="font-weight: bold; font-size: 14px; color: #005a70;">€50.00</td>
             </tr>
         </table>
 
@@ -735,32 +810,37 @@
     }
     setDefaultTimestamp();
 
-    // REAL-TIME TOTAL CALCULATION LOGIC
     function calculateTotal() {
-        const tierSelect = document.getElementById('service-tier-select');
-        const selectedOption = tierSelect.options[tierSelect.selectedIndex];
-        
-        let basePrice = 0;
-        if (selectedOption && selectedOption.dataset.price !== undefined) {
-            basePrice = parseFloat(selectedOption.dataset.price) || 0;
-        } else if (selectedOption) {
-            const match = selectedOption.value.match(/€(\d+(\.\d+)?)/);
-            basePrice = match ? parseFloat(match[1]) : 0;
-        }
+        let servicesSum = 0;
+        let selectedCount = 0;
+        let selectedItems = [];
 
-        const additionalInput = document.getElementById('fee-additional');
-        const additionalPrice = parseFloat(additionalInput.value) || 0;
+        document.querySelectorAll('.service-calc-item:checked').forEach(item => {
+            const price = parseFloat(item.dataset.price) || 0;
+            const label = item.dataset.name || item.parentElement.innerText.trim();
+            servicesSum += price;
+            selectedCount++;
+            selectedItems.push(`${label} (€${price.toFixed(2)})`);
+        });
 
-        const grandTotal = basePrice + additionalPrice;
+        const customPrice = parseFloat(document.getElementById('fee-custom').value) || 0;
+        const additionalPrice = parseFloat(document.getElementById('fee-additional').value) || 0;
 
-        document.getElementById('calc-base-text').innerText = '€' + basePrice.toFixed(2);
+        const grandTotal = servicesSum + customPrice + additionalPrice;
+
+        document.getElementById('calc-services-count').innerText = `${selectedCount} item(s)`;
+        document.getElementById('calc-services-sum').innerText = '€' + servicesSum.toFixed(2);
+        document.getElementById('calc-custom-text').innerText = '€' + customPrice.toFixed(2);
         document.getElementById('calc-add-text').innerText = '€' + additionalPrice.toFixed(2);
         document.getElementById('calc-grand-total').innerText = '€' + grandTotal.toFixed(2);
-        
-        return { basePrice, additionalPrice, grandTotal };
+
+        return { servicesSum, customPrice, additionalPrice, grandTotal, selectedItems };
     }
 
-    document.getElementById('service-tier-select').addEventListener('change', calculateTotal);
+    document.querySelectorAll('.service-calc-item').forEach(el => {
+        el.addEventListener('change', calculateTotal);
+    });
+    document.getElementById('fee-custom').addEventListener('input', calculateTotal);
     document.getElementById('fee-additional').addEventListener('input', calculateTotal);
 
     function setPurpose(type) {
@@ -802,7 +882,6 @@
         }
     }
 
-    // MICROPHONE VOICE DICTATION
     function toggleDictation(textAreaId) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
@@ -834,7 +913,6 @@
         };
 
         currentSpeechRecognition.onerror = function(event) {
-            console.error("Speech recognition error", event.error);
             cleanupSpeechUI();
         };
 
@@ -871,85 +949,87 @@
         currentActiveTextAreaId = null;
     }
 
-    // SIGNATURE CANVAS (Pointer-based)
-    const canvases = ['sig-customer', 'sig-tech'];
-    const canvasContexts = {};
+    // ROBUST SIGNATURE ENGINE (Pointer + Touch + Mouse Fallbacks)
+    function setupSignature(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
 
-    function initCanvases() {
-        canvases.forEach(id => {
-            const cvs = document.getElementById(id);
-            if (!cvs) return;
-            const ctx = cvs.getContext('2d');
-            canvasContexts[id] = ctx;
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
 
-            function resizeCanvas() {
-                const rect = cvs.getBoundingClientRect();
-                const imgData = ctx.getImageData(0, 0, cvs.width || 1, cvs.height || 1);
-                cvs.width = rect.width;
-                cvs.height = rect.height || 150;
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = 2.5;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                if (imgData.width > 1) {
-                    ctx.putImageData(imgData, 0, 0);
-                }
+        function getCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
             }
 
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-
-            let isDrawing = false;
-
-            function getCoordinates(e) {
-                const rect = cvs.getBoundingClientRect();
-                return {
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top
-                };
-            }
-
-            cvs.addEventListener('pointerdown', (e) => {
-                isDrawing = true;
-                cvs.setPointerCapture(e.pointerId);
-                const pos = getCoordinates(e);
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            });
-
-            cvs.addEventListener('pointermove', (e) => {
-                if (!isDrawing) return;
-                const pos = getCoordinates(e);
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-            });
-
-            const stopDrawing = (e) => {
-                if (isDrawing) {
-                    isDrawing = false;
-                    try { cvs.releasePointerCapture(e.pointerId); } catch (_) {}
-                }
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
             };
+        }
 
-            cvs.addEventListener('pointerup', stopDrawing);
-            cvs.addEventListener('pointercancel', stopDrawing);
-        });
+        function startDrawing(e) {
+            e.preventDefault();
+            isDrawing = true;
+            const pt = getCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(pt.x, pt.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pt = getCoords(e);
+            ctx.lineTo(pt.x, pt.y);
+            ctx.stroke();
+        }
+
+        function stopDrawing(e) {
+            if (isDrawing) {
+                isDrawing = false;
+            }
+        }
+
+        // Mouse Events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        window.addEventListener('mouseup', stopDrawing);
+
+        // Touch Events
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        window.addEventListener('touchend', stopDrawing);
+        window.addEventListener('touchcancel', stopDrawing);
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        initCanvases();
-        calculateTotal();
-    });
-
-    function clearCanvas(id) {
-        const cvs = document.getElementById(id);
-        if (cvs) {
-            const ctx = cvs.getContext('2d');
-            ctx.clearRect(0, 0, cvs.width, cvs.height);
+    function clearSig(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     }
 
-    // FORM SUBMISSION & PRINT DISPATCH
+    window.addEventListener('DOMContentLoaded', () => {
+        setupSignature('sig-customer');
+        setupSignature('sig-tech');
+        calculateTotal();
+    });
+
+    // FORM SUBMISSION & PRINT
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -996,20 +1076,15 @@
             document.getElementById('p-faults').innerText = document.getElementById('sr-faults').value.trim() || 'N/A';
             document.getElementById('p-physical').innerText = document.getElementById('sr-physical').value.trim() || 'No visual damage recorded.';
             
-            // Financial print mapping
             const totals = calculateTotal();
-            const selectedTierText = document.getElementById('service-tier-select').value;
-            document.getElementById('p-base-service').innerText = selectedTierText;
+            const customNotes = document.getElementById('srv-other').value.trim();
+            let displayServices = [...totals.selectedItems];
+            if (customNotes) displayServices.push(`Notes: ${customNotes}`);
+
+            document.getElementById('p-services').innerText = displayServices.length ? displayServices.join('\n') : 'None Selected';
+            document.getElementById('p-custom-fee').innerText = '€' + totals.customPrice.toFixed(2);
             document.getElementById('p-add-fee').innerText = '€' + totals.additionalPrice.toFixed(2);
             document.getElementById('p-total-due').innerText = '€' + totals.grandTotal.toFixed(2);
-
-            let srvList = [];
-            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics");
-            if(document.getElementById('srv-soft').checked) srvList.push("Software Repair / OS Reinstall");
-            if(document.getElementById('srv-hard').checked) srvList.push("Hardware Replacement");
-            if(document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");
-            if(document.getElementById('srv-other').value.trim()) srvList.push("Other: " + document.getElementById('srv-other').value.trim());
-            document.getElementById('p-services').innerText = srvList.length ? srvList.join(', ') : 'None Selected';
 
             const auditListUl = document.getElementById('p-audit-results');
             auditListUl.innerHTML = ''; 
@@ -1063,8 +1138,8 @@
         document.title = "iteireann - Client facing UI";
 
         this.reset();
-        clearCanvas('sig-customer');
-        clearCanvas('sig-tech');
+        clearSig('sig-customer');
+        clearSig('sig-tech');
         setDefaultTimestamp();
         setPurpose('service');
         calculateTotal();
