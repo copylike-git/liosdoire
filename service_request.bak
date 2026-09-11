@@ -10,7 +10,7 @@
             --accent-blue: #3baed4;
             --background-color: #f5f5f7;
             --text-color: #1d1d1f;
-            --border-color: #c7c7cc;
+            --border-color: #d2d2d7;
             --section-bg: #ffffff;
         }
 
@@ -20,29 +20,30 @@
             color: var(--text-color);
             line-height: 1.5;
             margin: 0;
-            padding: 24px 16px;
+            padding: 20px;
         }
 
         .container {
-            max-width: 860px;
+            max-width: 800px;
             margin: 0 auto;
             background: var(--section-bg);
-            padding: 36px 32px;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
+        /* SCREEN PLACEMENT HEADER WITH LOGO */
         .brand-header-ui {
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 18px;
-            margin-bottom: 28px;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
 
         .brand-logo-img {
-            height: 80px;
+            height: 75px;
             width: auto;
             display: block;
         }
@@ -53,89 +54,81 @@
 
         .brand-title-area h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 20px;
             color: var(--primary-color);
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
         }
 
         .subtitle {
-            margin: 4px 0 0 0;
-            font-size: 14px;
+            margin: 3px 0 0 0;
+            font-size: 13px;
             color: #555;
             font-weight: 500;
         }
 
         h2 {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             background-color: #e8e8ed;
-            padding: 12px 14px;
-            margin-top: 32px;
-            margin-bottom: 18px;
-            border-left: 5px solid var(--primary-color);
+            padding: 10px 12px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border-radius: 0 6px 6px 0;
         }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
-        .form-group { margin-bottom: 18px; position: relative; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; position: relative; }
         .full-width { grid-column: span 2; }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .required-star { color: #df2020; margin-left: 3px; }
 
         input[type="text"],
-        input[type="number"],
         input[type="email"],
         input[type="datetime-local"],
         select,
         textarea {
             width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             box-sizing: border-box;
-            font-size: 17px; 
+            font-size: 16px; 
             background-color: #fff;
-            line-height: 1.4;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(0, 90, 112, 0.18);
+            box-shadow: 0 0 0 3px rgba(0, 90, 112, 0.2);
         }
 
+        /* Dictation Layout Tweaks */
         .dictation-wrapper {
             position: relative;
             display: block;
         }
 
         .dictation-wrapper textarea {
-            padding-right: 56px;
+            padding-right: 50px;
         }
 
         .mic-btn {
             position: absolute;
-            right: 12px;
-            top: 12px;
-            width: 38px;
-            height: 38px;
+            right: 10px;
+            top: 10px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: 1px solid var(--border-color);
             background: #f5f5f7;
@@ -143,12 +136,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             transition: all 0.2s ease;
             z-index: 5;
         }
 
-        .mic-btn:hover { background: #e8e8ed; }
+        .mic-btn:hover {
+            background: #e8e8ed;
+        }
 
         .mic-btn.listening {
             background: #df2020;
@@ -163,20 +158,21 @@
             100% { opacity: 1; }
         }
 
+        /* Toggle Button Group */
         .purpose-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 28px;
+            gap: 10px;
+            margin-bottom: 25px;
         }
 
         .purpose-btn {
             background: #fff;
             border: 2px solid var(--border-color);
-            padding: 16px;
+            padding: 15px;
             text-align: center;
             border-radius: 8px;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -184,24 +180,25 @@
 
         .purpose-btn.active {
             border-color: var(--primary-color);
-            background-color: rgba(0, 90, 112, 0.08);
+            background-color: rgba(0, 90, 112, 0.06);
             color: var(--primary-color);
         }
 
+        /* Touch Checkboxes */
         .check-group {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 12px;
-            padding: 14px 16px;
-            border: 1px solid #e0e0e5;
-            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #e8e8ed;
+            border-radius: 6px;
             background: #fafafa;
         }
 
         .check-group input {
             width: 24px;
             height: 24px;
-            margin-right: 14px;
+            margin-right: 12px;
             flex-shrink: 0;
             cursor: pointer;
         }
@@ -209,138 +206,88 @@
         .check-group label {
             margin-bottom: 0;
             font-weight: 500;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
-        }
-
-        /* LIVE CALCULATION SUMMARY CARD */
-        .fee-calc-card {
-            background: #eef5f8;
-            border: 1.5px solid #b7d6e1;
-            border-radius: 10px;
-            padding: 18px 20px;
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-sizing: border-box;
-        }
-
-        .fee-breakdown {
-            font-size: 14px;
-            color: #333;
-        }
-
-        .fee-breakdown div {
-            margin-bottom: 3px;
-        }
-
-        .fee-total-highlight {
-            text-align: right;
-        }
-
-        .fee-total-highlight .total-label {
-            font-size: 13px;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--primary-color);
-            letter-spacing: 0.5px;
-        }
-
-        .fee-total-highlight .total-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary-color);
-            line-height: 1.1;
         }
 
         .tech-checklist-box {
             background: #fff;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
         }
 
-        .tech-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 15px; }
+        .tech-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 14px; }
         .tech-item:last-child { margin-bottom: 0; }
-        .tech-item input { width: 22px; height: 22px; margin-right: 12px; }
+        .tech-item input { width: 20px; height: 20px; margin-right: 10px; }
 
         .legal-box {
             background-color: #f9f9fb;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 16px;
+            padding: 15px;
             max-height: 200px;
             overflow-y: scroll;
-            font-size: 13.5px;
+            font-size: 13px;
             color: #333;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         .signature-section {
-            border: 1.5px dashed #a1a1a6;
-            padding: 18px;
-            border-radius: 10px;
+            border: 1px dashed #a1a1a6;
+            padding: 15px;
+            border-radius: 8px;
             background: #fff;
-            margin-top: 18px;
+            margin-top: 15px;
         }
 
         .canvas-container {
-            border: 1.5px solid var(--border-color);
-            background: #ffffff;
-            border-radius: 8px;
-            margin: 10px 0;
-            position: relative;
+            border: 1px solid var(--border-color);
+            background: #f5f5f7;
+            border-radius: 4px;
+            margin: 8px 0;
         }
 
-        canvas {
-            display: block;
-            width: 100%;
-            height: 150px;
-            touch-action: none;
-            cursor: crosshair;
-        }
+        canvas { display: block; width: 100%; height: 120px; }
 
         .clear-btn {
-            background: #6e6e73;
+            background: #86868b;
             color: white;
             border: none;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background 0.2s ease;
         }
-
-        .clear-btn:hover { background: #48484a; }
 
         .btn-submit {
             background-color: #00802b;
             color: white;
             border: none;
-            padding: 18px 22px;
-            font-size: 19px;
+            padding: 16px 20px;
+            font-size: 18px;
             font-weight: 600;
-            border-radius: 9px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            margin-top: 32px;
+            margin-top: 30px;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
         }
 
-        .btn-submit:hover { opacity: 0.92; }
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
 
         .dynamic-section { display: block; }
         .hidden { display: none !important; }
 
-        /* PRINT STYLES */
+        /* PRINT SUB-SYSTEM FOR A4 STANDARDS */
         #print-rendering-zone { display: none; }
 
         @media print {
-            @page { size: A4 portrait; margin: 15mm; }
+            @page { size: A4 portrait; margin: 15mm 15mm 15mm 15mm; }
             body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
             #interactive-form-zone { display: none !important; }
             #print-rendering-zone { display: block !important; width: 100%; font-size: 12px; }
@@ -366,12 +313,13 @@
             
             .print-sig-block { display: flex; justify-content: space-between; margin-top: 20px; }
             .print-sig-col { width: 48%; border-top: 1px solid #000; padding-top: 5px; font-size: 10px; }
-            .sig-img { max-height: 60px; display: block; margin-bottom: 4px; }
+            .sig-img { max-height: 50px; display: block; margin-bottom: 2px; }
             .print-hidden { display: none !important; }
             .print-check-list { list-style: none; padding-left: 0; margin: 5px 0; font-size: 10px; }
             .print-check-list li { margin-bottom: 2px; }
         }
         
+        /* CORPORATE LOGO REPOSITORY (Live Web URL) */
         .logo-src-data {
             content: url("https://www.ite.ie/wp-content/uploads/2025/01/Untitled-2-1.png");
         }
@@ -389,7 +337,7 @@
         </div>
     </div>
 
-    <label style="text-align: center; display: block; margin-bottom: 12px; font-size: 17px; font-weight: 600;">Select Admission Process Type:</label>
+    <label style="text-align: center; display: block; margin-bottom: 10px; font-size: 16px;">Select Admission Process Type:</label>
     <div class="purpose-selector">
         <div id="btn-purpose-service" class="purpose-btn active" onclick="setPurpose('service')">Device Inspection / Service</div>
         <div id="btn-purpose-pickup" class="purpose-btn" onclick="setPurpose('pickup')">New Laptop / Mobile Pickup</div>
@@ -399,6 +347,7 @@
         
         <h2>1. Customer Admission Details</h2>
         <div class="grid-2">
+            
             <div id="group-service-id" class="form-group full-width">
                 <label for="c-service-id">Service ID <span class="required-star">*</span></label>
                 <input type="text" id="c-service-id" required placeholder="e.g. SR-2026-8492">
@@ -476,51 +425,30 @@
                 </div>
             </div>
 
-            <!-- SERVICE SELECTION DROPDOWN & REAL-TIME CALCULATION -->
-            <div style="background:#f1f2f6; padding:20px; border-radius:10px; margin-bottom: 22px;">
-                <div class="grid-2">
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label for="service-tier-select">Service Fee Selection</label>
-                        <select id="service-tier-select">
-                            <option value="€0 Warranty" data-price="0">€0 Warranty</option>
-                            <option value="€50 (inspection)" data-price="50" selected>€50 (inspection)</option>
-                            <option value="System reload €100" data-price="100">System reload €100</option>
-                            <option value="Screen replacement €250" data-price="250">Screen replacement €250</option>
-                            <option value="Keyboard replacement €150" data-price="150">Keyboard replacement €150</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label for="fee-additional">Additional Work Total (€)</label>
-                        <input type="number" id="fee-additional" step="0.01" min="0" placeholder="0.00">
-                    </div>
+            <div class="grid-2" style="background:#f1f2f6; padding:15px; border-radius:8px;">
+                <div class="form-group">
+                    <label>Initial Diagnostic Fee</label>
+                    <div class="check-group" style="background:#fff; margin-bottom:0;"><input type="checkbox" checked disabled><label><strong>€50 incl. VAT</strong>[cite: 1]</label></div>
                 </div>
-
-                <div class="fee-calc-card">
-                    <div class="fee-breakdown">
-                        <div>Base Tier: <strong id="calc-base-text">€50.00</strong></div>
-                        <div>Additional Work: <strong id="calc-add-text">€0.00</strong></div>
-                        <div style="font-size:12px; color:#666; margin-top:4px;">All prices inclusive of standard VAT.</div>
-                    </div>
-                    <div class="fee-total-highlight">
-                        <div class="total-label">Estimated Total</div>
-                        <div class="total-number" id="calc-grand-total">€50.00</div>
-                    </div>
+                <div class="form-group">
+                    <label for="fee-additional">Additional Work Total (€)</label>
+                    <input type="text" id="fee-additional" placeholder="0.00">
                 </div>
             </div>
 
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
             <div class="legal-box">
-                <p><strong>3.1 Mandatory Inspection Fee:</strong> When applicable, inspection fees cover diagnostic resources and bench time required to assess hardware and are strictly non-refundable[cite: 1].</p>
-                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all hardware components, replacement parts, and repair service fees must be paid in full upfront before technical work or parts procurement commences[cite: 1].</p>
-                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the right to withdraw or adjust quotes based on parts availability[cite: 1].</p>
-                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, iteireann accepts absolutely no liability for data loss or corruption during diagnostic or repair processes[cite: 1].</p>
-                <p><strong>3.5 Pre-existing Faults:</strong> Electronic components can fail unexpectedly under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1].</p>
-                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of completion of diagnosis will be deemed abandoned and subject to disposal or recycling[cite: 1].</p>
+                <p><strong>3.1 Mandatory Inspection Fee:</strong> A mandatory inspection fee of €50.00 incl. VAT applies to all device admissions[cite: 1]. This fee covers the technical diagnostic resources and bench time required to assess the hardware and is strictly non-refundable under all circumstances, regardless of whether a repair is viable or declined by the customer[cite: 1].</p>
+                <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all additional hardware components, replacement parts, and repair service fees must be paid in full upfront before any technical work or parts procurement commences[cite: 1].</p>
+                <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the absolute right to withdraw from, amend, or cancel a quotation at any time due to shifting hardware stock availability, market supply fluctuations, or unforeseen clerical and pricing errors (Errors and Omissions Excepted / E&OE)[cite: 1].</p>
+                <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, iteireann accepts absolutely no liability for the loss, corruption, or compromise of data, software, or configurations during diagnostic or repair processes[cite: 1]. Data recovery is never guaranteed[cite: 1].</p>
+                <p><strong>3.5 Unseen & Pre-existing Faults:</strong> Electronic components can fail unpredictably under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1]. iteireann is not liable for devices that become completely non-operational or exhibit new faults during the course of assessment or repair due to latent, pre-existing structural or electronic degradation[cite: 1].</p>
+                <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of notification of readiness (or completion of diagnosis) will be deemed abandoned[cite: 1]. In accordance with legal principles regarding uncollected goods, iteireann reserves the right to dispose of, recycle, or sell the device to recover outstanding diagnostic, repair, storage, or admin fees[cite: 1].</p>
             </div>
 
             <h2>5. Customer Declaration & Authorisation</h2>
-            <p style="font-size:15px; color:#1d1d1f; margin-bottom:15px;">
-                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services[cite: 1]. I acknowledge that I have read, understood, and accept all terms and conditions outlined above[cite: 1].
+            <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
+                By signing below, I certify that I am the legal owner of the device described above, or have explicit authorisation from the owner to commission services[cite: 1]. I acknowledge that I have read, understood, and accept all terms and conditions outlined above, specifically noting the €50 incl. VAT inspection fee, the mandatory upfront payment policy for parts/labour, and the strict 1-working-day validity on quotes (E&OE)[cite: 1]. I hereby authorize iteireann to perform the technical assessment[cite: 1].
             </p>
         </div>
 
@@ -546,7 +474,7 @@
             </div>
 
             <h2>3. Device Setup Options & Protection Plans</h2>
-            <div style="border: 1px solid var(--border-color); padding: 18px; border-radius:8px; background:#fff;">
+            <div style="border: 1px solid var(--border-color); padding: 15px; border-radius:8px; background:#fff;">
                 <label>Device Setup Distribution Strategy</label>
                 <div class="check-group">
                     <input type="checkbox" id="setup-inperson" value="In person setup">
@@ -557,7 +485,7 @@
                     <label for="setup-pickup">Client pickup without setup</label>
                 </div>
 
-                <label style="margin-top:14px;">Hardware Item Allocation Selection</label>
+                <label style="margin-top:10px;">Hardware Item Allocation Selection</label>
                 <div class="check-group">
                     <input type="checkbox" id="hw-lap" value="Laptop / PC (€650)">
                     <label for="hw-lap">Laptop / PC Assignment (€650)</label>
@@ -567,7 +495,7 @@
                     <label for="hw-mob">Android Mobile Phone Assignment (€99)</label>
                 </div>
 
-                <div class="form-group" style="margin-top:16px;">
+                <div class="form-group" style="margin-top:15px;">
                     <label for="opt-content-filtering">ESET Content Filtering Install (1 PC 1 Mobile)</label>
                     <select id="opt-content-filtering">
                         <option value="Not required" selected>Not required</option>
@@ -587,7 +515,7 @@
             </div>
 
             <h2>4. Acknowledgement & Authorization</h2>
-            <p style="font-size:15px; color:#1d1d1f; margin-bottom:15px;">
+            <p style="font-size:14px; color:#1d1d1f; margin-bottom:15px;">
                 By completing this step, I confirm that the designated device allocations indicated above are logged and mapped correctly to my instructional deployment requirements[cite: 1].
             </p>
         </div>
@@ -597,39 +525,39 @@
                 <label>Customer / Authorised Signature</label>
                 <div class="canvas-container"><canvas id="sig-customer"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-customer')">Clear Signature</button>
-                <p style="font-size:13px; font-style:italic; margin-top:8px; color:#555;">I confirm that I fully understand the terms and condition of the service and I am authorised to provide permission for the above instructions[cite: 1].</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I fully understood the terms and condition of the service and I am authorised to provide permission for the above instructions[cite: 1].</p>
             </div>
 
             <div class="signature-section" style="margin-top:20px;">
                 <label>Technician Intake Sign-off & Inspection Verification</label>
                 
                 <div id="tech-checklist-container" class="tech-checklist-box">
-                    <label style="font-size:14px; color:var(--primary-color); margin-bottom:10px; text-transform:uppercase;">Mandatory Pre-Repair Audit Checklist</label>
+                    <label style="font-size:13px; color:var(--primary-color); margin-bottom:8px; text-transform:uppercase;">Mandatory Pre-Repair Audit Checklist</label>
                     <div class="tech-item">
                         <input type="checkbox" id="chk-chassis" name="tech_audit" value="Chassis condition verified">
-                        <label for="chk-chassis" style="font-weight:500; font-size:15px;">Chassis condition</label>
+                        <label for="chk-chassis" style="font-weight:500; font-size:14px;">Chassis condition</label>
                     </div>
                     <div class="tech-item">
                         <input type="checkbox" id="chk-screen" name="tech_audit" value="Screen condition verified">
-                        <label for="chk-screen" style="font-weight:500; font-size:15px;">Screen condition</label>
+                        <label for="chk-screen" style="font-weight:500; font-size:14px;">Screen condition</label>
                     </div>
                     <div class="tech-item">
                         <input type="checkbox" id="chk-ports" name="tech_audit" value="Ports condition verified">
-                        <label for="chk-ports" style="font-weight:500; font-size:15px;">Ports condition</label>
+                        <label for="chk-ports" style="font-weight:500; font-size:14px;">Ports condition</label>
                     </div>
                     <div class="tech-item">
                         <input type="checkbox" id="chk-keyboard" name="tech_audit" value="Keyboard keys missing/non-functional checked">
-                        <label for="chk-keyboard" style="font-weight:500; font-size:15px;">Keyboard keys missing and non-function</label>
+                        <label for="chk-keyboard" style="font-weight:500; font-size:14px;">Keyboard keys missing and non-function</label>
                     </div>
                     <div class="tech-item">
                         <input type="checkbox" id="chk-screws" name="tech_audit" value="Base screws / Structural damages checked">
-                        <label for="chk-screws" style="font-weight:500; font-size:15px;">Base screws, or structural damages e.g. hinges etc</label>
+                        <label for="chk-screws" style="font-weight:500; font-size:14px;">Base screws, or structural damages e.g. hinges etc</label>
                     </div>
                 </div>
 
                 <div class="canvas-container"><canvas id="sig-tech"></canvas></div>
                 <button type="button" class="clear-btn" onclick="clearCanvas('sig-tech')">Clear Signature</button>
-                <p style="font-size:13px; font-style:italic; margin-top:8px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service to the client[cite: 1].</p>
+                <p style="font-size:12px; font-style:italic; margin-top:5px; color:#555;">I confirm that I have carried out the necessary steps to inspect the device and explained the relevant scope of the service on offer to the client[cite: 1].</p>
             </div>
         </div>
 
@@ -638,6 +566,7 @@
 </div>
 
 <div id="print-rendering-zone">
+    
     <div class="print-brand-wrap">
         <div class="logo-src-data print-logo-box"></div>
         <div class="print-header-meta">
@@ -672,18 +601,12 @@
             <tr><th>Reported Faults</th><td colspan="3" id="p-faults" style="white-space: pre-wrap;"></td></tr>
             <tr><th>Requested Services</th><td colspan="3" id="p-services"></td></tr>
             <tr><th>Physical Inspection Notes</th><td colspan="3" id="p-physical" style="white-space: pre-wrap;"></td></tr>
-            <tr>
-                <th>Base Service Tier</th><td id="p-base-service">€50 (inspection)</td>
-                <th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td>
-            </tr>
-            <tr>
-                <th>Total Estimated Cost</th><td colspan="3" id="p-total-due" style="font-weight: bold; font-size: 13px; color: #005a70;">€50.00</td>
-            </tr>
+            <tr><th>Diagnostic Fee</th><td>€50.00 incl. VAT[cite: 1]</td><th>Additional Quoted Amount</th><td id="p-add-fee">€0.00</td></tr>
         </table>
 
         <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
         <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. Inspection and diagnostic fees are strictly non-refundable once work has commenced[cite: 1]. Financial parts processing totals must be paid upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
+            Client validates asset receipt or structural repair instruction metrics. €50 inspection guidelines are strictly non-refundable[cite: 1]. Financial parts processing totals must be processed upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
         </div>
         
         <div class="print-sig-block">
@@ -735,34 +658,7 @@
     }
     setDefaultTimestamp();
 
-    // REAL-TIME TOTAL CALCULATION LOGIC
-    function calculateTotal() {
-        const tierSelect = document.getElementById('service-tier-select');
-        const selectedOption = tierSelect.options[tierSelect.selectedIndex];
-        
-        let basePrice = 0;
-        if (selectedOption && selectedOption.dataset.price !== undefined) {
-            basePrice = parseFloat(selectedOption.dataset.price) || 0;
-        } else if (selectedOption) {
-            const match = selectedOption.value.match(/€(\d+(\.\d+)?)/);
-            basePrice = match ? parseFloat(match[1]) : 0;
-        }
-
-        const additionalInput = document.getElementById('fee-additional');
-        const additionalPrice = parseFloat(additionalInput.value) || 0;
-
-        const grandTotal = basePrice + additionalPrice;
-
-        document.getElementById('calc-base-text').innerText = '€' + basePrice.toFixed(2);
-        document.getElementById('calc-add-text').innerText = '€' + additionalPrice.toFixed(2);
-        document.getElementById('calc-grand-total').innerText = '€' + grandTotal.toFixed(2);
-        
-        return { basePrice, additionalPrice, grandTotal };
-    }
-
-    document.getElementById('service-tier-select').addEventListener('change', calculateTotal);
-    document.getElementById('fee-additional').addEventListener('input', calculateTotal);
-
+    // DYNAMIC SECTION TOGGLE LOGIC
     function setPurpose(type) {
         intakePurpose = type;
         
@@ -802,7 +698,7 @@
         }
     }
 
-    // MICROPHONE VOICE DICTATION
+    // MICROPHONE VOICE DICTATION ENHANCEMENT
     function toggleDictation(textAreaId) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
@@ -871,85 +767,36 @@
         currentActiveTextAreaId = null;
     }
 
-    // SIGNATURE CANVAS (Pointer-based)
+    // SIGNATURE CANVAS INTERACTION INTERFACE
     const canvases = ['sig-customer', 'sig-tech'];
-    const canvasContexts = {};
+    canvases.forEach(id => {
+        const cvs = document.getElementById(id);
+        if (!cvs) return;
+        const ctx = cvs.getContext('2d');
+        cvs.width = cvs.parentElement.clientWidth;
+        cvs.height = 120;
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
 
-    function initCanvases() {
-        canvases.forEach(id => {
-            const cvs = document.getElementById(id);
-            if (!cvs) return;
-            const ctx = cvs.getContext('2d');
-            canvasContexts[id] = ctx;
-
-            function resizeCanvas() {
-                const rect = cvs.getBoundingClientRect();
-                const imgData = ctx.getImageData(0, 0, cvs.width || 1, cvs.height || 1);
-                cvs.width = rect.width;
-                cvs.height = rect.height || 150;
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = 2.5;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                if (imgData.width > 1) {
-                    ctx.putImageData(imgData, 0, 0);
-                }
-            }
-
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-
-            let isDrawing = false;
-
-            function getCoordinates(e) {
-                const rect = cvs.getBoundingClientRect();
-                return {
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top
-                };
-            }
-
-            cvs.addEventListener('pointerdown', (e) => {
-                isDrawing = true;
-                cvs.setPointerCapture(e.pointerId);
-                const pos = getCoordinates(e);
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            });
-
-            cvs.addEventListener('pointermove', (e) => {
-                if (!isDrawing) return;
-                const pos = getCoordinates(e);
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-            });
-
-            const stopDrawing = (e) => {
-                if (isDrawing) {
-                    isDrawing = false;
-                    try { cvs.releasePointerCapture(e.pointerId); } catch (_) {}
-                }
-            };
-
-            cvs.addEventListener('pointerup', stopDrawing);
-            cvs.addEventListener('pointercancel', stopDrawing);
-        });
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        initCanvases();
-        calculateTotal();
+        let drawing = false;
+        function getPos(e) {
+            const rect = cvs.getBoundingClientRect();
+            const cX = e.touches ? e.touches[0].clientX : e.clientX;
+            const cY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: cX - rect.left, y: cY - rect.top };
+        }
+        cvs.addEventListener('touchstart', function(e) { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }, {passive: false});
+        cvs.addEventListener('touchmove', function(e) { if(!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, {passive: false});
+        window.addEventListener('touchend', () => drawing = false);
     });
 
     function clearCanvas(id) {
         const cvs = document.getElementById(id);
-        if (cvs) {
-            const ctx = cvs.getContext('2d');
-            ctx.clearRect(0, 0, cvs.width, cvs.height);
-        }
+        if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
     }
 
-    // FORM SUBMISSION & PRINT DISPATCH
+    // FORM PROCESSING SUBMISSION PIPELINE
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -996,15 +843,11 @@
             document.getElementById('p-faults').innerText = document.getElementById('sr-faults').value.trim() || 'N/A';
             document.getElementById('p-physical').innerText = document.getElementById('sr-physical').value.trim() || 'No visual damage recorded.';
             
-            // Financial print mapping
-            const totals = calculateTotal();
-            const selectedTierText = document.getElementById('service-tier-select').value;
-            document.getElementById('p-base-service').innerText = selectedTierText;
-            document.getElementById('p-add-fee').innerText = '€' + totals.additionalPrice.toFixed(2);
-            document.getElementById('p-total-due').innerText = '€' + totals.grandTotal.toFixed(2);
+            const addFeeVal = parseFloat(document.getElementById('fee-additional').value);
+            document.getElementById('p-add-fee').innerText = !isNaN(addFeeVal) ? '€' + addFeeVal.toFixed(2) : '€0.00';
 
             let srvList = [];
-            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics");
+            if(document.getElementById('srv-diag').checked) srvList.push("Inspection & Diagnostics (€50)");
             if(document.getElementById('srv-soft').checked) srvList.push("Software Repair / OS Reinstall");
             if(document.getElementById('srv-hard').checked) srvList.push("Hardware Replacement");
             if(document.getElementById('srv-data').checked) srvList.push("Data Recovery / Backup");
@@ -1058,16 +901,18 @@
             document.getElementById('p-pp-cost').innerText = document.getElementById('opt-protection-plan').value;
         }
 
+        // Fire local hardware printing pipeline
         window.print();
 
+        // Restore default tab header strings
         document.title = "iteireann - Client facing UI";
 
+        // Soft Reset Form environment
         this.reset();
         clearCanvas('sig-customer');
         clearCanvas('sig-tech');
         setDefaultTimestamp();
-        setPurpose('service');
-        calculateTotal();
+        setPurpose('service'); 
     });
 </script>
 
