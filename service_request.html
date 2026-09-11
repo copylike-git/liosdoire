@@ -230,7 +230,6 @@
             color: var(--primary-color);
         }
 
-        /* HIGHLIGHTED DATA BACKUP DISCLAIMER CALLOUT */
         .backup-warning-card {
             background-color: var(--warning-bg);
             border: 2px solid var(--warning-border);
@@ -242,7 +241,7 @@
             transition: all 0.2s ease;
         }
 
-        .backup-warning-card.shake {
+        .shake-element {
             animation: shake 0.4s ease-in-out;
         }
 
@@ -313,7 +312,6 @@
             line-height: 1.35;
         }
 
-        /* LIVE CALCULATION SUMMARY CARD */
         .fee-calc-card {
             background: #eef5f8;
             border: 1.5px solid #b7d6e1;
@@ -368,14 +366,43 @@
 
         .legal-box {
             background-color: #f9f9fb;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px 8px 0 0;
             padding: 16px;
             max-height: 200px;
             overflow-y: scroll;
             font-size: 13.5px;
             color: #333;
+            margin-bottom: 0;
+        }
+
+        /* SCROLL FOOTER TERMS & WAIVER CHECKBOX */
+        .legal-waiver-footer {
+            background: #f0f4f7;
+            border: 1.5px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 14px 16px;
             margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+        }
+
+        .legal-waiver-footer input {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            accent-color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .legal-waiver-footer label {
+            margin-bottom: 0;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #1d1d1f;
+            cursor: pointer;
         }
 
         .signature-section {
@@ -570,7 +597,6 @@
                 </div>
             </div>
 
-            <!-- MULTI-SELECT SERVICE TIERS -->
             <label style="margin-top:20px; font-size:17px;">Select Services & Repairs (Multiple Selectable):</label>
             <div style="background:#f9f9fb; padding:16px; border:1px solid var(--border-color); border-radius:10px; margin-bottom:18px;">
                 
@@ -614,12 +640,13 @@
                     <span class="service-badge-price">€150.00</span>
                 </div>
 
+                <!-- DATA BACKUP AND RECOVERY AT €350 -->
                 <div class="check-group">
                     <div class="check-group-inner">
-                        <input type="checkbox" class="service-calc-item" id="srv-data" data-name="Data Recovery / Backup" data-price="0">
-                        <label for="srv-data">Data Recovery / Backup</label>
+                        <input type="checkbox" class="service-calc-item" id="srv-data" data-name="Data Backup & Recovery" data-price="350">
+                        <label for="srv-data">Data Backup & Recovery</label>
                     </div>
-                    <span class="service-badge-price">To Quote</span>
+                    <span class="service-badge-price">€350.00</span>
                 </div>
 
                 <div class="grid-2" style="margin-top:16px;">
@@ -660,7 +687,7 @@
                     <span class="backup-warning-title">Critical Notice: Data Backup Disclaimer</span>
                 </div>
                 <div class="backup-warning-text">
-                    iteireann accepts absolutely <strong>no liability or responsibility</strong> for any data loss, corrupted files, missing operating systems, or account configurations during hardware diagnostics, bench stress-testing, or component repairs[cite: 1]. <strong>Customer data backup is not covered under any standard diagnostic or repair service.</strong>
+                    iteireann accepts absolutely <strong>no liability or responsibility</strong> for any data loss, corrupted files, missing operating systems, or account configurations during hardware diagnostics, bench stress-testing, or component repairs[cite: 1]. <strong>Customer data backup is not covered under any standard diagnostic or repair service[cite: 1].</strong>
                 </div>
                 <div class="backup-checkbox-row" onclick="document.getElementById('chk-backup-confirmed').click();">
                     <input type="checkbox" id="chk-backup-confirmed" required onclick="event.stopPropagation();">
@@ -671,13 +698,21 @@
             </div>
 
             <h2>4. Legal Terms, Conditions & Liability Disclaimer</h2>
-            <div class="legal-box">
+            <div class="legal-box" id="terms-scroll-box">
                 <p><strong>3.1 Mandatory Inspection Fee:</strong> When applicable, inspection fees cover diagnostic resources and bench time required to assess hardware and are strictly non-refundable[cite: 1].</p>
                 <p><strong>3.2 Upfront Payment Policy:</strong> To protect our commercial retail interests, all hardware components, replacement parts, and repair service fees must be paid in full upfront before technical work or parts procurement commences[cite: 1].</p>
                 <p><strong>3.3 Quotation Validity & Withdrawal (E&OE):</strong> All cost estimates and formal price quotes are strictly valid for one (1) working day from the time of issue[cite: 1]. Management reserves the right to withdraw or adjust quotes based on parts availability[cite: 1].</p>
                 <p><strong>3.4 Data Liability & Backup Release:</strong> iteireann strongly advises customers to back up all data prior to handing over any device[cite: 1]. While we take every reasonable precaution, iteireann accepts absolutely no liability for data loss or corruption during diagnostic or repair processes[cite: 1].</p>
                 <p><strong>3.5 Pre-existing Faults:</strong> Electronic components can fail unexpectedly under diagnostic stress or during disassembly, especially if subjected to prior liquid or physical impact[cite: 1].</p>
                 <p><strong>3.6 Abandoned Property & Disposal Rights:</strong> Devices not collected within sixty (60) days of completion of diagnosis will be deemed abandoned and subject to disposal or recycling[cite: 1].</p>
+            </div>
+
+            <!-- MANDATORY DATA WAIVER CHECKBOX ATTACHED TO TERMS SCROLL ZONE -->
+            <div id="box-terms-waiver" class="legal-waiver-footer">
+                <input type="checkbox" id="chk-terms-waiver" required>
+                <label for="chk-terms-waiver">
+                    I have reviewed the terms above and explicitly confirm my agreement to the <strong>Data Liability Waiver & Pre-existing Faults Disclaimer (Sections 3.4 & 3.5)[cite: 1]</strong>. <span class="required-star">*</span>
+                </label>
             </div>
 
             <h2>5. Customer Declaration & Authorisation</h2>
@@ -855,13 +890,13 @@
             </tr>
             <tr>
                 <th style="color: #d9381e;">Data Disclaimer Verified</th>
-                <td colspan="3" id="p-backup-status" style="font-weight: bold; color: #d9381e;">CONFIRMED: Customer accepts data backup is NOT covered.</td>
+                <td colspan="3" id="p-backup-status" style="font-weight: bold; color: #d9381e;">CONFIRMED: Customer accepts data backup is NOT covered & terms waiver agreed.</td>
             </tr>
         </table>
 
         <div class="print-sec-title">4. Executed Liability Declarations & Authorisations</div>
         <div style="font-size: 9px; text-align: justify; border: 1px solid #ccc; padding: 6px; line-height:1.2;">
-            Client validates asset receipt or structural repair instruction metrics. Inspection and diagnostic fees are strictly non-refundable once work has commenced[cite: 1]. Financial parts processing totals must be paid upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
+            Client validates asset receipt or structural repair instruction metrics[cite: 1]. Inspection and diagnostic fees are strictly non-refundable once work has commenced[cite: 1]. Financial parts processing totals must be paid upfront[cite: 1]. Quote metrics are valid for 1 working day (E&OE)[cite: 1]. iteireann disclaims all data liability during hardware bench interaction stress tests[cite: 1]. Items left past 60 days will trigger asset liquidation channels[cite: 1].
         </div>
         
         <div class="print-sig-block">
@@ -960,6 +995,7 @@
         const inputServiceId = document.getElementById('c-service-id');
         const inputStudentIdTop = document.getElementById('c-student-id-top');
         const chkBackup = document.getElementById('chk-backup-confirmed');
+        const chkTerms = document.getElementById('chk-terms-waiver');
 
         if (type === 'service') {
             btnService.classList.add('active');
@@ -973,6 +1009,7 @@
             inputServiceId.required = true;
             inputStudentIdTop.required = false;
             chkBackup.required = true;
+            chkTerms.required = true;
         } else {
             btnPickup.classList.add('active');
             btnService.classList.remove('active');
@@ -985,6 +1022,7 @@
             inputStudentIdTop.required = true;
             inputServiceId.required = false;
             chkBackup.required = false;
+            chkTerms.required = false;
         }
     }
 
@@ -1056,7 +1094,6 @@
         currentActiveTextAreaId = null;
     }
 
-    // ROBUST SIGNATURE ENGINE
     function setupSignature(canvasId) {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return;
@@ -1134,19 +1171,28 @@
         calculateTotal();
     });
 
-    // FORM SUBMISSION PIPELINE WITH BACKUP VERIFICATION CHECK
+    // FORM SUBMISSION PIPELINE WITH DOUBLE WAIVER VALIDATION
     document.getElementById('admissionForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Enforce Backup Disclaimer Check for service workflow
         if (intakePurpose === 'service') {
             const backupConfirmed = document.getElementById('chk-backup-confirmed').checked;
             if (!backupConfirmed) {
                 const warningBox = document.getElementById('box-backup-warning');
-                warningBox.classList.add('shake');
+                warningBox.classList.add('shake-element');
                 warningBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => warningBox.classList.remove('shake'), 500);
+                setTimeout(() => warningBox.classList.remove('shake-element'), 500);
                 alert("CRITICAL NOTICE:\n\nYou must verify and tick the Data Backup Disclaimer checkbox before this service request can proceed.");
+                return;
+            }
+
+            const termsWaiverConfirmed = document.getElementById('chk-terms-waiver').checked;
+            if (!termsWaiverConfirmed) {
+                const termsBox = document.getElementById('box-terms-waiver');
+                termsBox.classList.add('shake-element');
+                termsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => termsBox.classList.remove('shake-element'), 500);
+                alert("REQUIRED ACTION:\n\nPlease tick the checkbox below Section 4 confirming you have reviewed the terms and agree to the Data Liability Waiver.");
                 return;
             }
         }
